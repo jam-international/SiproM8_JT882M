@@ -1,0 +1,65 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_MainIniCustom.src
+//              Personalizzazioni all'inizio del programma Main    
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+'#include "DefVar.h"
+
+
+
+sub ()
+
+        // Centratura pinza con ago
+    if ( Vb4085              )
+        gosub "C2_TestPinzaAgo"
+        Vb4085              = 0  
+        Vb4079            = 0  
+        gosub "Halt.obj"
+    endif      
+
+        ///// dopo un reset riporto la pinza in posizione home
+    if ( vb4903               )
+	    SyncVar( vb2003          )   
+	vq2962     = vq2717            
+	if ( vq2918        < vq2962     )           // #M200717_1GF#
+		vq2962     = vq2918       
+	endif
+
+        fa[ 6        ] = vq2717            
+        fa[ 7        ] = vq2717            
+        // Movimento asse Y fuori ingombro ( finecorsa avanti )
+	if(vq57           < vq3093                     and vb2032          == 1)
+		AxAnt( 7       , vq3093                     , -15, 2, 0 )
+		WaitCond( IsAxInStop( 7        ) ) 
+	 endif
+        ax[ 6        ] = 0 
+        ax[ 7        ] = 0
+        ISO G1 X vq2911      Y vq2912      F vq2717              
+        Delays (0.1)
+
+        Vb4382                         = 1 
+	Vb4097                   = 1 
+
+	vq2952          = 0
+        vb4903               = 0  
+	vb2955       = 0  
+	vb41               = 1   //clear OPT3
+	if(vb152             )
+		Vb4383                           = 0  
+	endif
+	vb31               = 0  
+	gosub "Halt.obj"						///// messo per non iniziare a cucire dopo il reset
+    endif
+
+endsub

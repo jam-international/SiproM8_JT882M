@@ -1,0 +1,66 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_MainIniCustom.src
+//              Personalizzazioni all'inizio del programma Main    
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+#include "DefVar.h"
+
+
+
+sub ()
+
+        // Centratura pinza con ago
+    if ( Vb4085_TestFcZeroC2 )
+        gosub "C2_TestPinzaAgo"
+        Vb4085_TestFcZeroC2 = OFF
+        Vb4079_TestHomeC2 = OFF
+        gosub "Halt.obj"
+    endif      
+
+        ///// dopo un reset riporto la pinza in posizione home
+    if ( Vb4903_AppResetHmiC2 )
+	    SyncVar( C2_CmdPiedinoSu )   
+	C2_VelFeed = C2_Par_FeedG0Reset
+	if ( C2_Udf_FeedG0 < C2_VelFeed )           // #M200717_1GF#
+		C2_VelFeed = C2_Udf_FeedG0
+	endif
+ 
+        fa[ C2_AsseX ] = C2_Par_FeedG0Reset
+        fa[ C2_AsseY ] = C2_Par_FeedG0Reset
+        // Movimento asse Y fuori ingombro ( finecorsa avanti )
+	if(PosAx_C2_AsseY < Vq3093_QuoteLimiteAsseY_C2 and C2_AssiAzzerati == 1)
+		AxAnt( C2_AsseY, Vq3093_QuoteLimiteAsseY_C2 , -15, 2, 0 )
+		WaitCond( IsAxInStop( C2_AsseY ) ) 
+	 endif
+        ax[ C2_AsseX ] = 0 
+        ax[ C2_AsseY ] = 0
+        ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_Par_FeedG0Reset  
+        Delays (0.1)
+
+        Vb4382_AppAut_o50_C2_Pinza_int = ON
+	Vb4097_AppOnScartafiloC2 = ON
+	
+	C2_VqActPntCuci = 0
+        Vb4903_AppResetHmiC2 = OFF
+	C2_VbRunCuci = OFF
+	Vb41_Clear_OPT3_C2 = ON  //clear OPT3
+	if(Vb152KitCarPAttine)
+		Vb4383_AppAut_o51_PinzaPattina_1 = OFF
+	endif
+	Vb31_C2_InCucitura = OFF
+	gosub "Halt.obj"						///// messo per non iniziare a cucire dopo il reset
+    endif
+
+endsub
+

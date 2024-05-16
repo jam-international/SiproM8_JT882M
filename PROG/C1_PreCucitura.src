@@ -1,0 +1,27 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C1_PreCucitura.src
+//              Operazioni prima di eseguire la cucitura
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+
+#include "DefVar.h"
+
+
+
+sub ()
+
+ 
+
+endsub
+

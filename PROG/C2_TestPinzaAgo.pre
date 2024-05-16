@@ -1,0 +1,47 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_TestPinzaAgo   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        Mauro        1.0     27-02-2020
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+
+'#include "defvar.h"
+
+
+sub ()
+        Vb4382                         = 0  
+            Delays (0.1)
+		WaitCond ( din55                  )
+        // Comando azzeramento AsseX
+    vb7106      = 1
+        // Comando azzeramento AsseY
+    vb7126      = 1
+        // Attende fine azzeramento asse AsseX 
+    WaitCond ( ( vb7113      == 1 ) and ( vn3131        >= 7 ) )
+    WaitCond ( ( vb7113      == 1 ) and ( vn3131        >= 7 ) )
+	fp[ 6        ] = 100   
+    fp[ 7        ] = 100    
+            Delays (1.5)   
+	WaitCond ( Vb4050             and Vb4051             )
+	if ( Vb4078            == 0 )
+		ax[ 6        ] = Vq3535                              
+		ax[ 7        ] = Vq3536                          
+				Delays (0.1)   
+	else
+		ax[ 6        ] = vq2911         
+		ax[ 7        ] = vq2912     
+				Delays (0.1)   
+	endif	
+	vb2032          = 1 
+
+
+endsub

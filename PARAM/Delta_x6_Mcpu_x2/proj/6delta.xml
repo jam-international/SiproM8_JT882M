@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<TreeItem>
+	<ItemName>Siax (EtherCAT)</ItemName>
+	<PathName>TIID^Siax (EtherCAT)</PathName>
+	<ItemType>2</ItemType>
+	<ItemId>1</ItemId>
+	<ItemSubType>111</ItemSubType>
+	<ItemSubTypeName>EtherCAT</ItemSubTypeName>
+	<ChildCount>6</ChildCount>
+	<Disabled>0</Disabled>
+	<CreateSymbols>0</CreateSymbols>
+	<TreeImageData16x14>424dba030000000000003a00000028000000100000000e0000000100200000000000800300000000000000000000000000000000000034006501ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c00000000000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c0000000000000000000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c00000000000000000000000000000000000000000000000000000000000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c0000000000000000000000000000000000000000000000000000000000000000000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c0000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff00c0c0c000c0c0c0000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff000000ff00c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c0000000ff000000ff00c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c0000000ff00c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000c0c0c000ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00</TreeImageData16x14>
+	<DeviceDef>
+		<AmsPort>28673</AmsPort>
+		<AmsNetId>192.168.1.55.2.1</AmsNetId>
+		<AddressInfo>
+			<Pnp>
+				<DeviceDesc>Connessione alla rete locale (LAN) (NIC Fast Ethern</DeviceDesc>
+				<DeviceName>\DEVICE\{0DCD8E4F-5433-4083-8C63-EB134684D7D2}</DeviceName>
+				<DeviceData>000ea6716bd1</DeviceData>
+			</Pnp>
+		</AddressInfo>
+		<ScanBoxes>0</ScanBoxes>
+	</DeviceDef>
+	<EtherCAT>
+		<EmergencyScan>
+			<TestFrames>0</TestFrames>
+		</EmergencyScan>
+		<ExportConfigurationFile/>
+			<DC>
+				<AutomaticModeSelect>0</AutomaticModeSelect>
+				<Mode>Slave</Mode>
+			</DC>
+			<ContinuousRuntimeMeasurement>1</ContinuousRuntimeMeasurement>
+			<ContinuousCrcCheck>1</ContinuousCrcCheck>
+			<EBusPowerWarning>1</EBusPowerWarning>
+			<DisplayInputToggle>0</DisplayInputToggle>
+			<ForceReinitAfterCommErr>0</ForceReinitAfterCommErr>
+			<StartupState>O</StartupState>
+			<FrameRepeatCnt>0</FrameRepeatCnt>
+		</EtherCAT>
+	</TreeItem>

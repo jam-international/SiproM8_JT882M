@@ -1,0 +1,151 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_Azzeramento.SRC   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+
+'#include "DefVar.h"
+
+
+sub ()
+	Vb4382                         = 0  
+	// se ho il comando da HMI per azzerare solo la pinza salto avanti
+	if ( vb53                       )
+        Vb4382                         = 0  
+
+		  DelayS( 0.1 )    
+	    SyncVar( vb2003          )    
+		goto ZERO_X_Y
+	endif
+	vb87                  = 1 
+        // Piedino giu
+    SyncVar( vb2004           )    
+
+        // Sgancia inseguimento crochet
+    SyncVar( vb2015               )    
+
+        // --------------------------
+        // Start azzeramento asse AGO
+
+        // Se il sensore e' scoperto si va avanti finche' non si copre il sensore
+    if ( din54            )
+        AxAnt( 8         , 720 , -1, 2, 0 )         
+        WaitCond ( din54            )
+        ExecPlcFun( 75         , (8          * 100)+1 , 0 )
+        WaitCond( IsAxInStop( 8          ) ) 
+        DelayS( 0.2 )
+    endif    
+
+        // Comando di start azzeramento asse AGO
+    vb7146      = 1
+
+        // Attende fine azzeramento
+    WaitCond ( ( vb7153      == 1 ) and ( vn3151        >= 7 ) )
+
+        // Verifica se azzeramento completato con successo o con errore
+    if ( vn3151        > 7 ) 
+        gosub "Halt.obj"
+    endif    
+
+
+        // Movimento a quota di ago alto
+    vn3141   = 1000
+    fp[ 8          ] = 100    
+    ax[ 8          ] = vq2703    
+
+        // Piedino su
+    SyncVar( vb2003          )    
+
+        // -----------------------------------------
+        // Comando di start azzeramento asse CROCHET 
+    vb7166      = 1
+
+        // Attende fine azzeramento
+    WaitCond ( ( vb7173      == 1 ) and ( vn3171        >= 7 ) )
+
+        // Verifica se azzeramento completato con successo o con errore
+    if ( vn3171        > 7 ) 
+        gosub "Halt.obj"
+    endif    
+
+        // Movimento alla stessa quota dell'ago alto
+    vn3161   = 1000
+    fp[ 9          ] = 100    
+    ax[ 9          ] = vq2703    
+
+        // Aggancia inseguimento gantry
+    DelayS( 0.1 )    
+    SyncVar( vb2013              )     
+
+:ZERO_X_Y
+        // -----------------
+        // Azzeramento X e Y
+
+        // Movimento asse Y fuori ingombro ( finecorsa avanti )
+	if(vq57           < vq3093                     and vb2032          == 1)
+		AxAnt( 7       , vq3093                     , -15, 2, 0 )
+		WaitCond( IsAxInStop( 7        ) ) 
+	 endif
+
+
+
+
+
+        // Comando azzeramento AsseX
+    vb7106      = 1
+
+        // Attende fine azzeramento asse AsseX 
+    WaitCond ( ( vb7113      == 1 ) and ( vn3111        >= 7 ) )
+
+        // Verifica se azzeramento completato con errore
+    if ( vn3111        > 7 )
+        gosub "Halt.obj"
+    endif
+
+        // Comando azzeramento AsseY
+    vb7126      = 1
+
+        // Attende fine azzeramento asse AsseY
+    WaitCond ( ( vb7133      == 1 ) and ( vn3131        >= 7 ) )
+
+
+        // Verifica se azzeramento completato con errore
+    if ( vn3131        > 7 ) 
+        gosub "Halt.obj"
+    endif
+
+     WaitCond (  vb7193       == 1 )
+     do
+	if(vq60             >350)	//aspetto che il traslatore va alla posizione di riposo altrimenti non posso alzare le pinze
+		exitdo
+	endif
+    loop
+
+        // Carica il profilo: le quote di home sono scritte nell'header del profilo
+    gosub "C2_LoadProfilo"    
+
+        // Movimento a posizione di home ( coordinate macchina )
+    ISO G1 X vq2911      Y vq2912      F vq2717            
+
+
+
+
+        // Operazioni finali Custom
+    gosub "C2_AzzEndCustom"    
+
+		// setto cucitrice 2 azzerata
+	vb2032          = 1 
+	vb53                       = 0  
+	vb87                  = 0  
+
+endsub

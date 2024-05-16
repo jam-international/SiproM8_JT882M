@@ -1,0 +1,57 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_Parametri.src   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+//
+// In simulazione si forza il reload dei parametri
+//  #M210331_1GF#                       gf              1.1     31/03/2021
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+
+#include "DefVar.h"
+
+
+
+sub ()
+
+        // In simulazione si forza il reload dei parametri - #M210331_1GF#
+    if ( C2_CuciSimulaAuto == 1 )
+        C2_ReloadParam = ON
+    endif
+
+        // Calcolo parametri assi solo se serve
+    if ( C2_ReloadParam )
+
+            // Programmazione camme digitali
+        SyncVar( C2_CmdInitCamme )
+
+            // Parametri di cucitura
+        ExecPlcFun( PLC_CUCI_SET_PARAM, 201, C2_SGL_START_STOP_IDX )        
+
+//------------------------------------------------------------
+// Le seguenti istruzioni non servono se si usa il tabellone dei parametri dinamici
+//@// ExecPlcFun( PLC_CUCI_SET_PARAM, 211, C2_ACC_DEC_X_IDX )        
+//@// ExecPlcFun( PLC_CUCI_SET_PARAM, 212, C2_FREQ_X_IDX )        
+//@// ExecPlcFun( PLC_CUCI_SET_PARAM, 221, C2_ACC_DEC_Y_IDX )        
+//@// ExecPlcFun( PLC_CUCI_SET_PARAM, 222, C2_FREQ_Y_IDX )        
+//------------------------------------------------------------
+
+            // Parametri assi - calcolo velocita' massima asse ago
+        ExecPlcFun( PLC_READ_AX_PARAM, (C2_AsseAGO * 100)+6,  C2_VEL_RIF_AGO )        
+        ExecPlcFun( PLC_READ_AX_PARAM, (C2_AsseAGO * 100)+21, C2_MM_RIF_AGO )        
+        ExecPlcFun( PLC_READ_AX_PARAM, (C2_AsseAGO * 100)+22, C2_IMP_RIF_AGO )        
+
+        C2_VelMaxAgoRPM = ( C2_VelRifAgo * C2_MmRifAgo * 60 ) / ( C2_ImpRifAgo * 360 * 1000 )
+
+    endif
+
+endsub
+

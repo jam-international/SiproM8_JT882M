@@ -1,0 +1,48 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_TestPinzaAgo   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        Mauro        1.0     27-02-2020
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+
+#include "defvar.h"
+
+
+sub ()
+        Vb4383_AppAut_o50_C2_Pinza_int = OFF
+            Delays (0.1)
+		WaitCond ( i55_C2_FcPinzaIntBassa )
+        // Comando azzeramento AsseX
+    VbCmdAzzAx6 = 1
+        // Comando azzeramento AsseY
+    VbCmdAzzAx7 = 1
+        // Attende fine azzeramento asse AsseX 
+    WaitCond ( ( VbFlgAzzAx6 == 1 ) and ( VnFaseZeroAx7 >= 7 ) )
+    WaitCond ( ( VbFlgAzzAx6 == 1 ) and ( VnFaseZeroAx7 >= 7 ) )
+	fp[ C2_AsseX ] = 100   
+    fp[ C2_AsseY ] = 100    
+            Delays (1.5)   
+	WaitCond ( Vb4050_C2_AxXFermo and Vb4051_C2_AxYFermo )
+	if ( Vb4078_TestHomeC1 == 0 )
+		ax[ C2_AsseX ] = Vq3535_PosAsseX_TaraturaPinzaAgo    
+		ax[ C2_AsseY ] = Vq3536_PosAsseY_TaraturaPinzaAgo
+				Delays (0.1)   
+	else
+		ax[ C2_AsseX ] = C2_QuoHomeX    
+		ax[ C2_AsseY ] = C2_QuoHomeY
+				Delays (0.1)   
+	endif	
+	C2_AssiAzzerati = ON
+
+
+endsub
+

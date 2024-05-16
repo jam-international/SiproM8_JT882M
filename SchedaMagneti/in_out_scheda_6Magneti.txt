@@ -1,0 +1,6 @@
+//ch1 tens master : AO97
+//ch2 blocca filo master :  out 18
+//ch3 magnete sotto : AO99
+//ch4 magnete sopra : AO100
+//ch5 tensione slave : AO98
+//ch6 blocca filo slave : out54

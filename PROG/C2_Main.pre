@@ -1,0 +1,54 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_Main.src   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+'#include "DefVar.h"
+
+
+
+sub ()
+	if(vn320          == 882 )
+		// Operazioni iniziali Custom 
+	    gosub "C2_MainIniCustom.obj"    
+
+		// Ciclo di azzeramento vado solo se serve 
+	    if ( vb2032          == 0 )
+		vb2024          = 1
+		gosub "C2_Azzeramento.obj"
+	    else    
+
+	    //if(Vb4520_AppScaricoCortiConPinzaRunning ==1)
+	    if ( vb4515                   and vb4513                  == 0)
+			gosub "C2_MainEndCustom.obj" 
+	    else
+
+			gosub "C2_LoadProfilo.obj"    
+
+			gosub "C2_Parametri.obj"
+
+			gosub "C2_PreCucitura.obj"
+
+			    // Esegue la cucitura
+			gosub "C2_ExeCucitura.obj"
+
+			    // Operazioni finali
+			gosub "C2_MainEndCustom.obj"    
+		endif
+	    endif
+	else
+		vb2032          = 1 
+	endif
+
+
+endsub

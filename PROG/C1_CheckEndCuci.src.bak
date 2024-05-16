@@ -1,0 +1,83 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C1_CheckEndCuci.src   
+//              Verifica se la cucitura e' terminata
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+#include "DefVar.h"
+
+
+
+sub ()
+    
+	// Verifica cucitura terminata
+	if ( C1_VqActPntCuci >= C1_VqTotPntCuci )
+		// Movimento a posizione di home ( coordinate macchina )
+		SyncVar( C1_CmdPiedinoSu )
+		Delays ( 0.3 )
+ 		Vb4805_AppStartCaricatoreC1 = ON
+		C1_VelFeed = C1_Par_FeedG0Reset
+		if ( C1_Udf_FeedG0 < C1_VelFeed )           // #M200717_1GF#
+			C1_VelFeed = C1_Udf_FeedG0
+		endif
+
+		//ISO G1 X C1_QuoHomeX Y C1_QuoHomeY F C1_VelFeed
+
+		Vb37_Clear_OPT2 = ON		//spengo perni ranocchia
+
+
+		fa[ C1_AsseX ] = Vq3054_C1_VelFeed_Reset
+		fa[ C1_AsseY ] = Vq3054_C1_VelFeed_Reset
+		ax[ C1_AsseX ] = C1_QuoHomeX
+		ax[ C1_AsseY ] = C1_QuoHomeY
+		Delays (0.1)
+
+		//Daniele x fine test
+		if(Vb4006_StepTraslatore == OFF)
+			Vb4350_AppAut_o18_C1_Pinza_int = ON
+			Vb4351_AppAut_o19_C1_Pinza_est = ON 
+
+			WaitCond ( i24_C1_PinzaEstAlta == 1)
+
+		else
+
+			if(VbChn3AutoRun == 0)
+				if(VbChn2AutoRun == 0 and C2_VbRunCuci == 0 and Vb4382_AppAut_o50_C2_Pinza_int == OFF)
+					Vb4382_AppAut_o50_C2_Pinza_int = ON
+					 SyncVar( C2_CmdPiedinoSu )    
+					
+
+				endif
+
+
+				Vb12_StepResetCanale3_2 = OFF
+				Vb4016_PrgTraslatoreRun = ON
+				VnStatoCuci1 = 0
+				VnStatoCuci2 = 0
+				VbChn3Start = 1
+			endif
+
+
+
+
+		endif
+
+		Vb36_Clear_OPT1 = ON	//apro retrattile
+		Vb37_Clear_OPT2 = ON	//tolgo ranocchia
+		Vb38_Clear_OPT3 = ON	//disattivo salto piedino
+
+	
+		gosub "Halt.obj"
+	endif
+endsub
+

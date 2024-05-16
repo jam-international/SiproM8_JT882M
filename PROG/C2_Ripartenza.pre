@@ -1,0 +1,61 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_Ripartenza.src   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+'#include "DefVar.h"
+
+
+
+sub ()
+
+        // Verifica se la ripartenza e' in una zona di fermata temporanea
+        // In tal caso bisogna riportarsi all'inizio della prossima cucitura
+    do
+	vn778   = 2
+            // Attesa rilascio hold          
+        WaitCond( vb2009            == 0 )
+
+           // Per evitare di chiamare furiosamente la FUN 150
+        DelayS( 0.1 )
+
+
+	 if ( vb2033              or vb45                       )
+		vb45                       = 0  
+		vn778   = 3
+            exitdo
+        endif
+	vn778   = 4
+            // Movimento simulato avanti fino a ripresa o fine cucitura
+        ExecPlcFun( 281         , 250, 10 )  
+
+            // Attesa assi X Y fermi
+        WaitCond( IsAxInStop( 6        ) )      
+        WaitCond( IsAxInStop( 7        ) )      
+
+    loop
+
+        // Elimina le forzature di velocita' asse ago
+    ExecPlcFun( 281         , 208, 0 )        
+
+        // Verifica se terminata la cucitura
+    gosub "C2_CheckEndCuci"
+
+        // Riparte la cucitura senza azzerare il buffer dei punti            
+	if ( vb2028           )
+		ISO G281 P 10                  X vq2027       Y vq2028      
+	else
+		ISO G281 P 126                        X vq2027       Y vq2028      
+	endif
+
+endsub

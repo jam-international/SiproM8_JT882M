@@ -1,0 +1,35 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_LoadProfilo.src   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+
+'#include "DefVar.h"
+
+
+
+sub ()
+
+    if ( vb2019                 == 1 )
+
+            // Load Profilo UDF
+        ExecUdtCmd( 2     , 20, 0, 0 )
+
+            // Read Header
+        ExecUdtCmd( 2     , 51, 0, 212             )
+
+            // Reset flag di forzatura
+        vb2019                 = 0
+    endif
+
+endsub

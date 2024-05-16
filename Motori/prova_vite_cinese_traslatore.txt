@@ -1,0 +1,1 @@
+passo 40 diametro 25, fp[ C2_AsseCAR ] massima a 33 altrimenti la vite vibra.  33 il motore gira a 1500rpm quindi 1500/60*40 = 1000m/s

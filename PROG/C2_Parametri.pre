@@ -1,0 +1,56 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_Parametri.src   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+//
+// In simulazione si forza il reload dei parametri
+//  #M210331_1GF#                       gf              1.1     31/03/2021
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+
+'#include "DefVar.h"
+
+
+
+sub ()
+
+        // In simulazione si forza il reload dei parametri - #M210331_1GF#
+    if ( vb2034            == 1 )
+        vb2025         = 1 
+    endif
+
+        // Calcolo parametri assi solo se serve
+    if ( vb2025         )
+
+            // Programmazione camme digitali
+        SyncVar( vb2002          )
+
+            // Parametri di cucitura
+        ExecPlcFun( 280               , 201, 2701                  )        
+
+//------------------------------------------------------------
+// Le seguenti istruzioni non servono se si usa il tabellone dei parametri dinamici
+//@// ExecPlcFun( PLC_CUCI_SET_PARAM, 211, C2_ACC_DEC_X_IDX )        
+//@// ExecPlcFun( PLC_CUCI_SET_PARAM, 212, C2_FREQ_X_IDX )        
+//@// ExecPlcFun( PLC_CUCI_SET_PARAM, 221, C2_ACC_DEC_Y_IDX )        
+//@// ExecPlcFun( PLC_CUCI_SET_PARAM, 222, C2_FREQ_Y_IDX )        
+//------------------------------------------------------------
+
+            // Parametri assi - calcolo velocita' massima asse ago
+        ExecPlcFun( 210              , (8          * 100)+6,  2001           )        
+        ExecPlcFun( 210              , (8          * 100)+21, 2003          )        
+        ExecPlcFun( 210              , (8          * 100)+22, 2002           )        
+
+        vq2008          = ( vq2001       * vq2003      * 60 ) / ( vq2002       * 360 * 1000 )
+
+    endif
+
+endsub

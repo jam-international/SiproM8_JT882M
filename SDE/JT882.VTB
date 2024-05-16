@@ -1,0 +1,35 @@
+﻿[Settings]
+    26, 26, 476, 828
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+    True, True, True, True, True, False, False, False, False, False, False, False, False
+    1
+    1
+    False
+[EndSettings]
+[Table]
+       3,     3520,        0, , 65535, FF00FF00, 0, 0, 0, True, False, False
+       3,     3521,        0, , 65535, FF0000FF, 0, 0, 0, True, False, False
+       3,     3522,        0, , 65535, FFFF0000, 0, 0, 0, True, False, False
+       3,     3523,        0, , 65535, FF008000, 0, 0, 0, True, False, False
+       3,     3524,        0, , 65535, FFFF8000, 0, 0, 0, True, False, False
+       3,     3525,        0, , 65535, FF8000FF, 0, 0, 0, True, False, False
+       3,     3500,        0, , 65535, FFFF00FF, 0, 0, 0, True, False, False
+       3,     3501,        0, , 65535, FF00FFFF, 0, 0, 0, True, False, False
+       3,     3502,        0, , 65535, FF008080, 0, 0, 0, True, False, False
+       3,     3503,        0, , 65535, FF800080, 0, 0, 0, True, False, False
+       3,     3504,        0, , 65535, FF808000, 0, 0, 0, True, False, False
+       3,     3505,        0, , 65535, FFFFC0FE, 0, 0, 0, True, False, False
+       3,     3510,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3511,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3512,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3530,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3531,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3535,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3536,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3540,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3550,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3560,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3561,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3562,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+       3,     3563,        0, , 65535, FF000000, 0, 0, 0, True, False, False
+[EndTable]

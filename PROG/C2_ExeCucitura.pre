@@ -1,0 +1,215 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_ExeCucitura.src   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+
+'#include "DefVar.h"
+
+
+
+sub ()
+
+        // Piedino su
+    SyncVar( vb2003          )    
+
+        // --------------------------------------------------
+        // Velocita' [mm/min] nei G0 senza cucitura
+    if ( vb2025         )
+        ExecPlcFun( 281         , 207, 2918           )        
+    endif
+
+        // --------------------------------------------------
+
+        // Reset variabile di canale: vel. asse ago RPM
+    vcd1      = 0
+
+  // --------------------------------------------------
+        // La Velocita' di lavoro Ago dei parametri e' il limite massimo
+    vn2002       = vq2710         
+
+    if ( vn2002       > vq2913          )           // #M200717_1GF#
+        vn2002       = vq2913         
+    endif
+
+
+        // La minore tra C2_ParVelLavRPM e C2_UdfVelLavRPM
+
+        // Verifica ulteriore limitazione
+    if ( vn2002       > vq2110             )        // #M200717_1GF#
+        vn2002       = vq2110            
+    endif
+    // Imposta la velocita' di lavoro 
+    ExecPlcFun( 281         , 206, vn2002       )  // #M210313_1GF        
+
+        // --------------------------------------------------
+
+
+
+        // Esegue solo se e' necessario ricalcolare i parametri
+    if ( vb2025         )
+
+            // --------------------------------------------------
+            // Punti iniziali da profilo UDF o da parametro
+        if ( vq2915          > 0 )
+          vq2004    = vq2914            * 1000
+          vq2005    = vq2915          
+        else
+          vq2004    = vq2711            * 1000
+          vq2005    = vq2712          
+        endif
+
+            // #M200529_1GF#
+        if ( vq2005    > vn2002       )
+            vq2005    = vn2002       
+        endif
+
+            // Imposta punti iniziali ( funzione PLC )
+        ExecPlcFun( 280               , 203, 2004          )        
+
+            // --------------------------------------------------
+            // Punti finali da profilo UDF o da parametro
+        if ( vq2917           > 0 )
+            vq2006     = vq2916             * 1000
+            vq2007     = vq2917           
+        else
+            vq2006     = vq2713             * 1000
+            vq2007     = vq2714           
+        endif
+
+            // #M200529_1GF#
+        if ( vq2007     > vn2002       )
+            vq2007     = vn2002       
+        endif
+
+            // Imposta punti finali ( funzione PLC )
+        ExecPlcFun( 280               , 204, 2006           )        
+
+            // --------------------------------------------------
+            // Lettura delle coordinate di inizio cucitura
+        vq2025            = 2              
+
+        ExecPlcFun( 281         , 261, 2025            )
+
+        if ( vq2026          > 0 )
+            gosub "Halt.obj"
+        endif
+
+            // Creazione del buffer di cucitura
+        ISO G281 P 1             X vq2027       Y vq2028      
+    //  ExecPlcFun( PLC_CUCI_CMD, 260, C2_PROFILO_CNTX )            // #M201023_1GF#        
+        vq2035            = 2                                       // #M201023_1GF#
+        ExecPlcFun( 281         , 259, 2035            )            // #M201023_1GF#        
+        ISO G280
+
+            // Verifica codice errore creazione tabella             // #M201023_1GF#
+        if ( vq2036            > 0 )
+            gosub "Halt.obj"        
+        endif
+
+    endif
+
+        // Movimento a posizione di inizio cucitura
+    vq2962     = vq2918       
+    ISO G1 X vq2027       Y vq2028       F vq2962    
+    vn780   = 1
+
+        // Verifica esecuzione simulata: viene forzato Hold
+    if ( vb2034            == 1 )
+        vb2009            = 1
+	vn778   = 20
+    endif
+
+   if ( vb2009            == 0 )
+        ISO G281 P 10                  X vq2027       Y vq2028      
+	vn778   = 21
+   else
+	vb2028           = 1    // #M230406_1GF# - force rewind flag in C2_Ripartenza
+	vn778   = 22
+        gosub "C2_Ripartenza"
+    endif
+
+    vb2028           = 0        // #M230406_1GF# - reset rewind flag    
+    vb2025         = 0          // finito il primo giro in automatico non eseguo più le impostazioni
+
+        // Esecuzione cucitura
+	vb31               = 1 
+
+
+	//pattina, mi fermo dopo aver mosso le pinze al primo punto
+	if(vb152             )
+	vb160             = 0  
+	DelayS( 1 )
+		vb155              = 1 
+		do
+			if(vb160             )
+				vb160             = 0  
+				DelayS( 1 )
+				exitdo
+			endif
+		loop
+	endif
+
+    do
+	vn780   = 3
+        ISO G280
+
+            // Attesa
+        DelayS( 0.1 )
+
+            // Attesa asse ago fermo
+        WaitCond( IsAxInStop( 8          ) )      
+
+            // Non in stato di HOLD
+        if ( vb2009            == 0 )
+            exitdo
+        endif            
+
+            // Ripartenza cucitura
+        gosub "C2_Ripartenza"
+
+    loop        
+
+        // Piedino su
+    SyncVar( vb2003          )   
+
+
+        // Solo se presente l'asse di rotazione
+    if ( 0        != 0       )    
+            // Movimento asse C alla posizione iniziale - #M200724_1GF#
+        vq2061          = vq2029      
+        if ( vq2722             > 0 ) 
+            vq2062          = -vq2722            
+        else    
+            vq2062          = -10
+        endif
+        vq2063          = 0
+        ExecPlcFun( 74         , (0        * 100), 2060         )
+    endif
+
+      if ( vb4515                   and Vb4034                    and vb4519                         == 0)
+        Vb4032                        = 1   //fa partire scarictore
+      endif
+
+
+        // Movimento a posizione di home ( coordinate macchina )
+         vq2962     = vq2717            
+        if ( vq2918        < vq2962     )           // #M200717_1GF#
+            vq2962     = vq2918       
+        endif
+
+        ISO G1 X vq2911      Y vq2912      F vq2962      
+        WaitCond ( Vb4074                    == 0 or Vb4073                    ==0 )
+	vb89                   = 1 
+	vb31               = 0  
+endsub

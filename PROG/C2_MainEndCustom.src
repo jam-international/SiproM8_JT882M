@@ -1,0 +1,83 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_MainEndCustom.src
+//              Personalizzazioni alla fine del programma Main    
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+#include "DefVar.h"
+
+
+
+sub ()
+
+	if(Vb21_Tasca_dx_sx and Vn200_Tipo_DXSX_Ultima_cucita_su_C1 ==0)	//se ho tasca DX e SX e se ll'ultima tasca e stata cucita con lo start dal pulsante touch... altrimenti l'alternanza viene
+										// gestita dal CicloAutomatico.
+		if(Vn198_Tasca_DX_C2 == 1 and Vn199_Tasca_SX_C2 == 0)
+			Vn198_Tasca_DX_C2 = 0
+			Vn199_Tasca_SX_C2 = 1
+		else
+			Vn198_Tasca_DX_C2 = 1
+			Vn199_Tasca_SX_C2 = 0
+		endif
+			
+	endif
+// se è attivo lo scaricatore pezzi corti mando la pinza dietro
+
+	if ( Vb4515_AppEnbScaricatore and Vb4519_AppScaricoCortiConPinza)
+		Vb4520_AppScaricoCortiConPinzaRunning = ON
+		Vb4382_AppAut_o50_C2_Pinza_int = ON
+			
+		Delays (0.3)
+		C2_VelFeed = C2_Par_FeedG0Reset
+		ISO G1 X C2_QuoHomeX Y (C2_QuoHomeY + Vq3084_SpostamentoPinzaPezziCorti) F C2_VelFeed
+		
+		Vb4382_AppAut_o50_C2_Pinza_int = OFF
+
+		WaitCond ( i55_C2_FcPinzaIntBassa == 1)
+		Delays (0.3)
+		ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_VelFeed
+		
+
+		Vb4032_AppScaricatoreStrBarre = ON
+		Vb4382_AppAut_o50_C2_Pinza_int = ON
+		//endif
+		Vb4520_AppScaricoCortiConPinzaRunning = OFF
+		
+
+	else
+		///// se sono in manuale alzo le pinze 
+		if ( Vb4515_AppEnbScaricatore )
+			// Waitcond ( Vb4031_AppScaricatoreInPos ) /// aspetto il tempo per lo spostamento dx sx dello scaricatore
+			if ( Vb4515_AppEnbScaricatore and Vb4034_ScaricOnSuRasafilo == 0 and Vb4519_AppScaricoCortiConPinza == 0)
+				Vb4032_AppScaricatoreStrBarre = ON  //fa partire scarictore
+			endif
+
+			Vb4382_AppAut_o50_C2_Pinza_int = ON
+				
+		else
+			Vb4382_AppAut_o50_C2_Pinza_int = ON
+				
+		endif
+
+		Vb4097_AppOnScartafiloC2 = ON
+		Vb41_Clear_OPT3_C2 = ON  //clear OPT3
+		if(Vb152KitCarPAttine)
+			Vb4383_AppAut_o51_PinzaPattina_1 = OFF
+		endif
+	endif
+       
+// azzero numero punti fatti 
+    C2_VqActPntCuci = 0
+       
+endsub
+

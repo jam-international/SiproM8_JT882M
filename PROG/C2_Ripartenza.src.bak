@@ -1,0 +1,61 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_Ripartenza.src   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+#include "DefVar.h"
+
+
+
+sub ()
+
+        // Verifica se la ripartenza e' in una zona di fermata temporanea
+        // In tal caso bisogna riportarsi all'inizio della prossima cucitura
+    do
+
+            // Attesa rilascio hold          
+        WaitCond( C2_CmdHoldRelease == 0 )
+   
+           // Per evitare di chiamare furiosamente la FUN 150
+        DelayS( 0.1 )
+
+
+	 if ( C2_VbFlgCuciOrMove  or Vb45_TestCuciPrimaTasca_C2 )
+		Vb45_TestCuciPrimaTasca_C2 = OFF
+            exitdo
+        endif
+
+            // Movimento simulato avanti fino a ripresa o fine cucitura
+        ExecPlcFun( PLC_CUCI_CMD, 250, 10 )  
+
+            // Attesa assi X Y fermi
+        WaitCond( IsAxInStop( C2_AsseX ) )      
+        WaitCond( IsAxInStop( C2_AsseY ) )      
+
+    loop
+
+        // Elimina le forzature di velocita' asse ago
+    ExecPlcFun( PLC_CUCI_CMD, 208, 0 )        
+
+        // Verifica se terminata la cucitura
+    gosub "C2_CheckEndCuci"
+
+        // Riparte la cucitura senza azzerare il buffer dei punti            
+	if ( C2_CuciBufRewind )
+		ISO G281 P CA_MD_NO_RES_NO_INS X C2_FirstPt_X Y C2_FirstPt_Y
+	else
+		ISO G281 P CA_MD_NO_RES_NO_INS_NO_REW X C2_FirstPt_X Y C2_FirstPt_Y
+	endif
+    
+endsub
+

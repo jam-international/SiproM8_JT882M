@@ -1,0 +1,48 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_AzzEndCustom.src
+//              Personalizzazioni alla fine del programma di azzeramento    
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+
+'#include "DefVar.h"
+
+
+
+sub ()
+
+        // alzo le pinze dopo azzeramento
+	if ( vb4903               == 0 and vb4907                   ==1)
+			Vb4382                         = 1 
+
+		endif
+	/// se ho la cucitrice abilitata 
+	if ( vb4513                  and vn3804        != 1004)
+		Waitcond ( vb7193       and ( vq60             > 300 )) 
+		//Vb4382_AppAut_o50_C2_Pinza_int = ON
+	endif
+
+	/// se ho lo scaricatore abilitato 
+	if ( vb4513                  == 0   )
+		fp[ 7        ] = 30
+		ax[ 7        ] = 200
+		Vb4382                         = 1 
+
+	endif
+
+
+
+        // azzero numero punti fatti 
+    vq2952          = 0
+
+endsub

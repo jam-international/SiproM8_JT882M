@@ -1,0 +1,152 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_Azzeramento.SRC   
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+
+#include "DefVar.h"
+
+
+sub ()
+	Vb4382_AppAut_o50_C2_Pinza_int = OFF
+	// se ho il comando da HMI per azzerare solo la pinza salto avanti
+	if ( Vb53RichiestaZeroAxDaHmiC2 )
+        Vb4382_AppAut_o50_C2_Pinza_int = OFF
+			
+		  DelayS( 0.1 )    
+	    SyncVar( C2_CmdPiedinoSu )    
+		goto ZERO_X_Y
+	endif
+	Vb87In_Azzeramento_C2 = ON
+        // Piedino giu
+    SyncVar( C2_CmdPiedinoGiu )    
+
+        // Sgancia inseguimento crochet
+    SyncVar( C2_CmdSganciaCrochet )    
+
+        // --------------------------
+        // Start azzeramento asse AGO
+
+        // Se il sensore e' scoperto si va avanti finche' non si copre il sensore
+    if ( i54_C2_FcZeroAgo )
+        AxAnt( C2_AsseAGO, 720 , -1, 2, 0 )         
+        WaitCond ( i54_C2_FcZeroAgo )
+        ExecPlcFun( PLC_STOP_AX, (C2_AsseAGO * 100)+1 , 0 )
+        WaitCond( IsAxInStop( C2_AsseAGO ) ) 
+        DelayS( 0.2 )
+    endif    
+
+        // Comando di start azzeramento asse AGO
+    VbCmdAzzAx8 = 1
+
+        // Attende fine azzeramento
+    WaitCond ( ( VbFlgAzzAx8 == 1 ) and ( VnFaseZeroAx8 >= 7 ) )
+
+        // Verifica se azzeramento completato con successo o con errore
+    if ( VnFaseZeroAx8 > 7 ) 
+        gosub "Halt.obj"
+    endif    
+
+			
+        // Movimento a quota di ago alto
+    VnOvdAx8 = 1000
+    fp[ C2_AsseAGO ] = 100    
+    ax[ C2_AsseAGO ] = C2_AgoAlto
+    
+        // Piedino su
+    SyncVar( C2_CmdPiedinoSu )    
+
+        // -----------------------------------------
+        // Comando di start azzeramento asse CROCHET 
+    VbCmdAzzAx9 = 1
+
+        // Attende fine azzeramento
+    WaitCond ( ( VbFlgAzzAx9 == 1 ) and ( VnFaseZeroAx9 >= 7 ) )
+
+        // Verifica se azzeramento completato con successo o con errore
+    if ( VnFaseZeroAx9 > 7 ) 
+        gosub "Halt.obj"
+    endif    
+
+        // Movimento alla stessa quota dell'ago alto
+    VnOvdAx9 = 1000
+    fp[ C2_AsseCRO ] = 100    
+    ax[ C2_AsseCRO ] = C2_AgoAlto
+
+        // Aggancia inseguimento gantry
+    DelayS( 0.1 )    
+    SyncVar( C2_CmdGantryCrochet )     
+
+:ZERO_X_Y
+        // -----------------
+        // Azzeramento X e Y
+
+        // Movimento asse Y fuori ingombro ( finecorsa avanti )
+	if(PosAx_C2_AsseY < Vq3093_QuoteLimiteAsseY_C2 and C2_AssiAzzerati == 1)
+		AxAnt( C2_AsseY, Vq3093_QuoteLimiteAsseY_C2 , -15, 2, 0 )
+		WaitCond( IsAxInStop( C2_AsseY ) ) 
+	 endif
+   
+
+
+
+	
+        // Comando azzeramento AsseX
+    VbCmdAzzAx6 = 1
+    
+        // Attende fine azzeramento asse AsseX 
+    WaitCond ( ( VbFlgAzzAx6 == 1 ) and ( VnFaseZeroAx6 >= 7 ) )
+
+        // Verifica se azzeramento completato con errore
+    if ( VnFaseZeroAx6 > 7 )
+        gosub "Halt.obj"
+    endif
+   
+        // Comando azzeramento AsseY
+    VbCmdAzzAx7 = 1
+
+        // Attende fine azzeramento asse AsseY
+    WaitCond ( ( VbFlgAzzAx7 == 1 ) and ( VnFaseZeroAx7 >= 7 ) )
+
+    
+        // Verifica se azzeramento completato con errore
+    if ( VnFaseZeroAx7 > 7 ) 
+        gosub "Halt.obj"
+    endif
+
+     WaitCond (  VbFlgAzzAx10 == 1 )
+     do
+	if(PosAx_C2_AsseCAR >350)	//aspetto che il traslatore va alla posizione di riposo altrimenti non posso alzare le pinze
+		exitdo
+	endif
+    loop
+
+        // Carica il profilo: le quote di home sono scritte nell'header del profilo
+    gosub "C2_LoadProfilo"    
+
+        // Movimento a posizione di home ( coordinate macchina )
+    ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_Par_FeedG0Reset
+
+
+   
+
+        // Operazioni finali Custom
+    gosub "C2_AzzEndCustom"    
+
+		// setto cucitrice 2 azzerata
+	C2_AssiAzzerati = ON
+	Vb53RichiestaZeroAxDaHmiC2 = OFF
+	Vb87In_Azzeramento_C2 = OFF
+
+endsub
+

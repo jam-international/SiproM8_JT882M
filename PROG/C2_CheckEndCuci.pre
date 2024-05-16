@@ -1,0 +1,48 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_CheckEndCuci.src   
+//              Verifica se la cucitura e' terminata
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: non modificare questo file
+// ==========================================================================
+
+'#include "DefVar.h"
+
+
+
+sub ()
+
+        // Verifica cucitura terminata
+    if ( vq2952          >= vq2951          )
+
+            // Movimento a posizione di home ( coordinate macchina )
+       // ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_Par_FeedG0Reset 
+
+
+
+		fa[ 6        ] = vq3054                 
+		fa[ 7        ] = vq3054                 
+		ax[ 6        ] = vq2911     
+		ax[ 7        ] = vq2912     
+		Delays (0.1)
+
+		Vb4382                          = 1 
+
+		vb41               = 1   //clear OPT3
+
+		if(vb152             )
+			Vb4383                           = 0  
+		endif
+
+        gosub "Halt.obj"
+    endif
+
+endsub

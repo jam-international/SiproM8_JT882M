@@ -1,0 +1,82 @@
+// ==========================================================================
+// SIPRO - Siax M
+//
+// COMPANY:     JAM INTERNATIONAL
+//
+// DESCRIPTION: C2_MainEndCustom.src
+//              Personalizzazioni alla fine del programma Main    
+//
+// NOTE:                                NAME:           VER:    DATE:
+// -------------------------------------------------------------------------
+// Prima stesura                        gf              1.0     04/03/2021
+// Ultima modifica
+//
+// NOTA: il file puo' essere personalizzato 
+// ==========================================================================
+
+'#include "DefVar.h"
+
+
+
+sub ()
+
+	if(vb21             and vn200                               ==0)	//se ho tasca DX e SX e se ll'ultima tasca e stata cucita con lo start dal pulsante touch... altrimenti l'alternanza viene
+										// gestita dal CicloAutomatico.
+		if(vn198             == 1 and vn199             == 0)
+			vn198             = 0
+			vn199             = 1
+		else
+			vn198             = 1
+			vn199             = 0
+		endif
+
+	endif
+// se è attivo lo scaricatore pezzi corti mando la pinza dietro
+
+	if ( vb4515                   and vb4519                        )
+		vb4520                                = 1 
+		Vb4382                         = 1 
+
+		Delays (0.3)
+		vq2962     = vq2717            
+		ISO G1 X vq2911      Y (vq2912      + Vq3084                           ) F vq2962    
+
+		Vb4382                         = 0  
+
+		WaitCond ( din55                  == 1)
+		Delays (0.3)
+		ISO G1 X vq2911      Y vq2912      F vq2962    
+
+
+		Vb4032                        = 1 
+		Vb4382                         = 1 
+		//endif
+		vb4520                                = 0  
+
+
+	else
+		///// se sono in manuale alzo le pinze 
+		if ( vb4515                   )
+			// Waitcond ( Vb4031_AppScaricatoreInPos ) /// aspetto il tempo per lo spostamento dx sx dello scaricatore
+			if ( vb4515                   and Vb4034                    == 0 and vb4519                         == 0)
+				Vb4032                        = 1   //fa partire scarictore
+			endif
+
+			Vb4382                         = 1 
+
+		else
+			Vb4382                         = 1 
+
+		endif
+
+		Vb4097                   = 1 
+		vb41               = 1   //clear OPT3
+		if(vb152             )
+			Vb4383                           = 0  
+		endif
+	endif
+
+// azzero numero punti fatti 
+    vq2952          = 0
+
+endsub

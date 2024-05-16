@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<TreeItem>
+	<ItemName>SYSTEM - Configuration</ItemName>
+	<PathName>TIRC</PathName>
+	<ItemType>0</ItemType>
+	<ItemId>0</ItemId>
+	<Disabled>0</Disabled>
+	<TreeImageId>46</TreeImageId>
+	<System>
+		<AmsAddress>
+			<AmsNetId>192.168.0.89.1.1</AmsNetId>
+			<AmsPort>10000</AmsPort>
+		</AmsAddress>
+	</System>
+</TreeItem>
