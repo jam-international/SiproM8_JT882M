@@ -52,6 +52,7 @@ sub ()
 
         // --------------------------------------------------
         // Esegue solo se e' necessario ricalcolare i parametri
+
     if ( vb1025         )
 
             // --------------------------------------------------
@@ -116,20 +117,6 @@ sub ()
 
     endif
 
-        // Solo se presente l'asse di rotazione
-    if ( 0        != 0       )    
-            // Movimento asse C alla posizione iniziale - #M200724_1GF#
-        vq1061          = vq1029      
-        if ( vq1722             > 0 ) 
-            vq1062          = -vq1722            
-        else    
-            vq1062          = -10
-        endif
-        vq1063          = 0
-        ExecPlcFun( 74         , (0        * 100), 1060         )
-    endif
-
-
     //aspetto autorizzazione a partire a cucire dal CicloAutomatico
 do
     if(vn16       == 1 or vn16       ==2 or vn16       ==3)
@@ -168,6 +155,8 @@ do
     vb30               = 1  
 
 
+	//C1_CmdPiedinoSu =OFF
+	//C1_CmdPiedinoGiu = ON
     do
 
         ISO G280
@@ -186,18 +175,12 @@ do
 			if((vb4513                  ==1 and Vb4000            == 0) or (vb4513                  ==0 and vb4515                   ==1))	//controllo se ho due teste inserite e piegatore spento
 
 
-				if ( vb4513                  )
+				if ( vb4513                  and vn120                           == 0)
 					vb4805                      = 0  
 					vb51                = 1
-
-
-
 				endif
 
 				if(vb7948        == 0)
-
-
-
 					vb12                    = 0  
 					Vb4016                  = 1 
 					vn11         = 0
@@ -262,7 +245,7 @@ do
 :ENDCUCI
     vn16       = 0
     // Movimento a posizione di home ( coordinate macchina )
-    vb4805                      = 1 
+  /////////////  Vb4805_AppStartCaricatoreC1 = ON
     vq1962     = vq1717            
     if ( vq1918        < vq1962     )           // #M200717_1GF#
         vq1962     = vq1918       
@@ -273,7 +256,7 @@ do
      WaitCond( IsAxInStop( 1        ) )      
      WaitCond( IsAxInStop( 2        ) )      
 
-
+    vb4805                      = 1 
     vb30               = 0  
     vb88                   = 1 
 endsub

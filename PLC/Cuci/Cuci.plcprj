@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<plcProject caseSensitive="false" useCustomWorkspace="false" debugMode="false" extcheck="true" SFCControl="false" strictPointerCheck="false" strictEnumsCheck="false" copyWarningThreshold="200" version="2.7" useLD2="false" useXPLCFiles="false" useFBMethods="false">
+<plcProject caseSensitive="false" useCustomWorkspace="false" debugMode="false" extcheck="true" SFCControl="false" strictPointerCheck="false" PNContactsOnEachNetwork="false" LocalVarsFBAccess="false" strictEnumsCheck="false" copyWarningThreshold="200" version="2.8" useLD2="false" useXPLCFiles="false" useFBMethods="false" customSortOfProjectTree="false">
 	<image>Cuci.imgx</image>
 	<commSettings>SiaxProComm:0,1000,T#TCPIP:192.168.0.92/12003,5000</commSettings>
 	<sources>
@@ -42,6 +42,7 @@
 					<program>Contatori</program>
 					<program>Timeout_Sensori</program>
 					<program>CariactorePattine</program>
+					<program>Traslatore</program>
 				</task>
 				<task name="Boot">
 					<program>Boot</program>
@@ -54,7 +55,7 @@
 				</task>
 			</tasks>
 			<globalVars>
-				<group name="Ungrouped_vars" excludeFromBuild="FALSE">
+				<group name="Ungrouped_vars" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="" version="1.0.0">
 					<var name="vret" type="DINT"/>
 					<var name="EnbAutomatico" type="BOOL"/>
 					<var name="FallEnbAutomatico" type="FallEdge"/>
@@ -83,12 +84,8 @@
 					<var name="PiegatoreStaSalendo" type="BOOL"/>
 				</group>
 			</globalVars>
-			<retainVars>
-				<group name="Ungrouped_vars" excludeFromBuild="FALSE"/>
-			</retainVars>
-			<constantVars>
-				<group name="Ungrouped_vars" excludeFromBuild="FALSE"/>
-			</constantVars>
+			<retainVars/>
+			<constantVars/>
 			<iecVarsDeclaration>
 				<group name="Ungrouped_vars">
 					<iecDeclaration active="FALSE"/>
@@ -97,7 +94,7 @@
 			<functions/>
 			<functionBlocks/>
 			<programs>
-				<program name="Emergenze" version="1.0.0" creationDate="0" lastModifiedDate="1715757397" excludeFromBuild="FALSE">
+				<program name="Emergenze" version="1.0.0" creationDate="0" lastModifiedDate="1727703045" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Rise_ciclo_emergenza_attivata" type="RiseEdge"/>
@@ -184,6 +181,7 @@ if(Rise_ciclo_emergenza_attivata.q) then
  	C1_ReloadParam					 := TRUE ;(* forzo la rilettura dei programmi*)
  	C2_ReloadParam			 		 := TRUE ;(* forzo la rilettura dei programmi*)
 	C1_CuciSimulaAuto				:= FALSE ;
+	C2_CuciSimulaAuto				:= FALSE ;
 	Vb30_C1_InCucitura				:= FALSE;
 	Vb31_C2_InCucitura				:= FALSE;
 	Vb4807_PinzeAlteDopoPC			:= TRUE ;(* dopo home alzo le pinze*)
@@ -325,8 +323,8 @@ if(Rise_ciclo_emergenza_attivata.q) then
 	Vb4380_AppAuto48_Enable_AssiXY_C2		:=FALSE;
 	Vb4381_AppAut_o49_C2_Piedino           := FALSE ;				
 	Vb4382_AppAut_o50_C2_Pinza_int         := FALSE ; 
-	//51
-	//52	   
+	Vb4383_AppAut_o51_PinzaPattina_1		:=FALSE;
+	Vb4384_AppAut_o52_PinzaPattina_2	   	:=FALSE;
 	Vb4385_AppAut_o53_C2_RaffreddamentoAgo        := FALSE ;  
 	Vb4386_AppAut_o54_Scaric_dx_sx        := FALSE ;
 	//55
@@ -552,7 +550,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_Boot" version="1.0.0" creationDate="0" lastModifiedDate="1697105091" excludeFromBuild="FALSE">
+				<program name="C1_Boot" version="1.0.0" creationDate="0" lastModifiedDate="1697105091" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -685,7 +683,7 @@ Vn197_Tasca_SX_C1 :=0;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_Camme" version="1.0.0" creationDate="0" lastModifiedDate="1702977680" excludeFromBuild="FALSE">
+				<program name="C1_Camme" version="1.0.0" creationDate="0" lastModifiedDate="1702977680" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseApritens" type="RiseEdge"/>
@@ -840,7 +838,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Boot" version="1.0.0" creationDate="0" lastModifiedDate="1715780642" excludeFromBuild="FALSE">
+				<program name="Boot" version="1.0.0" creationDate="0" lastModifiedDate="1727703124" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -861,6 +859,8 @@ end_if;
 (* Ultima modifica                                                            
 (* ========================================================================== *)
 (* ver.17  15.05.2024 macchina normale + Cargo + FLAP*)
+(* ver.18  30.09.2024 aggiunto C2_CuciSimulaAuto := FALSE; nel file di emergenza*)
+
 
 	(* ------------------------------- *)
 	(* FLAG SIMULAZIONE - PER DEBUGGER *)
@@ -870,7 +870,7 @@ VbSimulaDbg := FALSE;
 case(Vn_ID_macchina)of
 //	862: App_Ver := 'JT862M - Ver 25.00 - 28.03.2024';	
 //	860: App_Ver := 'JT862HM - Ver 24.00 - 12.05.2023';
-	882: App_Ver := 'JT882M - Ver 17.00.00 - 15.05.2024';
+	882: App_Ver := 'JT882M - Ver 18.00.00 - 30.09.2024'; 
 end_case;
 
 	(* Emergenza all'accensione *)
@@ -919,7 +919,7 @@ Vb4077_IRQPiegatore_Su := TRUE;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_LoadUdf" version="1.0.0" creationDate="0" lastModifiedDate="1697205679" excludeFromBuild="FALSE">
+				<program name="C1_LoadUdf" version="1.0.0" creationDate="0" lastModifiedDate="1697205679" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseBootDone" type="RiseEdge"/>
@@ -1026,7 +1026,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1715757397" excludeFromBuild="FALSE">
+				<program name="C1_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1718374182" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="FallPrgRun" type="FallEdge"/>
@@ -1206,6 +1206,7 @@ end_if;
  Variabile START CUCITRICE
  Viene messa a TRUE dall'istruzione ISO G280    
  Il PLC la riporta al valore FALSE
+ !!!! quando gira anche la testa2 la C1_VbStartCuci arriva in ritardo da quando viene lanciato ISO G280
  --------------------------------------------*)
 if ( C1_VbStartCuci = TRUE ) then
 
@@ -1213,6 +1214,7 @@ if ( C1_VbStartCuci = TRUE ) then
     C1_VbStartCuci := FALSE;
 
     if ( C1_CmdHoldRelease = FALSE ) then
+
         CmdStartAgo := TRUE;
         C1_CuciLastPointEnaStop := FALSE;
     end_if;
@@ -1723,7 +1725,7 @@ case ( C1_PlcStatoAgo ) of
     25: if ( C1_FaseAxAgo = 0 ) then
             C1_CmdPiedinoGiu := FALSE;
             C1_CmdPiedinoSu  := TRUE;
-            C1_PlcStatoAgo := 30;   
+            C1_PlcStatoAgo := 35;   
         end_if;    
         if ( ( C1_CmdHoldRelease = FALSE ) and ( C1_CmdHoldHMI = TRUE ) ) then
             C1_CmdHoldRelease := TRUE;
@@ -1731,33 +1733,10 @@ case ( C1_PlcStatoAgo ) of
         end_if;
 
 
-(* Stato 30: trucco per far avanzare prima il traslatore*)
-    30:
-        
-        if(Vn120_AppEnbScambioPinzeC1_Car2 = 0) then
-         	if(Vb4513_AppEnbCucitrice2 = TRUE or (Vb4513_AppEnbCucitrice2 =FALSE and Vb4515_AppEnbScaricatore = TRUE)) then
-        		Vb96_AnticipoTrasl_SX := TRUE;
-         		
-         		
-         		
-         		if( not VbChn3AutoRun) then
-         			VbChn3Start := TRUE ;
-				end_if;
-         		
-         		GoAxPlcCaricErrCode := 0;
-				GoAxPlcCariObj := Vq3522_PosizioneTraslCaricoTascaC1 ;
-				GoAxPlcCaricVel:= -Vq3530_VelocitaTraslRiposo ; 
-				GoAxPlcCaric := 0;
-				
-				ipar := ((C2_AsseCAR*100)+1);
-                vret := ExecPlcFun( PLC_MOVE_AX, ipar, GOAX_PLC_CARIC_IDX );  
-         		
-         		
-         	end_if;
-        end_if; 
-        C1_PlcStatoAgo := 35;   	
+        	
 (* Stato 35: Attesa piedino su *)
 	 35:
+	 	Vb96_AnticipoTrasl_SX := TRUE;
 	 	if ( not C1_CmdPiedinoSu ) then
             C1_PlcStatoAgo := 0;
         end_if; 
@@ -1853,7 +1832,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_AppMacchina" version="1.0.0" creationDate="0" lastModifiedDate="1702997245" excludeFromBuild="FALSE">
+				<program name="C1_AppMacchina" version="1.0.0" creationDate="0" lastModifiedDate="1702997245" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="CmdSu" type="BOOL"/>
@@ -2123,7 +2102,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_CuciRtc" version="1.0.0" creationDate="0" lastModifiedDate="1715680349" excludeFromBuild="FALSE">
+				<program name="C1_CuciRtc" version="1.0.0" creationDate="0" lastModifiedDate="1715680349" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Rise_i10_Piegatore_Salito" type="RiseEdge"/>
@@ -2219,7 +2198,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="AppMainC3" version="1.0.0" creationDate="0" lastModifiedDate="1715777941" excludeFromBuild="FALSE">
+				<program name="AppMainC3" version="1.0.0" creationDate="0" lastModifiedDate="1715777941" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseBootDone" type="RiseEdge"/>
@@ -3129,7 +3108,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C2_Boot" version="1.0.0" creationDate="0" lastModifiedDate="1625153884" excludeFromBuild="FALSE">
+				<program name="C2_Boot" version="1.0.0" creationDate="0" lastModifiedDate="1625153884" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -3216,7 +3195,7 @@ Vn199_Tasca_SX_C2 :=0;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C2_LoadUdf" version="1.0.0" creationDate="0" lastModifiedDate="1619704921" excludeFromBuild="FALSE">
+				<program name="C2_LoadUdf" version="1.0.0" creationDate="0" lastModifiedDate="1619704921" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseBootDone" type="RiseEdge"/>
@@ -3322,7 +3301,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C2_Camme" version="1.0.0" creationDate="0" lastModifiedDate="1702979129" excludeFromBuild="FALSE">
+				<program name="C2_Camme" version="1.0.0" creationDate="0" lastModifiedDate="1702979129" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseApritens" type="RiseEdge"/>
@@ -3477,7 +3456,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C2_CuciRtc" version="1.0.0" creationDate="0" lastModifiedDate="1619700920" excludeFromBuild="FALSE">
+				<program name="C2_CuciRtc" version="1.0.0" creationDate="0" lastModifiedDate="1619700920" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -3568,7 +3547,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C2_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1715177294" excludeFromBuild="FALSE">
+				<program name="C2_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1715177294" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="FallPrgRun" type="FallEdge"/>
@@ -4363,7 +4342,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C2_AppMacchina" version="1.0.0" creationDate="0" lastModifiedDate="1702979200" excludeFromBuild="FALSE">
+				<program name="C2_AppMacchina" version="1.0.0" creationDate="0" lastModifiedDate="1702979200" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="CmdSu" type="BOOL"/>
@@ -4591,7 +4570,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Piegatore" version="1.0.0" creationDate="0" lastModifiedDate="1715693230" excludeFromBuild="FALSE">
+				<program name="Piegatore" version="1.0.0" creationDate="0" lastModifiedDate="1715693230" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseLanciaAvDi" type="RiseEdge"/>
@@ -4989,7 +4968,7 @@ vret := ExecPlcFun( PLC_ENABLE_IRQ, 31, ContIRQSensPiegatore_su_IDX );
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Uscite" version="1.0.0" creationDate="0" lastModifiedDate="1715273847" excludeFromBuild="FALSE">
+				<program name="Uscite" version="1.0.0" creationDate="0" lastModifiedDate="1715273847" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -5477,7 +5456,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="RitSensori" version="1.0.0" creationDate="0" lastModifiedDate="1702997448" excludeFromBuild="FALSE">
+				<program name="RitSensori" version="1.0.0" creationDate="0" lastModifiedDate="1702997448" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Riti24_C1_PinzaEstAlta" type="Ton"/>
@@ -5554,7 +5533,7 @@ Rise_i49_PinzaTrasloAlta( in :=i38_FcPinzaTraslAlta);
 ]]>
 					</sourceCode>
 				</program>
-				<program name="AppMainC1" version="1.0.0" creationDate="0" lastModifiedDate="1710429098" excludeFromBuild="FALSE">
+				<program name="AppMainC1" version="1.0.0" creationDate="0" lastModifiedDate="1720535337" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RisePinzeC1" type="RiseEdge"/>
@@ -5590,6 +5569,11 @@ Rise_i49_PinzaTrasloAlta( in :=i38_FcPinzaTraslAlta);
 
 (* main funzioni su cucitrice canale 1 *)
 (* sono in manuale attivo la pinza *)
+
+
+
+
+
 
 (* comando pinze con pedana in manuale *)
 RisePinzeC1(  in := ( (i2_C1_Pedana or VbSimulazionePedanaC1) and not Vb4507_AppManAuto and MacchinaAzzerata and not Vb4506_AppCambioPinzeRun and not Vb86In_Azzeramento_C1));
@@ -5792,7 +5776,7 @@ if ( RiseVb4035.q )then
 ]]>
 					</sourceCode>
 				</program>
-				<program name="AppMainC2" version="1.0.0" creationDate="0" lastModifiedDate="1715274322" excludeFromBuild="FALSE">
+				<program name="AppMainC2" version="1.0.0" creationDate="0" lastModifiedDate="1715274322" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RisePinzeC2" type="RiseEdge"/>
@@ -6029,7 +6013,7 @@ TimScatafilo( in := C2_PlcStatoScartafilo = 10 , pt := TO_UDINT(Vq3063_Tim_C2_Sc
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Caricatore" version="1.0.0" creationDate="0" lastModifiedDate="1702996566" excludeFromBuild="FALSE">
+				<program name="Caricatore" version="1.0.0" creationDate="0" lastModifiedDate="1702996566" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RisePinzaSuGiu" type="RiseEdge"/>
@@ -6148,7 +6132,7 @@ Rise_i1_Pulsanti_start_caricatore (in:= i1_Pulsanti_start and o24_Pinza_carico_S
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Scaricatore" version="1.0.0" creationDate="0" lastModifiedDate="1715704970" excludeFromBuild="FALSE">
+				<program name="Scaricatore" version="1.0.0" creationDate="0" lastModifiedDate="1715704970" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Rit_o32_Scaric_dx_sx" type="Ton"/>
@@ -6411,7 +6395,7 @@ Fall_Vb4519_AppScaricoCortiConPinza(in := Vb4519_AppScaricoCortiConPinza);
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Param_Delta" version="1.0.0" creationDate="0" lastModifiedDate="1619702712" excludeFromBuild="FALSE">
+				<program name="Param_Delta" version="1.0.0" creationDate="0" lastModifiedDate="1720535818" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -6471,7 +6455,7 @@ if ( C1_SetParamCmd > 0 ) then
         ipar := ((C1_SetParamAxNum*100)+3);    
         vret := ExecPlcFun( PLC_ECAT_INFO, ipar, C1_SDO_RW_PAR_IDX ); 
         
-        C1_SDO_ObjIndex := C1_SetParamIdx + ( C1_SetParamCat * 256 ) + 8192;
+        C1_SDO_ObjIndex :=  C1_SetParamIdx + ( C1_SetParamCat * 256 ) + 8192;
         C1_SDO_SubIndex := 0;
         C1_SDO_Size     := C1_SetParamSize; 
         C1_SDO_VqDataIdx:= C1_SDO_VQ_DATA_IDX; 
@@ -6489,10 +6473,32 @@ if ( C1_SetParamCmd > 0 ) then
     C1_SetParamCmd := 0;
 end_if;
 
+
+
+
+
+
+if(Vb_Fun301_run) then
+
+/*para da mettere nel Delta per leggere la temperatura P017 = 16*/    
+        
+    
+	Vb_Fun301_run := FALSE;
+	Fun301_vn4001_rete :=1;
+	Fun301_vn4002_noto	:=1; //ago
+	Fun301_vn4003_indice :=8201; 
+	Fun301_vn4004_sub		:=0;
+	Fun301_vn4005_dim	:=4;
+	Fun301_vn4006_idResult := 4000; 
+
+
+	vret := ExecPlcFun( 301, 800, 801 );
+
+end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="OutAnalogicheT1" version="1.0.0" creationDate="0" lastModifiedDate="1715679223" excludeFromBuild="FALSE">
+				<program name="OutAnalogicheT1" version="1.0.0" creationDate="0" lastModifiedDate="1715679223" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseVb4061_AppTensAumentaTesta1" type="RiseEdge"/>
@@ -6887,7 +6893,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="OutAnalogicheT2" version="1.0.0" creationDate="0" lastModifiedDate="1715679223" excludeFromBuild="FALSE">
+				<program name="OutAnalogicheT2" version="1.0.0" creationDate="0" lastModifiedDate="1715679223" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="AppON_TensioneTesta2" type="BOOL"/>
@@ -7162,7 +7168,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 ]]>
 					</sourceCode>
 				</program>
-				<program name="OpCodeT1" version="1.0.0" creationDate="0" lastModifiedDate="1702996654" excludeFromBuild="FALSE">
+				<program name="OpCodeT1" version="1.0.0" creationDate="0" lastModifiedDate="1702996654" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseC1_VbRunCuci" type="RiseEdge"/>
@@ -7331,7 +7337,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 ]]>
 					</sourceCode>
 				</program>
-				<program name="OpCodeT2" version="1.0.0" creationDate="0" lastModifiedDate="1702997408" excludeFromBuild="FALSE">
+				<program name="OpCodeT2" version="1.0.0" creationDate="0" lastModifiedDate="1702997408" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseC2_VbRunCuci" type="RiseEdge"/>
@@ -7467,7 +7473,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 ]]>
 					</sourceCode>
 				</program>
-				<program name="TestManutenzione" version="1.0.0" creationDate="0" lastModifiedDate="1703088245" excludeFromBuild="FALSE">
+				<program name="TestManutenzione" version="1.0.0" creationDate="0" lastModifiedDate="1703088245" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseVb4080_TestFcZeroC1" type="RiseEdge"/>
@@ -7625,7 +7631,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="ComandiHMI" version="1.0.0" creationDate="0" lastModifiedDate="1710437706" excludeFromBuild="FALSE">
+				<program name="ComandiHMI" version="1.0.0" creationDate="0" lastModifiedDate="1710437706" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseVb52RichiestaZeroAxDaHmiC1" type="RiseEdge"/>
@@ -8433,7 +8439,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="RotturaFilo_Spola_C1" version="1.0.0" creationDate="0" lastModifiedDate="1715702864" excludeFromBuild="FALSE">
+				<program name="RotturaFilo_Spola_C1" version="1.0.0" creationDate="0" lastModifiedDate="1715702864" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="CNT_N_PuntiRottFiloC1" type="DINT"/>
@@ -8673,7 +8679,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="RotturaFilo_Spola_C2" version="1.0.0" creationDate="0" lastModifiedDate="1711621632" excludeFromBuild="FALSE">
+				<program name="RotturaFilo_Spola_C2" version="1.0.0" creationDate="0" lastModifiedDate="1711621632" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="FallVb5_C2_InCucitura" type="FallEdge"/>
@@ -8827,7 +8833,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Contatori" version="1.0.0" creationDate="0" lastModifiedDate="1701250456" excludeFromBuild="FALSE">
+				<program name="Contatori" version="1.0.0" creationDate="0" lastModifiedDate="1701250456" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseCntCuci1" type="RiseEdge"/>
@@ -8904,7 +8910,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Timeout_Sensori" version="1.0.0" creationDate="1627283434" lastModifiedDate="1715704733" excludeFromBuild="FALSE">
+				<program name="Timeout_Sensori" version="1.0.0" creationDate="1627283434" lastModifiedDate="1715704733" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="TonSensPinzaEstOff" type="Ton"/>
@@ -9085,7 +9091,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="CariactorePattine" version="1.0.0" creationDate="1715259170" lastModifiedDate="1715844701" excludeFromBuild="FALSE">
+				<program name="CariactorePattine" version="1.0.0" creationDate="1715259170" lastModifiedDate="1718644418" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Fall_Vb152KitCarPAttine" type="FallEdge"/>
@@ -9132,6 +9138,7 @@ end_if;
 if(not Vb151EnableCarPattine) then
 	Vb152KitCarPAttine := FALSE;
 	Vb157PattinaPassoPasso := FALSE;
+	Vb4367_AppAut_o35_CarPat_Aghi:= FALSE;
 end_if;
 
 Fall_Vb152KitCarPAttine (in:= Vb152KitCarPAttine);
@@ -9151,7 +9158,7 @@ end_if;
 if(Rise_Vb157PattinaPassoPasso.q and not Vb152KitCarPAttine) then
 	Vb157PattinaPassoPasso := FALSE;
 end_if;
-DelayTimer_50( in := mc_stati_Carica_Pattina =50, pt := TO_UDINT(Vq3200_Time_Pattina_avanti) );
+DelayTimer_50( in := mc_stati_Carica_Pattina =50, pt := TO_UDINT(Vq3200_Time_Caricatore_Pattina_avanti) );
 DelayTimer_90( in := mc_stati_Carica_Pattina =90, pt := TO_UDINT(Vq3202_Time_pinza_blocca_pattin) );
 Ton_PartenzaCucitura (in:=	mc_stati_Carica_Pattina =95,pt := TO_UDINT( Vq3203_Ritardo_PartenzaCuciPat));
 Ton_BloccaPattina(in:=	Vb4369_AppAut_o37_CarPat_SoffiPattina, pt := TO_UDINT(Vq3201_Time_SoffioPattina));
@@ -9252,7 +9259,7 @@ case ( mc_stati_Carica_Pattina) of
 		end_if;
 		
 								
-	50: //pinze avanti poi aspetto Vq3200_Time_Pattina_avanti
+	50: //pinze avanti poi aspetto Vq3200_Time_Caricatore_Pattina_avanti
 		Vb4366_AppAut_o34_CarPat_FrontBack :=FALSE;
 		if ( DelayTimer_50.q ) then
 			mc_stati_Carica_Pattina := 52;
@@ -9321,7 +9328,7 @@ case ( mc_stati_Carica_Pattina) of
 	
 	90: //tempo per far avanzare la pinza blocca pattina della dima
 			if ( DelayTimer_90.q ) then	//Vq3202_Time_pinza_blocca_pattin
-			Vb4368_AppAut_o36_CarPat_SoffioAghi := FALSE;    //spengo soffi pinza aghi
+			
 			Vb4369_AppAut_o37_CarPat_SoffiPattina := FALSE;		//spengo tubisoffi
 			
 			Vb4370_AppAut_o38_CarPat_DCGiu := FALSE;	//pulisco
@@ -9336,6 +9343,7 @@ case ( mc_stati_Carica_Pattina) of
 		
  	95:// dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura
 		if(Ton_PartenzaCucitura.q) then   //Vq3203_Ritardo_PartenzaCuciPat
+			Vb4368_AppAut_o36_CarPat_SoffioAghi := FALSE;    //spengo soffi pinza aghi
 			Vb160PartiACucire := TRUE;
 			mc_stati_Carica_Pattina := 110;
 		end_if;
@@ -9381,7 +9389,7 @@ case ( mc_stati_Carica_Pattina) of
 		
 	//*** ho premuto tasto pattina, alzo la pinza fino al sensore alto e poi ne carico una.				
 	300:
-		Vb4367_AppAut_o35_CarPat_Aghi := FALSE;
+	
 		if(not i41_CarPat_Top_SUGIu) then					
 			Vb4371_AppAut_o39_CarPat_DCSu := TRUE;		//faccio salire il caricatore	
 			Vb4370_AppAut_o38_CarPat_DCGiu := FALSE;
@@ -9398,8 +9406,8 @@ case ( mc_stati_Carica_Pattina) of
 	
 	//*** ho spento il tasto pattina
 	400:	
-		Vb4367_AppAut_o35_CarPat_Aghi := FALSE;
 		if(not i41_CarPat_Top_SUGIu) then					
+			Vb4367_AppAut_o35_CarPat_Aghi:= FALSE;
 			Vb4371_AppAut_o39_CarPat_DCSu := TRUE;		//faccio salire il caricatore	
 			Vb4370_AppAut_o38_CarPat_DCGiu := FALSE;
 		end_if;	
@@ -9422,8 +9430,12 @@ end_case;
 
 // 4 sono fermo al secondo split, riapro la pinza 1
 Rise_Vb4043_SyncSplit (in:= Vb4043_SyncSplit2);
-if(Rise_Vb4043_SyncSplit.q) then
-	Vb4383_AppAut_o51_PinzaPattina_1 := FALSE;
+if(Rise_Vb4043_SyncSplit.q ) then
+	if(Vb152KitCarPAttine) then
+		Vb4383_AppAut_o51_PinzaPattina_1 := FALSE;
+	else
+		Vb4043_SyncSplit2 := FALSE;		//riparte seconda cucitura
+	end_if;
 end_if;
 
 // 5 chiudo la pinza 2 
@@ -9457,6 +9469,55 @@ if(Ton_timeour_zero.q) then
 	end_if;
 	
 end_if;
+]]>
+					</sourceCode>
+				</program>
+				<program name="Traslatore" version="1.0.0" creationDate="1718369881" lastModifiedDate="1718371210" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+					<vars/>
+					<iecDeclaration active="FALSE"/>
+					<sourceCode type="ST">
+						<![CDATA[(* ========================================================================== 
+(* SIPRO - Siax M															  	
+(*                                                                            
+(* COMPANY:     JAM INTERNATIONAL                                             
+(*                                                                            
+(* NAME: Traslatore                                                          
+(*
+(* TASK MAIN	 
+(*
+(* DESCRIPTION: Traslatore 
+(*
+(*                                                                             
+(* NOTE:                                NAME:           VER:    DATE:         
+(* -------------------------------------------------------------------------  
+(* Prima stesura                        Daniele         1.0     14/06/2024    
+(* Ultima modifica                                                            
+(* ========================================================================== *)
+
+(* qui cerco di anticipare il movimento del traslatore a prendere la tasca sulla prima testa nel caso ho il Mode Clamp = 0 [presa esterna]*)
+(* in pratica in C1_Cucitrice del PLC, appena finisco di cucire, prima ancora di muovermi al punto di Carico alzo la Vb96_AnticipoTrasl_SX*)
+(* e qui la rilevo e faccio il movimento "in anticipo"*)
+(**)
+        
+if(Vn120_AppEnbScambioPinzeC1_Car2 = 0 and Vb96_AnticipoTrasl_SX and VnStatoCuci2 < 25) then
+ 	if(Vb4513_AppEnbCucitrice2 = TRUE or (Vb4513_AppEnbCucitrice2 =FALSE and Vb4515_AppEnbScaricatore = TRUE) ) then
+		 		
+ 		if( not VbChn3AutoRun) then
+ 			VbChn3Start := TRUE ;
+		end_if;
+ 		
+ 		GoAxPlcCaricErrCode := 0;
+		GoAxPlcCariObj := Vq3522_PosizioneTraslCaricoTascaC1 ;
+		GoAxPlcCaricVel:= -Vq3530_VelocitaTraslRiposo ; 
+		GoAxPlcCaric := 0;
+		
+			
+		ipar := ((C2_AsseCAR*100)+1);
+    	vret := ExecPlcFun( PLC_MOVE_AX, ipar, GOAX_PLC_CARIC_IDX );  		
+ 		
+ 	end_if;
+end_if; 
+
 ]]>
 					</sourceCode>
 				</program>
@@ -11529,7 +11590,7 @@ END_VAR
  *
  * MDPlc source file: DefVar.PLL
  *
- * Date = "15/05/2024 16:22:02"
+ * Date = "09/07/2024 16:34:25"
  *)
 
 
@@ -11644,6 +11705,7 @@ VAR_GLOBAL
     Vb159PattinaTestRunning                 AT %MB300.159  : BOOL;         {DE:"vb159  - =1 il ciclo piattina test sta girando"}
     Vb160PartiACucire                       AT %MB300.160  : BOOL;         {DE:"vb160  - =1 il plc avverte il CN che la pattina è stata caricata e bloccata, ora può effettuare la prima cucitura"}
     Vb170KitTascaCargo                      AT %MB300.170  : BOOL;         {DE:"vb170  - =1 attivo il kit tasca cargo"}
+    Vb_Fun301_run                           AT %MB300.171  : BOOL;         {DE:"vb171"}
     Vb4000_Automatico                       AT %MB300.4000 : BOOL;         {DE:"vb4000 - /// messa a ON da HMI sono in automatico"}
     Vb4001_StepPiegatore                    AT %MB300.4001 : BOOL;         {DE:"vb4001 - /// messa a ON da HMI il piegatore è passo passo"}
     Vb4002_StepPiegatoreStop                AT %MB300.4002 : BOOL;         {DE:"vb4002 - /// punto di stop piegatore"}
@@ -12019,6 +12081,13 @@ VAR_GLOBAL
     vntest1                                 AT %MW400.778  : INT;          {DE:"vn778"}
     vntest2                                 AT %MW400.779  : INT;          {DE:"vn779"}
     vntest3                                 AT %MW400.780  : INT;          {DE:"vn780"}
+    Fun301_vn4000_err                       AT %MW400.800  : INT;          {DE:"vn800"}
+    Fun301_vn4001_rete                      AT %MW400.801  : INT;          {DE:"vn801"}
+    Fun301_vn4002_noto                      AT %MW400.802  : INT;          {DE:"vn802"}
+    Fun301_vn4003_indice                    AT %MW400.803  : INT;          {DE:"vn803"}
+    Fun301_vn4004_sub                       AT %MW400.804  : INT;          {DE:"vn804"}
+    Fun301_vn4005_dim                       AT %MW400.805  : INT;          {DE:"vn805"}
+    Fun301_vn4006_idResult                  AT %MW400.806  : INT;          {DE:"vn806"}
     VnOvdAx1                                AT %MW400.3001 : INT;          {DE:"vn3001 - Asse 1 - Override indipendente"}
     VnFaseZeroAx1                           AT %MW400.3011 : INT;          {DE:"vn3011 - Asse 1 - Fase azzeramento"}
     VnStatoAx1                              AT %MW400.3013 : INT;          {DE:"vn3013 - Asse 1 - Status asse"}
@@ -12209,7 +12278,7 @@ VAR_GLOBAL
     Vq3144_RitPiegatore_4_ON                AT %MD500.3144 : DINT;         {DE:"vq3144 - variabile per memorizzare tempo su sequenza Curve5"}
     Vq3145_RitPiegatore_4_OFF               AT %MD500.3145 : DINT;         {DE:"vq3145 - variabile per memorizzare tempo su sequenza Curve5"}
     Vq3160_ContSensPiegatoreSu              AT %MD500.3160 : DINT;         {DE:"vq3160 - punti contati dalla molla rottura filo"}
-    Vq3200_Time_Pattina_avanti              AT %MD500.3200 : DINT;         {DE:"vq3200 - tempo tra caricatore verso operatore e giu"}
+    Vq3200_Time_Caricatore_Pattina_avanti   AT %MD500.3200 : DINT;         {DE:"vq3200 - tempo tra caricatore verso operatore e giu"}
     Vq3201_Time_SoffioPattina               AT %MD500.3201 : DINT;         {DE:"vq3201 - tempo soffi per lasciare la pattina"}
     Vq3202_Time_pinza_blocca_pattin         AT %MD500.3202 : DINT;         {DE:"vq3202 - tempo necessario a far avanzare la pinza blocca pattina sulladima"}
     Vq3203_Ritardo_PartenzaCuciPat          AT %MD500.3203 : DINT;         {DE:"vq3203 - dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura"}
@@ -12255,6 +12324,7 @@ VAR_GLOBAL
     GoAxPlcCariObj                          AT %MD500.3601 : DINT;         {DE:"vq3601 - GoAx asse caricatore - quota obbiettivo"}
     GoAxPlcCaricVel                         AT %MD500.3602 : DINT;         {DE:"vq3602 - GoAx asse caricatore - Velocita'"}
     GoAxPlcCaric                            AT %MD500.3603 : DINT;         {DE:"vq3603 - GoAx asse caricatore - Libera"}
+    FUN301_vq4000                           AT %MD500.4000 : DINT;         {DE:"vq4000"}
 
 
     VdTmpCalc                               AT %ML600.1    : LREAL;        {DE:"vd1    - Usato per calcoli temporanei nel PLC"}
@@ -12552,7 +12622,7 @@ END_VAR
  *
  * MDPlc source file: DefCuci.PLL
  *
- * Date = "15/05/2024 16:22:02"
+ * Date = "09/07/2024 16:34:25"
  *)
 
 
@@ -13200,7 +13270,7 @@ END_VAR
 		</libraries>
 		<aux/>
 	</sources>
-	<codegen crossReference="false" crossReferenceOptions="0x3000001D" listing="true" saveEXPFile="true" saveEXPFileLibraries="false" saveTargetFiles="true" warningEnable="true" symMap="true" checkIndexType="false" waitExtension="false" allocateUnusedVariables="false" checkArrayBounds="false" checkDivisionByZero="false" checkPointers="1" checkReferences="false" checkInterfaces="false" ioVarsAsReferences="false" customTargetBINFileName="Cuci.bin" customTargetTSCFileName="Cuci_source.bin" customTargetTDSFileName="Cuci_debug.bin" generateCustomFilesName="false" initFunVarsWithZero="false">
+	<codegen crossReference="false" crossReferenceOptions="0x3000001D" listing="true" unusedObjs="false" saveEXPFile="true" saveEXPFileLibraries="false" saveTargetFiles="true" warningEnable="true" symMap="true" checkIndexType="false" waitExtension="false" allocateUnusedVariables="false" checkArrayBounds="false" checkDivisionByZero="false" checkPointers="1" checkReferences="false" checkInterfaces="false" ioVarsAsReferences="false" customTargetBINFileName="Cuci.bin" customTargetTSCFileName="Cuci_source.bin" customTargetTDSFileName="Cuci_debug.bin" generateCustomFilesName="false" initFunVarsWithZero="false" enablePreprocessDirectives="false">
 		<disabledWarnings/>
 		<applicationDataBlocks/>
 	</codegen>

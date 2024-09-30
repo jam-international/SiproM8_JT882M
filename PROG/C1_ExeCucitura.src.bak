@@ -52,6 +52,7 @@ sub ()
 
         // --------------------------------------------------
         // Esegue solo se e' necessario ricalcolare i parametri
+	vntest1 = 10
     if ( C1_ReloadParam )
 
             // --------------------------------------------------
@@ -116,20 +117,6 @@ sub ()
 
     endif
 
-        // Solo se presente l'asse di rotazione
-    if ( C1_AsseC != AX_NULL )    
-            // Movimento asse C alla posizione iniziale - #M200724_1GF#
-        C1_Fun74_QuoObj = C1_FirstPt_C
-        if ( C1_ParVelRotazione > 0 ) 
-            C1_Fun74_VelObj = -C1_ParVelRotazione
-        else    
-            C1_Fun74_VelObj = -10
-        endif
-        C1_Fun74_Future = 0
-        ExecPlcFun( PLC_MOVE_AX, (C1_AsseC * 100), C1_FUN74_IDX )
-    endif
-
-
     //aspetto autorizzazione a partire a cucire dal CicloAutomatico
 do
     if(Vn16GoCuci == 1 or Vn16GoCuci ==2 or Vn16GoCuci ==3)
@@ -167,7 +154,9 @@ do
         // Esecuzione cucitura
     Vb30_C1_InCucitura = ON 
 
-   
+
+	//C1_CmdPiedinoSu =OFF
+	//C1_CmdPiedinoGiu = ON
     do
 
         ISO G280
@@ -186,18 +175,12 @@ do
 			if((Vb4513_AppEnbCucitrice2 ==1 and Vb4000_Automatico == 0) or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1))	//controllo se ho due teste inserite e piegatore spento
 
 			
-				if ( Vb4513_AppEnbCucitrice2 )
+				if ( Vb4513_AppEnbCucitrice2 and Vn120_AppEnbScambioPinzeC1_Car2 == 0)
 					Vb4805_AppStartCaricatoreC1 = OFF
 					RichiestaStartCuci2 = 1
-
-					
-
 				endif
 
 				if(VbChn3AutoRun == 0)
-					
-
-
 					Vb12_StepResetCanale3_2 = OFF
 					Vb4016_PrgTraslatoreRun = ON
 					VnStatoCuci1 = 0
@@ -262,16 +245,18 @@ do
 :ENDCUCI
     Vn16GoCuci = 0
     // Movimento a posizione di home ( coordinate macchina )
-    Vb4805_AppStartCaricatoreC1 = ON
+  /////////////  Vb4805_AppStartCaricatoreC1 = ON
     C1_VelFeed = C1_Par_FeedG0Reset
     if ( C1_Udf_FeedG0 < C1_VelFeed )           // #M200717_1GF#
         C1_VelFeed = C1_Udf_FeedG0
     endif
     ISO G1 X C1_QuoHomeX Y C1_QuoHomeY F C1_VelFeed
     
-    
+           // Attesa assi X Y fermi
+     WaitCond( IsAxInStop( C1_AsseX ) )      
+     WaitCond( IsAxInStop( C1_AsseY ) )      
 
-
+    Vb4805_AppStartCaricatoreC1 = ON
     Vb30_C1_InCucitura = OFF
     Vb88_TascaC1Completata = ON
 endsub

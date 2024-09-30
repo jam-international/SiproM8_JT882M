@@ -49,7 +49,7 @@ sub ()
 
 
 
-		if ( vn120                           == 1 )
+		if ( vn120                           == 1 and vb30               == 0 )
 		      // Attesa assi X Y fermi
 			WaitCond( IsAxInStop( 1        ) )
 			WaitCond( IsAxInStop( 2        ) )

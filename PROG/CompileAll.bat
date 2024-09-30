@@ -24,7 +24,6 @@
 "C:\Program Files (x86)\Sipro\SDE\COMPILER\cnom32.exe" -f"D:\GitHub\SiproM8_JT882M\prog\C2_TestPinzaAgo.SRC"
 "C:\Program Files (x86)\Sipro\SDE\COMPILER\cnom32.exe" -f"D:\GitHub\SiproM8_JT882M\prog\CaricatoreMan.SRC"
 "C:\Program Files (x86)\Sipro\SDE\COMPILER\cnom32.exe" -f"D:\GitHub\SiproM8_JT882M\prog\CicloAutomatico.src"
-"C:\Program Files (x86)\Sipro\SDE\COMPILER\cnom32.exe" -f"D:\GitHub\SiproM8_JT882M\prog\CicloTraslatore.src"
 "C:\Program Files (x86)\Sipro\SDE\COMPILER\cnom32.exe" -f"D:\GitHub\SiproM8_JT882M\prog\Halt.src"
 "C:\Program Files (x86)\Sipro\SDE\COMPILER\cnom32.exe" -f"D:\GitHub\SiproM8_JT882M\prog\Piegatore.SRC"
 "C:\Program Files (x86)\Sipro\SDE\COMPILER\cnom32.exe" -f"D:\GitHub\SiproM8_JT882M\prog\ResetFolder.SRC"

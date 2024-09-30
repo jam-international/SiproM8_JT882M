@@ -76,40 +76,6 @@ sub ()
 
 	endif
 
-	// if ((Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) or (Vb4513_AppEnbCucitrice2 ==1 and Vb4006_StepTraslatore ==1) )
-	 
-		
-
-	// else
-
-
-	//	if ( Vn120_AppEnbScambioPinzeC1_Car2 == 1 )
-	//	      // Attesa assi X Y fermi
-	//		WaitCond( IsAxInStop( C1_AsseX ) )
-	//		WaitCond( IsAxInStop( C1_AsseY ) )
-	//		Vb4351_AppAut_o19_C1_Pinza_est = ON
-	//		Waitcond ( i24_C1_PinzaEstAlta )
-
-	//		RichiestaStartCuci2 = ON
-	//	endif
-
-
-	//	if ( Vb4803_AppResetHmiC1 == 0 and Vb4507_AppManAuto == 0 )
-	//		if(Vb4016_PrgTraslatoreRun == OFF)
-	//			Vb4350_AppAut_o18_C1_Pinza_int = ON
-	//			Vb4351_AppAut_o19_C1_Pinza_est = ON 
-	//		endif
-	//		Vb4096_AppOnScartafiloC1 = ON
-	//		WaitCond ( i24_C1_PinzaEstAlta == 1)
-	//		Vb36_Clear_OPT1 = ON	//apro retrattile
-	//		Vb37_Clear_OPT2 = ON	//abbasso perni ranocchia
-	//		Vb38_Clear_OPT3 = ON	//disattivo salto piedino
-			
-	//	endif
-	//endif
-
-
-
 
 // azzero numero punti fatti 
 	C1_VqActPntCuci = 0

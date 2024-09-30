@@ -278,7 +278,7 @@
 
 //cargo
 #define Vb170KitTascaCargo			vb170		//=1 attivo il kit tasca cargo
-
+#define Vb_Fun301_run				vb171
 
 
 //------------------------------------------------------------------------
@@ -765,6 +765,7 @@
 #define Vn111_EnbEtichetta			vn111				///// a ON abilito la pausa per mettere l'etichetta ( 1 = tutte) ( 2 = 1 si 1 no )
 #define Vn112_AppEtichettaMod_2		vn112				///// utilizzata come appoggio modo 2 ( se serve mettere reset )
 
+
 #define Vn115_CopiaSeqPiegFree		vn115			//copia sequenza piegatura Free per pagina touch
 
 //// tipologia scambio pinze
@@ -786,6 +787,8 @@
 #define	Vn162_Read_anaout99				vn162
 #define	Vn163_Read_anaout100			vn163
 #define mc_stati_Carica_Pattina			vn164
+
+#define Vn180_Device_Rinforzo			vn180	// 0= disabilitato, 1 = tipo JAM, 2 = tipo Turco
 
 
 #define	Vn196_Tasca_DX_C1				vn196
@@ -889,6 +892,15 @@
 
 #define Vn3804_PageID			vn3804		// Pagina in esecuzione
 
+
+#define Fun301_vn4000_err		vn4000
+#define Fun301_vn4001_rete		vn4001
+#define Fun301_vn4002_noto		vn4002
+#define Fun301_vn4003_indice	vn4003
+#define Fun301_vn4004_sub		vn4004
+#define Fun301_vn4005_dim		vn4005
+#define Fun301_vn4006_idResult	vn4006
+
 // ============================================================================
 //      ASSEGNAZIONE VQ
 // ============================================================================
@@ -975,6 +987,9 @@
 #define Vq_117_READ_FC_ava_Y_C2        vq117      // Vq lettura fine corsa avanti asse Y C2
 #define Vq_118_READ_FC_ind_CARIC_C2        vq118      // Vq lettura fine corsa indietro traslatore
 #define Vq_119_READ_FC_ava_CARIC_C2        vq119      // Vq lettura fine corsa avanti traslatore
+
+
+
 //------------------------------------------------------------------------
 //
 // #######################################
@@ -1110,7 +1125,7 @@
 #define Vq3160_ContSensPiegatoreSu		Vq3160 		// punti contati dalla molla rottura filo
 
 // tempi carica pattine
-#define Vq3200_Time_Pattina_avanti		Vq3200		//tempo tra caricatore verso operatore e giu
+#define Vq3200_Time_Caricatore_Pattina_avanti		Vq3200		//tempo tra caricatore verso operatore e giu
 #define Vq3201_Time_SoffioPattina		Vq3201		//tempo soffi per lasciare la pattina
 #define Vq3202_Time_pinza_blocca_pattin	Vq3202		//tempo necessario a far avanzare la pinza blocca pattina sulladima
 #define Vq3203_Ritardo_PartenzaCuciPat	Vq3203		//dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura
@@ -1191,7 +1206,7 @@
 #define GoAxPlcCaric            	vq3603        // GoAx asse caricatore - Libera
 
 
-
+#define FUN301_vq4000				vq4000
 
 
 // ============================================================================

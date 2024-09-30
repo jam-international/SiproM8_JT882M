@@ -597,6 +597,7 @@ do
 
 		    case 0
 		    vn777   = 2
+
 			if(vb4513                  ==0 and vb4515                   ==1 and vb4507            ==1)
 			 vn777   = 3
 				if(vb51               )
@@ -611,6 +612,7 @@ do
 			break
 
 		case 1
+
 			//se non devo cucire con la seconda e ho lo scaricatore lo faccio avanzare
 			if ( vb4513                  == 0 and vb4515                   and ( vb4523                        or vb4519                        )) 
 
@@ -627,11 +629,12 @@ do
 									vb12                    = 0  
 								// step reset piegatore fine
 
-
+			vn12         = 2
+			break
 
 		case 2
 
-			if(vn120                           == 1)
+			if(vn120                           == 1 and vb30               == 0)
 				if ( vb51                 or (vb4513                  ==0 and vb4515                   ==1) or Vb4006               )	//scambio con pinza esterna alta
 					//RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
 					vn12         = 5
@@ -641,12 +644,13 @@ do
 			endif
 
 
-			if(vn120                           == 0)
+			if(vn120                           == 0 and vb51                == 1)
 
 				if ( vb51                 or (vb4513                  ==0 and vb4515                   ==1) or Vb4006                 )	//scambio con pinza esterna bassa
 					vb51                = 0		//pulisco altrimenti potrebbe partire subito
-					vb96                  = 0  
-					//------>IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX] AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
+
+					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX]
+					////------> AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
 					vn12         = 20
 					Vb4016                  = 1 	//segnalo che il ciclo trasalatore è in fasi di movimento
 					break
@@ -675,7 +679,7 @@ do
 
 			if( (vb51                == 1 or   (vb4513                  ==0 and vb4515                   ==1) )and din38                ) /// vado a prendere la tasca
 				vb51                = 0
-				AxAnt( 10        , Vq3522                             , -Vq3530                    , 2, 0 )
+				AxAnt( 10        ,  Vq3522                             , -Vq3530                    , 2, 0 )
 				vn12         = 20
 			endif
 
@@ -691,6 +695,8 @@ do
 
 
 			break
+
+
 
 		case 20  //aspetto traslatore sopra le pinze C1 (ScambioPinzeC1 = 1 oppure =0) poi abbasso pinza traslatore
 								// step reset piegatore inizio
@@ -714,9 +720,10 @@ do
 
 
 			if ( IsAxInQuote( 10        ) and  Vb4072                    == 0   and IsAxInQuote( 1       )  and IsAxInQuote( 2       ) )	// aspetto il caricatore in posizione per abbassare la pinza
-							Delays(0.1)
-							Vb4388                              = 1 
-			    vn12         = 21
+				Delays(0.1)
+				Vb4388                              = 1 
+				vb96                  = 0  
+				vn12         = 21
 			endif
 			break
 
@@ -761,6 +768,7 @@ do
 			// se la cucitrice 2 è disabilitata e lo scaricatore attivo sposto dx-sx
 			if ( vb4513                  == 0 and vb4515                   and ( vb4523                        or vb4519                        ) and din24               and din23                ==0 ) 
 				AxAnt( 10        , Vq3520                         , -Vq3531                    , 2, 0 ) 
+
 				//Vb4386_AppAut_o54_Scaric_dx_sx = ON
 				vn12         = 30  //80
 			endif
@@ -818,7 +826,9 @@ do
 			endif
 			break	
 
-		case 26 // il traslatore sta andando (o è arrivato) nella posizione di attesa perchè le pinze C2 sono basse
+		case 26 
+
+		// il traslatore sta andando (o è arrivato) nella posizione di attesa perchè le pinze C2 sono basse
 			 // può succesere due cose, si alza prima che mi fermo allora gli cambio la quota oppure si alza quando ho raggiunto la posizione di attesa, in questo
 
 								// step reset piegatore inizio
@@ -830,26 +840,28 @@ do
 									vb12                    = 0  
 								// step reset piegatore fine
 			if ( vb7928        == 0 and din55                  == 0 and dout50           )	 //aspetto che la C2 finisce di cucire poi..
-				 if   (IsAxInQuote( 10         ))	//se è in quota
 
-					if(vb4515                  )
-						Delays ( Vq3071                )
-					endif
+				vn12         = 27
+			endif
+			break
+		case 27
+			 if   (IsAxInQuote( 10         ))	//se è in quota
 
-					 AxAnt( 10        , Vq3520                         , -Vq3531                    , 2, 0 ) 
-					 vn12         = 27
-
-				else  // non è ancora in quota
-					ChangeAxQuoObj( 10        , Vq3520                         )
-					vn12         = 27
-
+				if(vb4515                  )
+					Delays ( Vq3071                )
 				endif
 
+				AxAnt( 10        , Vq3520                         , -Vq3531                    , 2, 0 ) 
+				vn12         = 28
+
+			else  // non è ancora in quota
+				ChangeAxQuoObj( 10        , Vq3520                         )
+				vn12         = 28
 
 			endif
 			break
 
-		case 27  // c'è un caso "strano" in cui il traslatore lascia la tasca prima di portarla sotto le pinze C2, provo a coprirlo qui
+		case 28  // c'è un caso "strano" in cui il traslatore lascia la tasca prima di portarla sotto le pinze C2, provo a coprirlo qui
 			if ( IsAxInQuote( 10         ) )
 
 				AxAnt( 10        , Vq3520                         , -Vq3531                    , 2, 0 ) 

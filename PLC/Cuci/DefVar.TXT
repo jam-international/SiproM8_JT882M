@@ -97,6 +97,7 @@ As2000 Simbols Table
 #vb159;Vb159PattinaTestRunning;=1 il ciclo piattina test sta girando
 #vb160;Vb160PartiACucire;=1 il plc avverte il CN che la pattina è stata caricata e bloccata, ora può effettuare la prima cucitura
 #vb170;Vb170KitTascaCargo;=1 attivo il kit tasca cargo
+#vb171;Vb_Fun301_run;
 #vb4000;Vb4000_Automatico;/// messa a ON da HMI sono in automatico
 #vb4001;Vb4001_StepPiegatore;/// messa a ON da HMI il piegatore è passo passo
 #vb4002;Vb4002_StepPiegatoreStop;/// punto di stop piegatore
@@ -470,6 +471,13 @@ As2000 Simbols Table
 #vn778;vntest1;
 #vn779;vntest2;
 #vn780;vntest3;
+#vn800;Fun301_vn4000_err;
+#vn801;Fun301_vn4001_rete;
+#vn802;Fun301_vn4002_noto;
+#vn803;Fun301_vn4003_indice;
+#vn804;Fun301_vn4004_sub;
+#vn805;Fun301_vn4005_dim;
+#vn806;Fun301_vn4006_idResult;
 #vn3001;VnOvdAx1;Asse 1 - Override indipendente
 #vn3011;VnFaseZeroAx1;Asse 1 - Fase azzeramento
 #vn3013;VnStatoAx1;Asse 1 - Status asse
@@ -658,7 +666,7 @@ As2000 Simbols Table
 #vq3144;Vq3144_RitPiegatore_4_ON;variabile per memorizzare tempo su sequenza Curve5
 #vq3145;Vq3145_RitPiegatore_4_OFF;variabile per memorizzare tempo su sequenza Curve5
 #vq3160;Vq3160_ContSensPiegatoreSu;punti contati dalla molla rottura filo
-#vq3200;Vq3200_Time_Pattina_avanti;tempo tra caricatore verso operatore e giu
+#vq3200;Vq3200_Time_Caricatore_Pattina_avanti;tempo tra caricatore verso operatore e giu
 #vq3201;Vq3201_Time_SoffioPattina;tempo soffi per lasciare la pattina
 #vq3202;Vq3202_Time_pinza_blocca_pattin;tempo necessario a far avanzare la pinza blocca pattina sulladima
 #vq3203;Vq3203_Ritardo_PartenzaCuciPat;dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura
@@ -704,6 +712,7 @@ As2000 Simbols Table
 #vq3601;GoAxPlcCariObj;GoAx asse caricatore - quota obbiettivo
 #vq3602;GoAxPlcCaricVel;GoAx asse caricatore - Velocita'
 #vq3603;GoAxPlcCaric;GoAx asse caricatore - Libera
+#vq4000;FUN301_vq4000;
 #i1;i1_Pulsanti_start;
 #i2;i2_C1_Pedana;
 #i3;i3_C1_PedanaPiegatore;

@@ -597,6 +597,7 @@ do
 		    
 		    case 0
 		    v_ntest = 2
+		    
 			if(Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1 and Vb4507_AppManAuto ==1)
 			 v_ntest = 3
 				if(RichiestaStartCuci2)
@@ -611,6 +612,7 @@ do
 			break
 
 		case 1
+			
 			//se non devo cucire con la seconda e ho lo scaricatore lo faccio avanzare
 			if ( Vb4513_AppEnbCucitrice2 == 0 and Vb4515_AppEnbScaricatore and ( Vb4523_C2_PinzaDietroUnaTesta or Vb4519_AppScaricoCortiConPinza)) 
 				
@@ -627,11 +629,12 @@ do
 									Vb12_StepResetCanale3_2 = OFF
 								// step reset piegatore fine
 
-				
+			VnStatoCuci2 = 2
+			break
 
 		case 2
 			
-			if(Vn120_AppEnbScambioPinzeC1_Car2 == 1)
+			if(Vn120_AppEnbScambioPinzeC1_Car2 == 1 and Vb30_C1_InCucitura == 0)
 				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) or Vb4006_StepTraslatore)	//scambio con pinza esterna alta
 					//RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
 					VnStatoCuci2 = 5
@@ -641,12 +644,13 @@ do
 			endif
 
 
-			if(Vn120_AppEnbScambioPinzeC1_Car2 == 0)
+			if(Vn120_AppEnbScambioPinzeC1_Car2 == 0 and RichiestaStartCuci2 == 1)
 
 				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) or Vb4006_StepTraslatore  )	//scambio con pinza esterna bassa
 					RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
-					Vb96_AnticipoTrasl_SX = OFF
-					//------>IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX] AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
+
+					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX]
+					////------> AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
 					VnStatoCuci2 = 20
 					Vb4016_PrgTraslatoreRun = ON	//segnalo che il ciclo trasalatore è in fasi di movimento
 					break
@@ -675,7 +679,7 @@ do
 				
 			if( (RichiestaStartCuci2 == 1 or   (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) )and i38_FcPinzaTraslAlta ) /// vado a prendere la tasca
 				RichiestaStartCuci2 = 0
-				AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
+				AxAnt( C2_AsseCAR,  Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
 				VnStatoCuci2 = 20
 			endif
 
@@ -691,6 +695,8 @@ do
 
 
 			break
+
+	
 			
 		case 20  //aspetto traslatore sopra le pinze C1 (ScambioPinzeC1 = 1 oppure =0) poi abbasso pinza traslatore
 								// step reset piegatore inizio
@@ -714,9 +720,10 @@ do
 
 				
 			if ( IsAxInQuote( C2_AsseCAR) and  Vb4072_AllarmeContSpolaC1 == OFF and IsAxInQuote( C1_AsseX)  and IsAxInQuote( C1_AsseY) )	// aspetto il caricatore in posizione per abbassare la pinza
-							Delays(0.1)
-							Vb4388_AppAut_o56_Pinza_tras_su_giu = ON
-			    VnStatoCuci2 = 21
+				Delays(0.1)
+				Vb4388_AppAut_o56_Pinza_tras_su_giu = ON
+				Vb96_AnticipoTrasl_SX = OFF
+				VnStatoCuci2 = 21
 			endif
 			break
 
@@ -761,6 +768,7 @@ do
 			// se la cucitrice 2 è disabilitata e lo scaricatore attivo sposto dx-sx
 			if ( Vb4513_AppEnbCucitrice2 == 0 and Vb4515_AppEnbScaricatore and ( Vb4523_C2_PinzaDietroUnaTesta or Vb4519_AppScaricoCortiConPinza) and i24_C1_PinzaEstAlta and i23_C1_PinzaIntBassa ==0 ) 
 				AxAnt( C2_AsseCAR, Vq3520_PosizioneTraslScaricaC2 , -Vq3531_VelocitaTraslLavoro, 2, 0 ) 
+				
 				//Vb4386_AppAut_o54_Scaric_dx_sx = ON
 				VnStatoCuci2 = 30  //80
 			endif
@@ -818,7 +826,9 @@ do
 			endif
 			break	
 
-		case 26 // il traslatore sta andando (o è arrivato) nella posizione di attesa perchè le pinze C2 sono basse
+		case 26 
+		
+		// il traslatore sta andando (o è arrivato) nella posizione di attesa perchè le pinze C2 sono basse
 			 // può succesere due cose, si alza prima che mi fermo allora gli cambio la quota oppure si alza quando ho raggiunto la posizione di attesa, in questo
 
 								// step reset piegatore inizio
@@ -830,26 +840,28 @@ do
 									Vb12_StepResetCanale3_2 = OFF
 								// step reset piegatore fine
 			if ( VbChn2AutoRun == 0 and i55_C2_FcPinzaIntBassa == 0 and o50_C2_Pinza_int )	 //aspetto che la C2 finisce di cucire poi..
-				 if   (IsAxInQuote( C2_AsseCAR ))	//se è in quota
+			
+				VnStatoCuci2 = 27
+			endif
+			break
+		case 27
+			 if   (IsAxInQuote( C2_AsseCAR ))	//se è in quota
 
-					if(Vb4515_AppEnbScaricatore)
-						Delays ( Vq3071_RitTras_Scaric )
-					endif
-
-					 AxAnt( C2_AsseCAR, Vq3520_PosizioneTraslScaricaC2 , -Vq3531_VelocitaTraslLavoro, 2, 0 ) 
-					 VnStatoCuci2 = 27
-
-				else  // non è ancora in quota
-					ChangeAxQuoObj( C2_AsseCAR, Vq3520_PosizioneTraslScaricaC2 )
-					VnStatoCuci2 = 27
-					
+				if(Vb4515_AppEnbScaricatore)
+					Delays ( Vq3071_RitTras_Scaric )
 				endif
 
+				AxAnt( C2_AsseCAR, Vq3520_PosizioneTraslScaricaC2 , -Vq3531_VelocitaTraslLavoro, 2, 0 ) 
+				VnStatoCuci2 = 28
 
+			else  // non è ancora in quota
+				ChangeAxQuoObj( C2_AsseCAR, Vq3520_PosizioneTraslScaricaC2 )
+				VnStatoCuci2 = 28
+					
 			endif
 			break
 
-		case 27  // c'è un caso "strano" in cui il traslatore lascia la tasca prima di portarla sotto le pinze C2, provo a coprirlo qui
+		case 28  // c'è un caso "strano" in cui il traslatore lascia la tasca prima di portarla sotto le pinze C2, provo a coprirlo qui
 			if ( IsAxInQuote( C2_AsseCAR ) )
 
 				AxAnt( C2_AsseCAR, Vq3520_PosizioneTraslScaricaC2 , -Vq3531_VelocitaTraslLavoro, 2, 0 ) 

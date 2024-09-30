@@ -144,6 +144,22 @@ sub ()
 
         // Esecuzione cucitura
 	Vb31_C2_InCucitura = ON
+
+
+	//pattina, mi fermo dopo aver mosso le pinze al primo punto
+	if(Vb152KitCarPAttine)
+	Vb160PartiACucire = OFF
+	DelayS( 1 )
+		Vb155LasciaPattina = ON
+		do
+			if(Vb160PartiACucire )
+				Vb160PartiACucire = OFF
+				DelayS( 1 )
+				exitdo
+			endif
+		loop
+	endif
+
     do
 	vntest3 = 3
         ISO G280

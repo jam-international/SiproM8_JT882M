@@ -108,6 +108,7 @@ sub ()
 				// muovo caricatore C2
 				fp[ C2_AsseCAR ] = 20    
 				ax[ C2_AsseCAR ] = Vq3522_PosizioneTraslCaricoTascaC1 
+				vntest1 = 200
 					Delays ( 0.5 )
 				// abbasso la pinza del caricatore C2 
 				Vb4388_AppAut_o56_Pinza_tras_su_giu = ON
@@ -120,6 +121,7 @@ sub ()
 					Delays ( 0.5 )
 				fp[ C2_AsseCAR ] = 20    
 				ax[ C2_AsseCAR ] = Vq3521_PosizioneTraslAspCaricoTascaC1 
+				vntest1 = 201
 		Vb4083_TestCaricatoreC2CaricoC1 = OFF			
 			goto FINE
 	endif
@@ -137,6 +139,7 @@ sub ()
 				// muovo caricatore C2
 				fp[ C2_AsseCAR ] = 20    
 				ax[ C2_AsseCAR ] = Vq3520_PosizioneTraslScaricaC2 
+				vntest1 = 202
 					Delays ( 0.5 )
 				// abbasso la pinza del caricatore C2 
 				Vb4388_AppAut_o56_Pinza_tras_su_giu = ON
@@ -148,7 +151,8 @@ sub ()
 					Waitcond ( i38_FcPinzaTraslAlta )
 					Delays ( 0.5 )
 				fp[ C2_AsseCAR ] = 20    
-				ax[ C2_AsseCAR ] = Vq3523_PosizioneTraslAspScaricoC2 
+				ax[ C2_AsseCAR ] = Vq3521_PosizioneTraslAspCaricoTascaC1 
+				vntest1 = 203
 		Vb4084_TestCaricatoreC2ScaricoC2 = OFF			
 			goto FINE
 	endif

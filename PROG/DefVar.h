@@ -278,7 +278,7 @@
 
 //cargo
 #define Vb170KitTascaCargo			vb170		//=1 attivo il kit tasca cargo
-
+#define Vb_Fun301_run				vb171
 
 
 //------------------------------------------------------------------------
@@ -825,6 +825,20 @@
 #define vntest2						vn779
 #define vntest3						vn780
 
+
+
+
+#define Fun301_vn4000_err		vn800
+#define Fun301_vn4001_rete		vn801
+#define Fun301_vn4002_noto		vn802
+#define Fun301_vn4003_indice	vn803
+#define Fun301_vn4004_sub		vn804
+#define Fun301_vn4005_dim		vn805
+#define Fun301_vn4006_idResult	vn806
+
+
+
+
 //------------------------------------------------------------------------
 //
 // #######################################
@@ -891,6 +905,10 @@
 #define VnStatoAx10             vn3193      // Asse 10 - Status asse
 
 #define Vn3804_PageID			vn3804		// Pagina in esecuzione
+
+
+
+
 
 // ============================================================================
 //      ASSEGNAZIONE VQ
@@ -978,6 +996,9 @@
 #define Vq_117_READ_FC_ava_Y_C2        vq117      // Vq lettura fine corsa avanti asse Y C2
 #define Vq_118_READ_FC_ind_CARIC_C2        vq118      // Vq lettura fine corsa indietro traslatore
 #define Vq_119_READ_FC_ava_CARIC_C2        vq119      // Vq lettura fine corsa avanti traslatore
+
+
+
 //------------------------------------------------------------------------
 //
 // #######################################
@@ -1113,7 +1134,7 @@
 #define Vq3160_ContSensPiegatoreSu		Vq3160 		// punti contati dalla molla rottura filo
 
 // tempi carica pattine
-#define Vq3200_Time_Pattina_avanti		Vq3200		//tempo tra caricatore verso operatore e giu
+#define Vq3200_Time_Caricatore_Pattina_avanti		Vq3200		//tempo tra caricatore verso operatore e giu
 #define Vq3201_Time_SoffioPattina		Vq3201		//tempo soffi per lasciare la pattina
 #define Vq3202_Time_pinza_blocca_pattin	Vq3202		//tempo necessario a far avanzare la pinza blocca pattina sulladima
 #define Vq3203_Ritardo_PartenzaCuciPat	Vq3203		//dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura
@@ -1194,7 +1215,7 @@
 #define GoAxPlcCaric            	vq3603        // GoAx asse caricatore - Libera
 
 
-
+#define FUN301_vq4000				vq4000
 
 
 // ============================================================================

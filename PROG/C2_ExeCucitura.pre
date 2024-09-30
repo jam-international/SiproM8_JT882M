@@ -127,15 +127,13 @@ sub ()
         // Verifica esecuzione simulata: viene forzato Hold
     if ( vb2034            == 1 )
         vb2009            = 1
-	vn778   = 20
     endif
 
    if ( vb2009            == 0 )
         ISO G281 P 10                  X vq2027       Y vq2028      
-	vn778   = 21
+
    else
 	vb2028           = 1    // #M230406_1GF# - force rewind flag in C2_Ripartenza
-	vn778   = 22
         gosub "C2_Ripartenza"
     endif
 

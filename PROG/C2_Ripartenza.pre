@@ -22,7 +22,7 @@ sub ()
         // Verifica se la ripartenza e' in una zona di fermata temporanea
         // In tal caso bisogna riportarsi all'inizio della prossima cucitura
     do
-	vn778   = 2
+
             // Attesa rilascio hold          
         WaitCond( vb2009            == 0 )
 
@@ -32,10 +32,10 @@ sub ()
 
 	 if ( vb2033              or vb45                       )
 		vb45                       = 0  
-		vn778   = 3
+
             exitdo
         endif
-	vn778   = 4
+
             // Movimento simulato avanti fino a ripresa o fine cucitura
         ExecPlcFun( 281         , 250, 10 )  
 

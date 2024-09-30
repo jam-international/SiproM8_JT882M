@@ -49,7 +49,7 @@ sub ()
 
 
 
-		if ( Vn120_AppEnbScambioPinzeC1_Car2 == 1 )
+		if ( Vn120_AppEnbScambioPinzeC1_Car2 == 1 and Vb30_C1_InCucitura == 0 )
 		      // Attesa assi X Y fermi
 			WaitCond( IsAxInStop( C1_AsseX ) )
 			WaitCond( IsAxInStop( C1_AsseY ) )

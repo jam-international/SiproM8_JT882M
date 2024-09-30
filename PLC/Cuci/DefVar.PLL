@@ -2,7 +2,7 @@
  *
  * MDPlc source file: DefVar.PLL
  *
- * Date = "16/05/2024 09:37:21"
+ * Date = "09/07/2024 16:34:25"
  *)
 
 
@@ -117,6 +117,7 @@ VAR_GLOBAL
     Vb159PattinaTestRunning                 AT %MB300.159  : BOOL;         {DE:"vb159  - =1 il ciclo piattina test sta girando"}
     Vb160PartiACucire                       AT %MB300.160  : BOOL;         {DE:"vb160  - =1 il plc avverte il CN che la pattina è stata caricata e bloccata, ora può effettuare la prima cucitura"}
     Vb170KitTascaCargo                      AT %MB300.170  : BOOL;         {DE:"vb170  - =1 attivo il kit tasca cargo"}
+    Vb_Fun301_run                           AT %MB300.171  : BOOL;         {DE:"vb171"}
     Vb4000_Automatico                       AT %MB300.4000 : BOOL;         {DE:"vb4000 - /// messa a ON da HMI sono in automatico"}
     Vb4001_StepPiegatore                    AT %MB300.4001 : BOOL;         {DE:"vb4001 - /// messa a ON da HMI il piegatore è passo passo"}
     Vb4002_StepPiegatoreStop                AT %MB300.4002 : BOOL;         {DE:"vb4002 - /// punto di stop piegatore"}
@@ -492,6 +493,13 @@ VAR_GLOBAL
     vntest1                                 AT %MW400.778  : INT;          {DE:"vn778"}
     vntest2                                 AT %MW400.779  : INT;          {DE:"vn779"}
     vntest3                                 AT %MW400.780  : INT;          {DE:"vn780"}
+    Fun301_vn4000_err                       AT %MW400.800  : INT;          {DE:"vn800"}
+    Fun301_vn4001_rete                      AT %MW400.801  : INT;          {DE:"vn801"}
+    Fun301_vn4002_noto                      AT %MW400.802  : INT;          {DE:"vn802"}
+    Fun301_vn4003_indice                    AT %MW400.803  : INT;          {DE:"vn803"}
+    Fun301_vn4004_sub                       AT %MW400.804  : INT;          {DE:"vn804"}
+    Fun301_vn4005_dim                       AT %MW400.805  : INT;          {DE:"vn805"}
+    Fun301_vn4006_idResult                  AT %MW400.806  : INT;          {DE:"vn806"}
     VnOvdAx1                                AT %MW400.3001 : INT;          {DE:"vn3001 - Asse 1 - Override indipendente"}
     VnFaseZeroAx1                           AT %MW400.3011 : INT;          {DE:"vn3011 - Asse 1 - Fase azzeramento"}
     VnStatoAx1                              AT %MW400.3013 : INT;          {DE:"vn3013 - Asse 1 - Status asse"}
@@ -682,7 +690,7 @@ VAR_GLOBAL
     Vq3144_RitPiegatore_4_ON                AT %MD500.3144 : DINT;         {DE:"vq3144 - variabile per memorizzare tempo su sequenza Curve5"}
     Vq3145_RitPiegatore_4_OFF               AT %MD500.3145 : DINT;         {DE:"vq3145 - variabile per memorizzare tempo su sequenza Curve5"}
     Vq3160_ContSensPiegatoreSu              AT %MD500.3160 : DINT;         {DE:"vq3160 - punti contati dalla molla rottura filo"}
-    Vq3200_Time_Pattina_avanti              AT %MD500.3200 : DINT;         {DE:"vq3200 - tempo tra caricatore verso operatore e giu"}
+    Vq3200_Time_Caricatore_Pattina_avanti   AT %MD500.3200 : DINT;         {DE:"vq3200 - tempo tra caricatore verso operatore e giu"}
     Vq3201_Time_SoffioPattina               AT %MD500.3201 : DINT;         {DE:"vq3201 - tempo soffi per lasciare la pattina"}
     Vq3202_Time_pinza_blocca_pattin         AT %MD500.3202 : DINT;         {DE:"vq3202 - tempo necessario a far avanzare la pinza blocca pattina sulladima"}
     Vq3203_Ritardo_PartenzaCuciPat          AT %MD500.3203 : DINT;         {DE:"vq3203 - dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura"}
@@ -728,6 +736,7 @@ VAR_GLOBAL
     GoAxPlcCariObj                          AT %MD500.3601 : DINT;         {DE:"vq3601 - GoAx asse caricatore - quota obbiettivo"}
     GoAxPlcCaricVel                         AT %MD500.3602 : DINT;         {DE:"vq3602 - GoAx asse caricatore - Velocita'"}
     GoAxPlcCaric                            AT %MD500.3603 : DINT;         {DE:"vq3603 - GoAx asse caricatore - Libera"}
+    FUN301_vq4000                           AT %MD500.4000 : DINT;         {DE:"vq4000"}
 
 
     VdTmpCalc                               AT %ML600.1    : LREAL;        {DE:"vd1    - Usato per calcoli temporanei nel PLC"}

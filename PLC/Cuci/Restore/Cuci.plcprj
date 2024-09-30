@@ -97,7 +97,7 @@
 			<functions/>
 			<functionBlocks/>
 			<programs>
-				<program name="Emergenze" version="1.0.0" creationDate="0" lastModifiedDate="1715351205" excludeFromBuild="FALSE">
+				<program name="Emergenze" version="1.0.0" creationDate="0" lastModifiedDate="1715757397" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="Rise_ciclo_emergenza_attivata" type="RiseEdge"/>
@@ -379,7 +379,7 @@ if(Rise_ciclo_emergenza_attivata.q) then
  	Vb4017_AttesaTascaIsRunning			:= FALSE;
  	PiegatoreStaSalendo 				:= FALSE;
  	Vb4513_AppEnbCucitrice2				:= TRUE;
- 	Vb90_AnticipoTrasl_SX 				:= FALSE;
+ 	Vb96_AnticipoTrasl_SX 				:= FALSE;
 
 		(* azzeramento variabili PLC *)
 	MoveAsseY_C2_ON 	          		:= FALSE ;
@@ -392,6 +392,8 @@ if(Rise_ciclo_emergenza_attivata.q) then
 	Vb89_TascaC2Completata				:= FALSE ;
 	Vb43_TestCuciPrimaTasca_C1			:= FALSE;
 	Vb45_TestCuciPrimaTasca_C2			:= FALSE;
+
+
 	
 	
 	(* azzeramento variabili pattina*)
@@ -838,7 +840,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Boot" version="1.0.0" creationDate="0" lastModifiedDate="1715177173" excludeFromBuild="FALSE">
+				<program name="Boot" version="1.0.0" creationDate="0" lastModifiedDate="1715780642" excludeFromBuild="FALSE">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -858,7 +860,7 @@ end_if;
 (* Prima stesura                        gf              1.0     29/04/2021    
 (* Ultima modifica                                                            
 (* ========================================================================== *)
-
+(* ver.17  15.05.2024 macchina normale + Cargo + FLAP*)
 
 	(* ------------------------------- *)
 	(* FLAG SIMULAZIONE - PER DEBUGGER *)
@@ -866,9 +868,9 @@ VbSimulaDbg := FALSE;
 
 	(* Versopne applicativo*) 
 case(Vn_ID_macchina)of
-	862: App_Ver := 'JT862M - Ver 25.00 - 28.03.2024';	(*25.00 rottura filo con contagiri e non con sensore ago*)
-	860: App_Ver := 'JT862HM - Ver 24.00 - 12.05.2023';
-	882: App_Ver := 'JT882M - Ver 16.00.00 - 22.11.2023';
+//	862: App_Ver := 'JT862M - Ver 25.00 - 28.03.2024';	
+//	860: App_Ver := 'JT862HM - Ver 24.00 - 12.05.2023';
+	882: App_Ver := 'JT882M - Ver 17.00.00 - 15.05.2024';
 end_case;
 
 	(* Emergenza all'accensione *)
@@ -907,6 +909,13 @@ Fun202VnParIndx_2 := EnbCountRotturaFiloC2_IDX;
 Fun202VnParIndx_3 := ContPuntiRottFiloC2_IDX;
 vret := ExecPlcFun( PLC_ADD_FUN_IRQ, 21, 1000 ); 
 
+Fun202VnParIndx_0 := 1;
+Fun202VnParIndx_1 := 202;
+Fun202VnParIndx_2 := EnbCountIRQPiegatore_Su_IDX;
+Fun202VnParIndx_3 := ContIRQSensPiegatore_su_IDX;
+vret := ExecPlcFun( PLC_ADD_FUN_IRQ, 31, 1000 ); 
+
+Vb4077_IRQPiegatore_Su := TRUE;
 ]]>
 					</sourceCode>
 				</program>
@@ -1017,7 +1026,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1715177116" excludeFromBuild="FALSE">
+				<program name="C1_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1715757397" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="FallPrgRun" type="FallEdge"/>
@@ -1727,7 +1736,7 @@ case ( C1_PlcStatoAgo ) of
         
         if(Vn120_AppEnbScambioPinzeC1_Car2 = 0) then
          	if(Vb4513_AppEnbCucitrice2 = TRUE or (Vb4513_AppEnbCucitrice2 =FALSE and Vb4515_AppEnbScaricatore = TRUE)) then
-        		Vb90_AnticipoTrasl_SX := TRUE;
+        		Vb96_AnticipoTrasl_SX := TRUE;
          		
          		
          		
@@ -2114,7 +2123,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_CuciRtc" version="1.0.0" creationDate="0" lastModifiedDate="1703066425" excludeFromBuild="FALSE">
+				<program name="C1_CuciRtc" version="1.0.0" creationDate="0" lastModifiedDate="1715680349" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="Rise_i10_Piegatore_Salito" type="RiseEdge"/>
@@ -2207,20 +2216,10 @@ if ( C1_CuciLastPointEnaStop and C1_CammaStopAgoAlto ) then
 	C1_VbEnableCamme := TRUE;
 end_if;	
 
-(*-------------------------------------------------------------------- 
-cerco di leggere al volo il sensore del piegatore quando sale
- ---------------------------------------------------------------------*)
-
-Rise_i10_Piegatore_Salito (in:= i10_Piegatore_Salito);  
-Fall_i10_Piegatore_Salito (in:= i10_Piegatore_Salito);  
-if((i10_Piegatore_Salito or Rise_i10_Piegatore_Salito.q or Fall_i10_Piegatore_Salito.q) and  PiegatoreStaSalendo ) then
-	Vb84PiegatoreRisalito := TRUE;
-end_if;
-
 ]]>
 					</sourceCode>
 				</program>
-				<program name="AppMainC3" version="1.0.0" creationDate="0" lastModifiedDate="1715346276" excludeFromBuild="FALSE">
+				<program name="AppMainC3" version="1.0.0" creationDate="0" lastModifiedDate="1715777941" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="RiseBootDone" type="RiseEdge"/>
@@ -2757,7 +2756,7 @@ Fall_Vb4511_AppEnbCaricatore(  in := Vb4511_AppEnbCaricatore  );
 
 RiseVb4508_AppHmiPiegatore(  in :=  Vb4508_AppHmiPiegatore and (not VbChn3AutoRun or VnStatoCuci1 = 5 or VnStatoCuci1 = 100) and  Vb4049_C1_AsseCARFermo );
 
-if ( RiseVb4508_AppHmiPiegatore.q and Vb4806_AppPinzaAltaC1 and not Vb4003_RqsStopPiegatore)then
+if ( RiseVb4508_AppHmiPiegatore.q and i24_C1_PinzaEstAlta and o18_C1_Pinza_int and o19_C1_Pinza_est and not Vb4003_RqsStopPiegatore)then
 
 
 	if(Vb4511_AppEnbCaricatore and not Vb4015_PrgCaricatoreRun and Vb4504_AppPosMacchinaPerAutomatico) then
@@ -4592,7 +4591,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Piegatore" version="1.0.0" creationDate="0" lastModifiedDate="1715592782" excludeFromBuild="FALSE">
+				<program name="Piegatore" version="1.0.0" creationDate="0" lastModifiedDate="1715693230" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="RiseLanciaAvDi" type="RiseEdge"/>
@@ -4618,6 +4617,7 @@ end_if;
 							<var name="Ton_lentezza_tasca_aspiratore_passo_passo" type="Ton"/>
 							<var name="FallPiegatoreBasso" type="FallEdge"/>
 							<var name="RisePiegatoreGiu" type="RiseEdge"/>
+							<var name="Rise_i9_FcPiegatoreBasso" type="RiseEdge"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
@@ -4959,10 +4959,12 @@ Rise_Vb4028_Piegatore4_OFF(in:= Vb4028_Piegatore4_OFF);
 (* il piegatore risale, prendo al volo il fronte sensore *)
 FallPiegatoreBasso (in:= o11_Piegatore_Su_Giu and  VbChn3AutoRun);
 RisePiegatoreGiu  (in:= o11_Piegatore_Su_Giu and  VbChn3AutoRun);
+Rise_i9_FcPiegatoreBasso (in:=i9_FcPiegatoreBasso and  VbChn3AutoRun);
 
-if(RisePiegatoreGiu.q) then
+if(Rise_i9_FcPiegatoreBasso.q) then
 	PiegatoreStaSalendo := FALSE;
-	Vb84PiegatoreRisalito := FALSE;
+	Vb83PiegatoreRisalito := FALSE;
+	Vq3160_ContSensPiegatoreSu := 0;
 
 end_if;
 
@@ -4971,6 +4973,19 @@ if(FallPiegatoreBasso.q) then
 	PiegatoreStaSalendo := TRUE;
 
 end_if;	
+
+
+
+(* il piegatore risale, prendo al volo il fronte sensore *)
+(*se il contatore di letture IRQ sul sensore piegatore in salita si incrementa segnalo che il sensore si è acceso*)
+if(Vq3160_ContSensPiegatoreSu =1 and not o11_Piegatore_Su_Giu and  VbChn3AutoRun) then
+
+	Vq3160_ContSensPiegatoreSu := 0;
+	Vb83PiegatoreRisalito := TRUE;
+	
+end_if;
+
+vret := ExecPlcFun( PLC_ENABLE_IRQ, 31, ContIRQSensPiegatore_su_IDX );
 ]]>
 					</sourceCode>
 				</program>
@@ -6133,7 +6148,7 @@ Rise_i1_Pulsanti_start_caricatore (in:= i1_Pulsanti_start and o24_Pinza_carico_S
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Scaricatore" version="1.0.0" creationDate="0" lastModifiedDate="1702997612" excludeFromBuild="FALSE">
+				<program name="Scaricatore" version="1.0.0" creationDate="0" lastModifiedDate="1715704970" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="Rit_o32_Scaric_dx_sx" type="Ton"/>
@@ -6150,6 +6165,9 @@ Rise_i1_Pulsanti_start_caricatore (in:= i1_Pulsanti_start and o24_Pinza_carico_S
 							<var name="Rise_Vb4519_AppScaricoCortiConPinza" type="RiseEdge"/>
 							<var name="Fall_Vb4519_AppScaricoCortiConPinza" type="FallEdge"/>
 							<var name="Rise_Vb4515_AppEnbScaricatore" type="RiseEdge"/>
+							<var name="Rit_Barra2OFF_Barra1OFF" type="Ton"/>
+							<var name="Fall_Barra2_OFF" type="FallEdge"/>
+							<var name="Bool_Barra2OFF" type="BOOL"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
@@ -6218,6 +6236,7 @@ Rit_o32_Scaric_dx_sx( in := ( Vb4386_AppAut_o54_Scaric_dx_sx and Vb4515_AppEnbSc
 
 	if ( Rit_o32_Scaric_dx_sx.q )then
 		Vb4031_AppScaricatoreInPos := TRUE ;
+		Bool_Barra2OFF 						:= FALSE;	
 	else;
 		Vb4031_AppScaricatoreInPos := FALSE ;
 	end_if;		
@@ -6255,17 +6274,30 @@ Rit_o32_Scaric_dx_sxOFF( in := ( Vb4393_AppAut_o61_Seconda_barra and Vb4515_AppE
 	end_if;		
 
 
-(* ritardo OFF scaricatore  *)
+(* ritardo OFF scaricatore Sx e Barra 2 OFF  *)
 Rit_Scaric_OFF( in := ( Rit_o32_Scaric_dx_sxOFF.q or not Vb4515_AppEnbScaricatore ) , pt := TO_UDINT( Vq3081_RitScaricatoreDxSx_OFF ) );
 
 	if ( Rit_Scaric_OFF.q )then
 			Vb4386_AppAut_o54_Scaric_dx_sx := FALSE ;
-			Vb4392_AppAut_o60_Prima_barra := FALSE ;
+		//	Vb4392_AppAut_o60_Prima_barra := FALSE ;
 			Vb4393_AppAut_o61_Seconda_barra := FALSE ;
 			Vb4032_AppScaricatoreStrBarre := FALSE ;
 			
 		
 	end_if;		
+
+(* ritardo tra Barra 2 OFF e Barra 1 OFF  *)
+Fall_Barra2_OFF (in:= Vb4393_AppAut_o61_Seconda_barra);
+if(Fall_Barra2_OFF.q) then
+	Bool_Barra2OFF := TRUE;
+end_if;
+
+Rit_Barra2OFF_Barra1OFF (in:= Bool_Barra2OFF,pt:= TO_UDINT( Vq3079_RitBar2Off_Bar1Off));
+if(Rit_Barra2OFF_Barra1OFF.q) then
+	Vb4392_AppAut_o60_Prima_barra := FALSE ;
+	Bool_Barra2OFF := FALSE;
+end_if;
+
 
 
 
@@ -6460,7 +6492,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="OutAnalogicheT1" version="1.0.0" creationDate="0" lastModifiedDate="1715668991" excludeFromBuild="FALSE">
+				<program name="OutAnalogicheT1" version="1.0.0" creationDate="0" lastModifiedDate="1715679223" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="RiseVb4061_AppTensAumentaTesta1" type="RiseEdge"/>
@@ -6553,9 +6585,9 @@ end_if;
 
 
 (* timer colpo tensione a 5V *)
-TimIniTensioneTesta1( in := AppON_TensioneTesta1 , pt := TO_UDINT(Vq3094_TimeColpoTensione ) );
+TimIniTensioneTesta1( in := AppON_TensioneTesta1 ,pt :=TO_UDINT(Vq3094_TimeColpoTensione ));
 (* timeout tensione manuale dopo colpo a 5 V*)
-TimeOutTensioneTesta1( in := ( AppON_TensioneTesta1 and not Vb4061_AppTensAumentaTesta1 and not Vb4062_AppTensDiminuisceTesta1 and not Vb30_C1_InCucitura), pt := TO_UDINT(Vq3095_TimeChiusTensTasti ) );
+TimeOutTensioneTesta1( in := ( AppON_TensioneTesta1 and not Vb4061_AppTensAumentaTesta1 and not Vb4062_AppTensDiminuisceTesta1 and not Vb30_C1_InCucitura), pt :=TO_UDINT(Vq3095_TimeChiusTensTasti ) );
 	
 	
 	(* macchina stati ulsanti tensione + e - *)
@@ -6855,7 +6887,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="OutAnalogicheT2" version="1.0.0" creationDate="0" lastModifiedDate="1715671535" excludeFromBuild="FALSE">
+				<program name="OutAnalogicheT2" version="1.0.0" creationDate="0" lastModifiedDate="1715679223" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="AppON_TensioneTesta2" type="BOOL"/>
@@ -6928,9 +6960,9 @@ end_if;
 
 
 (* timer colpo tensione a 5V *)
-TimIniTensioneTesta2( in := AppON_TensioneTesta2 , pt :=  TO_UDINT(Vq3094_TimeColpoTensione ) );
+TimIniTensioneTesta2( in := AppON_TensioneTesta2 , pt :=TO_UDINT(Vq3094_TimeColpoTensione ) );
 (* timeout tensione manuale dopo colpo a 5 V*)
-TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAumentaTesta2 and not Vb4064_AppTensDiminuisceTesta2 and not Vb31_C2_InCucitura), pt := TO_UDINT(Vq3095_TimeChiusTensTasti ) );
+TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAumentaTesta2 and not Vb4064_AppTensDiminuisceTesta2 and not Vb31_C2_InCucitura), pt :=TO_UDINT(Vq3095_TimeChiusTensTasti ) );
 	
 	
 	(* macchina stati ulsanti tensione + e - *)
@@ -8401,7 +8433,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="RotturaFilo_Spola_C1" version="1.0.0" creationDate="0" lastModifiedDate="1711621497" excludeFromBuild="FALSE">
+				<program name="RotturaFilo_Spola_C1" version="1.0.0" creationDate="0" lastModifiedDate="1715702864" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="CNT_N_PuntiRottFiloC1" type="DINT"/>
@@ -8418,11 +8450,14 @@ end_if;
 							<var name="Rise_paginaTest_IO" type="RiseEdge"/>
 							<var name="Fall_paginaTest_IO" type="FallEdge"/>
 							<var name="Rise_i18_C1_RotturaFilo" type="RiseEdge"/>
+							<var name="Rise_Riarmo" type="RiseEdge"/>
+							<var name="CNT_N_PuntiRottFiloC2" type="DINT"/>
+							<var name="OLD_ContPuntiRottFiloC2" type="DINT"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
-						<![CDATA[(* ========================================================================== 
+						<![CDATA[ (* ========================================================================== 
 (* SIPRO - Siax M															  	
 (*                                                                            
 (* COMPANY:     JAM INTERNATIONAL                                             
@@ -8479,7 +8514,7 @@ FallVb4_C1_InCucitura ( in:= Vb4_C1_InCucitura );
 RiseStopC1(  in := ( VB_CHN_AUTO_RUNNING and not C1_CmdHoldRelease and Vb4090_EnableRotturaFiloC1 and ( CNT_N_PuntiRottFiloC1 >= Vq3560_N_PuntiRottFiloC1 )));
 	if ( RiseStopC1.q )then
 		C1_CmdHoldHMI := TRUE ;
-		//if(CNT_N_PuntiRottFiloC1 >= C1_NumPuntiRottFilo) then
+
 		if(CNT_N_PuntiRottFiloC1 >= Vq3560_N_PuntiRottFiloC1) then
 		
 
@@ -8540,6 +8575,99 @@ if(Fall_Vb4075_GiraAgoFaiSpolaC1.q) then
 	Vb4008_AgoSu_C1 := TRUE;  (*lancio comando per far ritornare l'ago in posizione alta*)
 
 end_if;
+//===================================================================
+// AZZERO CONTATORI
+//===================================================================
+// Azzero i contatori rottura filo 1 e 2 al riarmo
+Rise_Riarmo ( in:= i21_Emg );
+if(Rise_Riarmo.q ) then
+	CNT_N_PuntiRottFiloC1 := 0;	//Filo 1
+	CNT_N_PuntiRottFiloC2 := 0;	//Filo 2
+end_if;
+
+
+
+//===================================================================
+// ABILITA CONTEGGIO
+//===================================================================
+// Quando sono in cucitura e gira l'ago si abilita il conteggio
+
+if ( RiseVb4_C1_InCucitura.q )then 
+	Vb4092_EnbCountRotturaFiloC1 := TRUE;	//Filo 1	
+	Vb4093_EnbCountRotturaFiloC2 := TRUE;	//Filo 2
+	Vq3561_ContPuntiRottFiloC1 := 1; 		//Filo 1		
+	Vq3563_ContPuntiRottFiloC2 := 1; 		//Filo 2
+	CNT_N_PuntiRottFiloC1 := 0; 			//Filo 1
+	CNT_N_PuntiRottFiloC2 := 0;				//Filo 2
+	OLD_ContPuntiRottFiloC1 := 0;			//Filo 1	
+	OLD_ContPuntiRottFiloC2 := 0;			//Filo 2
+	//FUN200 <MdIrqAndEdge> <CntVqIndx> (Abilitazione di un interrupt del CNC)
+	//MdIrqAndEdge: ( Numero dell’interrupt * 10 ) + Edge(1 Interrupt sul fronte di salita)
+	//CntVqIndx: Indice della VQ contatore interrupt 
+	vret := ExecPlcFun( PLC_ENABLE_IRQ, 11, ContPuntiRottFiloC1_IDX );	//Filo 1
+	vret := ExecPlcFun( PLC_ENABLE_IRQ, 21, ContPuntiRottFiloC2_IDX );	//Filo 2
+end_if;
+
+
+
+//===================================================================
+// DISABILITA CONTEGGIO
+//===================================================================
+// Quando non gira più l'ago si disabilita il conteggio	
+
+
+if ( FallVb4_C1_InCucitura.q )then 
+	Vb4092_EnbCountRotturaFiloC1 := FALSE;	//Filo 1
+	Vb4093_EnbCountRotturaFiloC2 := FALSE;	//Filo 2
+	Vq3561_ContPuntiRottFiloC1 := 0;		//Filo 1
+	Vq3563_ContPuntiRottFiloC2 := 0; 		//Filo 2
+	CNT_N_PuntiRottFiloC1 := 0;				//Filo 1
+	CNT_N_PuntiRottFiloC2 := 0;				//Filo 2
+	OLD_ContPuntiRottFiloC1 := 0;			//Filo 1
+	OLD_ContPuntiRottFiloC2 := 0;			//Filo 2
+	//FUN201 <IrqAndEdge> (Disabilitazione di un interrupt del CNC)
+	//IrqAndEdge: ( Numero dell’interrupt * 10 ) + Edge(1 Interrupt sul fronte di salita)
+	vret := ExecPlcFun( PLC_DISABLE_IRQ, 11, 0 );	//Filo 1
+	vret := ExecPlcFun( PLC_DISABLE_IRQ, 21, 0 );	//Filo 2
+end_if;
+//===================================================================
+// Controlla il contatore se incrementa con riferimento camma zero 
+//===================================================================
+// ad ogni giro (vedi VnDeltaCntGiri_C1) controllo se i TOCCHI della molla (Vq3561_ContPuntiRottFiloC1) aumentano,
+// se si, azzero il contatore CNT_N_PuntiRottFiloC1 se no, lo incremento di 1. Quando supera Vq3560_N_PuntiRottFiloC1
+// attivo allarme rottura filo
+
+
+	if ( Rise_cnt_giro.q and VN_SYS_PAGE_ID = 1001)then 	
+		//Filo 1-------------------------------------------------------
+		if ( Vq3561_ContPuntiRottFiloC1 > OLD_ContPuntiRottFiloC1 )then
+			OLD_ContPuntiRottFiloC1 := Vq3561_ContPuntiRottFiloC1 ;	
+			CNT_N_PuntiRottFiloC1 := 0 ;
+		else;
+			CNT_N_PuntiRottFiloC1 := CNT_N_PuntiRottFiloC1 + 1000 ;
+			OLD_ContPuntiRottFiloC1 := 0 ;	
+			Vq3561_ContPuntiRottFiloC1 := 0 ;
+		end_if;
+		//Filo 2-------------------------------------------------------
+		if ( Vq3563_ContPuntiRottFiloC2 > OLD_ContPuntiRottFiloC2 )then
+			OLD_ContPuntiRottFiloC2 := Vq3563_ContPuntiRottFiloC2 ;	
+			CNT_N_PuntiRottFiloC2 := 0 ;
+		else;
+			CNT_N_PuntiRottFiloC2 := CNT_N_PuntiRottFiloC2 + 1000 ;
+			OLD_ContPuntiRottFiloC2 := 0 ;	
+			Vq3563_ContPuntiRottFiloC2 := 0 ;
+		end_if;
+		//-------------------------------------------------------------
+	end_if;
+
+
+// per capire se IRQ1 funziona, nella pagina TEST IO lascio contare, vedrò aumentare il conteggio su VQ3561
+if(VN_SYS_PAGE_ID = 1005) then		//pagina test IO
+	vret := ExecPlcFun( PLC_ENABLE_IRQ, 11, ContPuntiRottFiloC1_IDX );	//Filo 1	
+	vret := ExecPlcFun( PLC_ENABLE_IRQ, 21, ContPuntiRottFiloC2_IDX );	//Filo 2
+	Vb4092_EnbCountRotturaFiloC1 := TRUE;	//Filo 1	
+	Vb4093_EnbCountRotturaFiloC2 := TRUE;	//Filo 2
+end_if;		
 
 
 ]]>
@@ -8776,7 +8904,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Timeout_Sensori" version="1.0.0" creationDate="1627283434" lastModifiedDate="1703066814" excludeFromBuild="FALSE">
+				<program name="Timeout_Sensori" version="1.0.0" creationDate="1627283434" lastModifiedDate="1715704733" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="TonSensPinzaEstOff" type="Ton"/>
@@ -8897,13 +9025,13 @@ if(FallPiegatoreBasso.q) then
 	PiegatoreStaSalendo := TRUE;
 end_if;	
 
-if(RisePiegatoreGiu.q or Vb84PiegatoreRisalito or not i21_Emg) then
+if(RisePiegatoreGiu.q or Vb83PiegatoreRisalito or not i21_Emg) then
 	PiegatoreStaSalendo := FALSE;
 end_if;
 
 
 TonSensPiegatoreGiu (in:=  Vb4343_AppAut_o11_Piegatore_Su_Giu and not i9_FcPiegatoreBasso, pt := TO_UDINT(Vq3090_TimeoutSensori) ); 
-TonSensPiegatoreSu (in:=   PiegatoreStaSalendo and not Vb84PiegatoreRisalito and Vb85AbilitaSensAltoPieg, pt := TO_UDINT(Vq3090_TimeoutSensori) ); 
+TonSensPiegatoreSu (in:=   PiegatoreStaSalendo and not Vb83PiegatoreRisalito and Vb84AbilitaSensAltoPieg, pt := TO_UDINT(Vq3090_TimeoutSensori) ); 
 if(TonSensPiegatoreGiu.q ) then
 	Vn2CodiceAllarmeXHmi :=31;
 	Vn16GoCuci := 2; //annullo esecuzione cucitura
@@ -8957,7 +9085,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="CariactorePattine" version="1.0.0" creationDate="1715259170" lastModifiedDate="1715361377" excludeFromBuild="FALSE">
+				<program name="CariactorePattine" version="1.0.0" creationDate="1715259170" lastModifiedDate="1715844701" excludeFromBuild="FALSE">
 					<vars>
 						<localVars>
 							<var name="Fall_Vb152KitCarPAttine" type="FallEdge"/>
@@ -9037,11 +9165,17 @@ else
 	Vb158PattinaTestRunning := FALSE;	
 end_if;	
 
+//se spengo il tasto Pattina
+if(Fall_Vb152KitCarPAttine.q) then
+	mc_stati_Carica_Pattina := 400;
+end_if;
+
 // se la macchina è azzerata e accendo il tasto pattina ne preparo una
-if(Rise_Vb152KitCarPAttine.q and i41_CarPat_Top_SUGIu) then
-	Vb153GoCicloCarPAttina:=TRUE;
-	Vb154CarInPosAltaOK :=TRUE;
-	Vb4366_AppAut_o34_CarPat_FrontBack :=TRUE;
+if(Rise_Vb152KitCarPAttine.q ) then //and i41_CarPat_Top_SUGIu) then
+	mc_stati_Carica_Pattina := 300;
+//	Vb153GoCicloCarPAttina:=TRUE;
+//	Vb154CarInPosAltaOK :=TRUE;
+//	Vb4366_AppAut_o34_CarPat_FrontBack :=TRUE;
 end_if;
 
 
@@ -9241,13 +9375,44 @@ case ( mc_stati_Carica_Pattina) of
 		Vb4367_AppAut_o35_CarPat_Aghi := FALSE;
 		Vb4368_AppAut_o36_CarPat_SoffioAghi := FALSE;
 		Vb4369_AppAut_o37_CarPat_SoffiPattina := FALSE;	
-		Vb4371_AppAut_o39_CarPat_DCSu := TRUE;
-		Vb4370_AppAut_o38_CarPat_DCGiu := FALSE;
 		Vb157PattinaPassoPasso := FALSE;
-		mc_stati_Carica_Pattina := 100;
+		mc_stati_Carica_Pattina := 400;
+	
+		
+	//*** ho premuto tasto pattina, alzo la pinza fino al sensore alto e poi ne carico una.				
+	300:
+		Vb4367_AppAut_o35_CarPat_Aghi := FALSE;
+		if(not i41_CarPat_Top_SUGIu) then					
+			Vb4371_AppAut_o39_CarPat_DCSu := TRUE;		//faccio salire il caricatore	
+			Vb4370_AppAut_o38_CarPat_DCGiu := FALSE;
+		end_if;	
+		mc_stati_Carica_Pattina := 310;
 
-								
-									
+	310:
+		if(i41_CarPat_Top_SUGIu) then
+			Vb4371_AppAut_o39_CarPat_DCSu := FALSE;	
+			Vb4370_AppAut_o38_CarPat_DCGiu := FALSE;	
+			Vb4366_AppAut_o34_CarPat_FrontBack :=TRUE;
+			mc_stati_Carica_Pattina := 1; 
+		end_if;			
+	
+	//*** ho spento il tasto pattina
+	400:	
+		Vb4367_AppAut_o35_CarPat_Aghi := FALSE;
+		if(not i41_CarPat_Top_SUGIu) then					
+			Vb4371_AppAut_o39_CarPat_DCSu := TRUE;		//faccio salire il caricatore	
+			Vb4370_AppAut_o38_CarPat_DCGiu := FALSE;
+		end_if;	
+		mc_stati_Carica_Pattina := 410;
+
+		
+	410:
+		if(i41_CarPat_Top_SUGIu) then
+			Vb4371_AppAut_o39_CarPat_DCSu := FALSE;	
+			Vb4370_AppAut_o38_CarPat_DCGiu := FALSE;	
+			Vb4366_AppAut_o34_CarPat_FrontBack :=TRUE;
+			mc_stati_Carica_Pattina := 0; 
+		end_if;						
 else
 	mc_stati_Carica_Pattina := 0; 
 	
@@ -11364,7 +11529,7 @@ END_VAR
  *
  * MDPlc source file: DefVar.PLL
  *
- * Date = "14/05/2024 08:42:47"
+ * Date = "15/05/2024 16:22:02"
  *)
 
 
@@ -11449,14 +11614,20 @@ VAR_GLOBAL
     Vb80ShowIconaTools                      AT %MB300.80   : BOOL;         {DE:"vb80   - =1 permette a HMI di mostrare l'icona per andare alla pagina tools"}
     Vb81PremutoResetAccensione              AT %MB300.81   : BOOL;         {DE:"vb81   - =1 se premo il verde mentre il pulsante reset piegatore è premuto"}
     Vb82FaiFuoriIngombroY_C1                AT %MB300.82   : BOOL;         {DE:"vb82   - = 1 durante azzeramento la pinza prima si muove in Y in dietro"}
-    Vb83FaiFuoriIngombroY_C2                AT %MB300.83   : BOOL;         {DE:"vb83   - = 1 durante azzeramento la pinza prima si muove in Y in dietro"}
-    Vb84PiegatoreRisalito                   AT %MB300.84   : BOOL;         {DE:"vb84   - =1 il sensore nuovo ha rilevato che il piegatore si è sollevato abbastanza per far avanzare il caricatore"}
-    Vb85AbilitaSensAltoPieg                 AT %MB300.85   : BOOL;         {DE:"vb85   - =1 abilitia la lettura sel sensore alto piegatore"}
+    Vb83PiegatoreRisalito                   AT %MB300.83   : BOOL;         {DE:"vb83   - =1 il sensore nuovo ha rilevato che il piegatore si è sollevato abbastanza per far avanzare il caricatore"}
+    Vb84AbilitaSensAltoPieg                 AT %MB300.84   : BOOL;         {DE:"vb84   - =1 abilitia la lettura sel sensore alto piegatore"}
+    Vb85debug                               AT %MB300.85   : BOOL;         {DE:"vb85   - =1 abilitia la lettura sel sensore alto piegatore"}
     Vb86In_Azzeramento_C1                   AT %MB300.86   : BOOL;         {DE:"vb86   - =1 sto facendo azzeramento C1"}
     Vb87In_Azzeramento_C2                   AT %MB300.87   : BOOL;         {DE:"vb87   - =1 sto facendo azzeramento C2"}
     Vb88_TascaC1Completata                  AT %MB300.88   : BOOL;         {DE:"vb88   - =1 la tasca C1 è stata cucita e la pinza è tornata sul punto di carico"}
     Vb89_TascaC2Completata                  AT %MB300.89   : BOOL;         {DE:"vb89   - =1 la tasca C2 è stata cucita e la pinza è tornata sul punto di carico"}
-    Vb90_AnticipoTrasl_SX                   AT %MB300.90   : BOOL;         {DE:"vb90   - =1 anticipo il movimento del traslatore a sx sopra le pinze di cucitura della testa 1"}
+    Vb90_EnableAutoBobbinChang              AT %MB300.90   : BOOL;         {DE:"vb90   - =1 Auto bobbin changer attivo"}
+    Vb91_RunCambioSpola                     AT %MB300.91   : BOOL;         {DE:"vb91   - =1 Ciclo Togli e metti spola"}
+    Vb92_CambiatoRevolver                   AT %MB300.92   : BOOL;         {DE:"vb92   - = 1 l'operatore ha messo un revolver nuovo, 2 = tutti posti vuoti"}
+    Vb93_RotazRevolver                      AT %MB300.93   : BOOL;         {DE:"vb93   - = 1 il revolver fa un passo di rotazione"}
+    Vb94_Cambiare_revolver                  AT %MB300.94   : BOOL;         {DE:"vb94   - =1 è ora di cambiare il revolver"}
+    Vb95_ResetConteggio                     AT %MB300.95   : BOOL;         {DE:"vb95   - tasto Reset HMI rimette il conteggio 1/7"}
+    Vb96_AnticipoTrasl_SX                   AT %MB300.96   : BOOL;         {DE:"vb96   - =1 anticipo il movimento del traslatore a sx sopra le pinze di cucitura della testa 1"}
     VbTest                                  AT %MB300.99   : BOOL;         {DE:"vb99   - per test"}
     VbSimulaDbg                             AT %MB300.100  : BOOL;         {DE:"vb100  - Cucitrice simulata ( per debugger )"}
     VbSyncDbg                               AT %MB300.101  : BOOL;         {DE:"vb101  - Variabile di sync ( per debugger )"}
@@ -11538,6 +11709,7 @@ VAR_GLOBAL
     Vb4074_AllarmeContSpolaC2               AT %MB300.4074 : BOOL;         {DE:"vb4074 - /// HMI utilizzato per abilitare il conteggio della spola C2 ( OFF funziona )"}
     Vb4075_GiraAgoFaiSpolaC1                AT %MB300.4075 : BOOL;         {DE:"vb4075 - /// HMI utilizzato per far girare la testa C1 per fare la spola"}
     Vb4076_GiraAgoFaiSpolaC2                AT %MB300.4076 : BOOL;         {DE:"vb4076 - /// HMI utilizzato per far girare la testa C2 per fare la spola"}
+    Vb4077_IRQPiegatore_Su                  AT %MB300.4077 : BOOL;         {DE:"vb4077 - /// abilitare  IRQ per leggere il sensore piegatore su"}
     Vb4078_TestHomeC1                       AT %MB300.4078 : BOOL;         {DE:"vb4078 - /// HMI utilizzato per centrare i sensori di zero su dima cucitrice 1"}
     Vb4079_TestHomeC2                       AT %MB300.4079 : BOOL;         {DE:"vb4079 - /// HMI utilizzato per centrare i sensori di zero su dima cucitrice 2"}
     Vb4080_TestFcZeroC1                     AT %MB300.4080 : BOOL;         {DE:"vb4080 - /// HMI utilizzato per centrare i sensori di zero su dima cucitrice 1"}
@@ -11819,6 +11991,7 @@ VAR_GLOBAL
     Vn162_Read_anaout99                     AT %MW400.162  : INT;          {DE:"vn162"}
     Vn163_Read_anaout100                    AT %MW400.163  : INT;          {DE:"vn163"}
     mc_stati_Carica_Pattina                 AT %MW400.164  : INT;          {DE:"vn164"}
+    Vn180_Device_Rinforzo                   AT %MW400.180  : INT;          {DE:"vn180  - 0= disabilitato, 1 = tipo JAM, 2 = tipo Turco"}
     Vn196_Tasca_DX_C1                       AT %MW400.196  : INT;          {DE:"vn196"}
     Vn197_Tasca_SX_C1                       AT %MW400.197  : INT;          {DE:"vn197"}
     Vn198_Tasca_DX_C2                       AT %MW400.198  : INT;          {DE:"vn198"}
@@ -11982,6 +12155,7 @@ VAR_GLOBAL
     Vq3063_Tim_C2_Scartafilo                AT %MD500.3063 : DINT;         {DE:"vq3063"}
     Vq3070_RitPinzaTraslatore_ON            AT %MD500.3070 : DINT;         {DE:"vq3070"}
     Vq3071_RitTras_Scaric                   AT %MD500.3071 : DINT;         {DE:"vq3071"}
+    Vq3079_RitBar2Off_Bar1Off               AT %MD500.3079 : DINT;         {DE:"vq3079"}
     Vq3080_RitScaricatoreDxSx_ON_OK         AT %MD500.3080 : DINT;         {DE:"vq3080"}
     Vq3081_RitScaricatoreDxSx_OFF           AT %MD500.3081 : DINT;         {DE:"vq3081"}
     Vq3082_RitScaricatorePrimaBarra         AT %MD500.3082 : DINT;         {DE:"vq3082"}
@@ -12034,6 +12208,7 @@ VAR_GLOBAL
     Vq3143_RitPiegatore_3_OFF               AT %MD500.3143 : DINT;         {DE:"vq3143 - variabile per memorizzare tempo su sequenza Curve5"}
     Vq3144_RitPiegatore_4_ON                AT %MD500.3144 : DINT;         {DE:"vq3144 - variabile per memorizzare tempo su sequenza Curve5"}
     Vq3145_RitPiegatore_4_OFF               AT %MD500.3145 : DINT;         {DE:"vq3145 - variabile per memorizzare tempo su sequenza Curve5"}
+    Vq3160_ContSensPiegatoreSu              AT %MD500.3160 : DINT;         {DE:"vq3160 - punti contati dalla molla rottura filo"}
     Vq3200_Time_Pattina_avanti              AT %MD500.3200 : DINT;         {DE:"vq3200 - tempo tra caricatore verso operatore e giu"}
     Vq3201_Time_SoffioPattina               AT %MD500.3201 : DINT;         {DE:"vq3201 - tempo soffi per lasciare la pattina"}
     Vq3202_Time_pinza_blocca_pattin         AT %MD500.3202 : DINT;         {DE:"vq3202 - tempo necessario a far avanzare la pinza blocca pattina sulladima"}
@@ -12289,6 +12464,7 @@ VAR_GLOBAL CONSTANT
     C2_VB_BLOCCO_FILO_END                   : INT := 16; { DE:"VB blocco filo durante primo giro" }
     C2_ENA_BLOCCO_FILO_END                  : INT := 2001; { DE:"Indice VB abilitazione camma blocco filo durante primo giro ( vb1001 )" }
     ENABLE_CAMME_IDX                        : INT := 1;
+    EnbCountIRQPiegatore_Su_IDX             : INT := 4077; { DE:"///  HMI utilizzato per abilitare il conteggio del sensore piegatore su" }
     EnbCountRotturaFiloC1_IDX               : INT := 4092; { DE:"///  HMI utilizzato per abilitare il conteggio della rottura filo C1" }
     EnbCountRotturaFiloC2_IDX               : INT := 4093; { DE:"///  HMI utilizzato per abilitare  abilitare il conteggio della rottura filo C2" }
     ERR_CODE_CAMME_IDX                      : INT := 1;
@@ -12299,6 +12475,7 @@ VAR_GLOBAL CONSTANT
     STOP_PLC_AGO_IDX                        : INT := 25; { DE:"STOP_PLC_AGO_IDX" }
     MOVE_PLC_AGO_IDX                        : INT := 28; { DE:"MOVE_PLC_AGO_IDX" }
     POS_AX_VQ_BASE_IDX                      : INT := 50; { DE:"Indice prima VQ posizione assi ( PLC )" }
+    ContIRQSensPiegatore_su_IDX             : INT := 3160; { DE:"irq sensore piegatore su" }
     ContPuntiRottFiloC1_IDX                 : INT := 3561; { DE:"punti contati dalla molla rottura filo" }
     ContPuntiRottFiloC2_IDX                 : INT := 3563; { DE:"punti contati dalla molla rottura filo" }
     GOAX_PLC_CARIC_IDX                      : INT := 3600; { DE:"GOAX_PLC_CARIC_IDX" }
@@ -12375,7 +12552,7 @@ END_VAR
  *
  * MDPlc source file: DefCuci.PLL
  *
- * Date = "14/05/2024 08:42:47"
+ * Date = "15/05/2024 16:22:02"
  *)
 
 
