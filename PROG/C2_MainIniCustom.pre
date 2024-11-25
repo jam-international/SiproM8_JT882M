@@ -30,6 +30,7 @@ sub ()
 
         ///// dopo un reset riporto la pinza in posizione home
     if ( vb4903               )
+	vb2004           = 0  
 	    SyncVar( vb2003          )   
 	vq2962     = vq2717            
 	if ( vq2918        < vq2962     )           // #M200717_1GF#
@@ -45,7 +46,29 @@ sub ()
 	 endif
         ax[ 6        ] = 0 
         ax[ 7        ] = 0
-        ISO G1 X vq2911      Y vq2912      F vq2717              
+     //   ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_Par_FeedG0Reset  
+
+	vb2009            = 0					//mi assicuro di spegnere Hold (TEST cucitura)
+	vb2034            = 0
+
+	Delays (0.3)
+
+
+	fa[ 6        ] = vq2717            
+	fa[ 7        ] = vq2717            
+
+	ax[ 6        ] = vq2911      ax[ 7        ] = vq2912     
+
+	WaitCond ( Vb4050             and Vb4051             )
+	Delays (0.1)
+
+
+
+
+
+
+
+
         Delays (0.1)
 
         Vb4382                         = 1 

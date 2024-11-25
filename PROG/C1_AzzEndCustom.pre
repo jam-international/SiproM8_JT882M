@@ -26,6 +26,7 @@ sub ()
 	if ( vb4803               == 0 and vb4807                 ==1)
 		Vb4350                         = 1 
 		Vb4351                         = 1  
+		vb300 = 1 
 	endif
 
         // azzero numero punti fatti 

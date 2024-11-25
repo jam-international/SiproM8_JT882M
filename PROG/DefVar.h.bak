@@ -229,7 +229,7 @@
 #define Vb67HmiJogXM_C2				vb67		// Richiesta jog - asse X C2
 #define Vb68HmiJogYP_C2				vb68		// Richiesta jog + asse Y C2
 #define Vb69HmiJogYM_C2				vb69		// Richiesta jog - asse Y C2
-
+#define Vb70BilanciereSu_RigheCN	vb70		// =1 nel ciclo Righe, se premo la pedana si alza il bilanciere
 #define Vb72HmiMoveXY_C1			vb72		// Richiesta di spostamento assi XY da Modifica_programmi.java
 #define Vb73HmiMoveXY_C2			vb73		// Richiesta di spostamento assi XY da Modifica_programmi.java
 #define Vb74HmiMoveXY_PieAlto_C1	vb74		// Richiesta di spostamento assi XY da Modifica_programmi.java con piedino alto
@@ -264,6 +264,10 @@
 #define VbSyncDbg                   vb101       // Variabile di sync ( per debugger )
 #define	VbSimulazionePedanaC1	    vb102		// alza e abbassa le pinze tramite vb come se premessi la pedana
 #define	VbSimulazionePedanaC2	    vb103		// alza e abbassa le pinze tramite vb come se premessi la pedana
+
+#define Vb115CricchettoRinforzo		vb115		//ad ON lancia il ciclo per inserire la fettuccia nei rulli
+#define Vb116RinforzoGiu_HMI		vb116		//ad ON HMI chiede al PLC di abbassare i coltelli del rinforzo
+
 //pattina
 #define Vb151EnableCarPattine		vb151		//=1 device caricatore pattina attivo
 #define Vb152KitCarPAttine			vb152		//=1 il kit carica pattina è attivo (tasto HMI)
@@ -279,7 +283,93 @@
 //cargo
 #define Vb170KitTascaCargo			vb170		//=1 attivo il kit tasca cargo
 #define Vb_Fun301_run				vb171
+#define Vb_3SchedeIOBelli			vb172		//=1 è una 882 con solo 3 schede IO fatte da Belli (NB in Argentina la prima 882 ne aveva 4 quindi questa vb va tenuta a false)
 
+//Vb appoggio degli ingressi
+#define Vb_ingresso_Pulsanti_start				vb201	//i1
+#define Vb_ingresso_C1_Pedana					vb202	//i2
+#define Vb_ingresso_C1_PedanaPiegatore			vb203	//i3
+#define Vb_ingresso_C1_FcZeroCrochet			vb204
+#define Vb_ingresso_FcPinzaCaricoAlta			vb205
+#define Vb_ingresso_FcMinCaricatore1			vb206
+#define Vb_ingresso_FcPiegatore_AV				vb207
+#define Vb_ingresso_FcPiegatore_DI				vb208
+#define Vb_ingresso_FcPiegatoreBasso			vb209
+#define Vb_ingresso_10							vb210
+#define Vb_ingresso_FcLancia_DI					vb211
+#define Vb_ingresso_Bilanciere_Alto				vb212
+#define Vb_ingresso_Bilanciere_Basso			vb213
+#define Vb_ingresso_Rinforzo_Attivo				vb214
+#define Vb_ingresso_Rinforzo_ready				vb215
+#define Vb_ingresso16							vb216
+#define Vb_ingresso17							vb217
+#define Vb_ingresso18							vb218
+#define Vb_ingresso_C1_FcMinAsseX				vb219
+#define Vb_ingresso_C1_FcMinAsseY				vb220
+#define Vb_ingresso_Emg							vb221
+#define Vb_ingresso_C1_FcZeroAgo				vb222
+#define Vb_ingresso_C1_PinzaIntBassa			vb223
+#define Vb_ingresso_C1_PinzaEstAlta				vb224
+#define Vb_ingresso_PulsResetFolder				vb225
+#define Vb_ingresso_C1_PulsStopTesta			vb226
+#define Vb_ingresso_C2_PulsStopTesta_suC1			vb227
+#define Vb_ingresso28				vb228
+#define Vb_ingresso29				vb229
+#define Vb_ingresso30				vb230
+#define Vb_ingresso_C1_ReadyAsseX				vb231
+#define Vb_ingresso_C1_ReadyAsseY				vb232
+#define Vb_ingresso_C2_Pedana				vb233
+#define Vb_ingresso34				vb234
+#define Vb_ingresso_Pressostato				vb235
+#define Vb_ingresso36				vb236
+#define Vb_ingresso37				vb237
+#define Vb_ingresso38				vb238
+#define Vb_ingresso39				vb239
+#define Vb_ingresso_C2_FcZeroAgo				vb240
+#define Vb_ingresso_C2_FcPinzaIntBassa				vb241
+#define Vb_ingresso_FcPinzaTraslAlta				vb242
+#define Vb_ingresso43				vb243
+#define Vb_ingresso44				vb244
+#define Vb_ingresso_C2_PulsStopTesta				vb245
+#define Vb_ingresso46				vb246
+#define Vb_ingresso_C2_ReadyAsseX				vb247
+#define Vb_ingresso_C2_ReadyAsseY				vb248
+#define Vb_ingresso_CarPat_Top_SUGIu				vb249
+#define Vb_ingresso_CarPat_Middle_SUGIu				vb250
+#define Vb_ingresso_CarPat_Bottom_SUGIu				vb251
+#define Vb_ingresso_CarPat_Tastatore				vb252
+#define Vb_ingresso_CarPat_Empty				vb253
+#define Vb_ingresso_CarPat_BackPos				vb254
+#define Vb_ingresso_CarPat_SpoLamLungoL				vb255
+#define Vb_ingresso_CarPat_SpoLamLungoR				vb256
+#define Vb_ingresso_CarPat_SpoLamCortoL				vb257
+#define Vb_ingresso_CarPat_SpoLamCortoR				vb258
+#define Vb_ingresso59				vb259
+#define Vb_ingresso60				vb260
+#define Vb_ingresso61				vb261
+#define Vb_ingresso62				vb262
+#define Vb_ingresso63				vb263
+#define Vb_ingresso64				vb264
+
+
+#define	Vb300						vb300
+#define	Vb301						vb301
+#define	Vb302						vb302
+#define	Vb303						vb303
+#define	Vb304						vb304
+#define	Vb305						vb305
+#define	Vb306						vb306
+#define	Vb307						vb307
+#define	Vb308						vb308
+#define	Vb309						vb309
+#define	Vb310						vb310
+#define	Vb311						vb311
+#define	Vb312						vb312
+#define	Vb313						vb313
+#define	Vb314						vb314
+#define	Vb315						vb315
+#define	Vb316						vb316
+#define	Vb317						vb317
 
 //------------------------------------------------------------------------
 //
@@ -331,7 +421,7 @@
 #define	Vb4028_Piegatore4_OFF			Vb4028				// Quarto piegatore disattivato
 
 // scaricatore
-#define	Vb4031_AppScaricatoreInPos			Vb4031				//dopo un tempo che la valvola o54_Scaric_dx_sx è a ON
+#define	Vb4031_AppScaricatoreInPos			Vb4031				//dopo un tempo che la valvola Scaric_dx_sx è a ON
 #define	Vb4032_AppScaricatoreStrBarre		Vb4032				//avvio le barre insieme alla pinza alta
 #define	Vb4033_RitardoAvanzataCaricatore	Vb4033				//finchè è ad 1 il caricatore non può avanzare (ritardo dopo la barra2 on)
 #define	Vb4034_ScaricOnSuRasafilo			Vb4034				//se On la prima barra parte sul rasafilo finale, se off dopo che le pinze solo alte
@@ -433,70 +523,70 @@
 #define Vb4100_											Vb4100
 
 
-#define Vb4133_AppMan_o1_Piegatore_1				Vb4133	//
-#define	Vb4134_AppMan_o2_Piegatore_2				Vb4134
-#define Vb4135_AppMan_o3_Piegatore_3				Vb4135	//
-#define Vb4136_AppMan_o4_Piegatore_4				Vb4136	//
-#define Vb4137_AppMan_o5_Cambio_corpo				Vb4137	//
-#define Vb4138_AppMan_o6_Cambio_lama_front			Vb4138	//
-#define Vb4139_AppMan_o7_Cambio_lame_lateral		Vb4139	//
-#define Vb4140_AppMan_o8_Cambio_Lamelle_4_5			Vb4140	//
-#define Vb4141_AppMan_o9_Lancia_AD					Vb4141	//
-#define Vb4142_AppMan_o10_Piegatore_AD				Vb4142	//
-#define	Vb4143_AppMan_o11_Piegatore_Su_Giu			Vb4143
-#define Vb4144_AppMan_o12_Bilanciere_Su_Giu			Vb4144	//
-#define Vb4145_AppMan_o13_Lancia_Cargo_Aperta		Vb4145	//
-#define Vb4146_AppMan_o14_C1_rasafilo				Vb4146	//
-#define Vb4147_AppMan_o15_EvAspiratore				Vb4147	//
-#define Vb4148_AppMan_o16_Lancia_Cargo_Chiusa		Vb4148	//
-#define Vb4149_AppMan_o17_C1_Piedino				Vb4149	//
-#define	Vb4150_AppMan_o18_C1_Pinza_int				Vb4150
-#define Vb4151_AppMan_o19_C1_Pinza_est				Vb4151	//
-#define Vb4152_AppMan_o20_C1_Retrattile_AC			Vb4152	//
-#define Vb4153_AppMan_o21_C1_RaffreddamentoAgo		Vb4153	//
+#define Vb4133_AppMan_out_Piegatore_1				Vb4133	//
+#define	Vb4134_AppMan_out_Piegatore_2				Vb4134
+#define Vb4135_AppMan_out_Piegatore_3				Vb4135	//
+#define Vb4136_AppMan_out_Piegatore_4				Vb4136	//
+#define Vb4137_AppMan_out_Cambio_corpo				Vb4137	//
+#define Vb4138_AppMan_out_Cambio_lama_front			Vb4138	//
+#define Vb4139_AppMan_out_Cambio_lame_lateral		Vb4139	//
+#define Vb4140_AppMan_out_Cambio_Lamelle_4_5			Vb4140	//
+#define Vb4141_AppMan_out_Lancia_AD					Vb4141	//
+#define Vb4142_AppMan_out_Piegatore_AD				Vb4142	//
+#define	Vb4143_AppMan_out_Piegatore_Su_Giu			Vb4143
+#define Vb4144_AppMan_out_Bilanciere_Su_Giu			Vb4144	//
+#define Vb4145_AppMan_out_Lancia_Cargo_Aperta		Vb4145	//
+#define Vb4146_AppMan_out_C1_rasafilo				Vb4146	//
+#define Vb4147_AppMan_out_EvAspiratore				Vb4147	//
+#define Vb4148_AppMan_out_Lancia_Cargo_Chiusa		Vb4148	//
+#define Vb4149_AppMan_out_C1_Piedino				Vb4149	//
+#define	Vb4150_AppMan_out_C1_Pinza_int				Vb4150
+#define Vb4151_AppMan_out_C1_Pinza_est				Vb4151	//
+#define Vb4152_AppMan_out_C1_Retrattile_AC			Vb4152	//
+#define Vb4153_AppMan_out_C1_RaffreddamentoAgo		Vb4153	//
 #define Vb4154_22									Vb4154	//
-#define Vb4155_AppMan_o23_Lentezza_Tasca_AD			Vb4155	//
-#define Vb4156_AppMan_o24_Pinza_carico_Su_Giu		Vb4156	//
-#define Vb4157_AppMan_o25_C1_Cambio_Pinze			Vb4157	//
-#define Vb4158_AppMan_o26_C1_Scalino_Piedino		Vb4158	//
-#define Vb4159_AppMan_o27_C1_Ranocchia_retrat		Vb4159	//
-#define Vb4160_28									Vb4160	//
-#define Vb4161_29									Vb4161	//
-#define Vb4162_30									Vb4162	//
-#define	Vb4163_AppMan_o31_C1_bloccaFiloMagente		Vb4163
-#define Vb4164_AppMan_o32_Enable_AssiXY_C1			Vb4164	
+#define Vb4155_AppMan_out_Lentezza_Tasca_AD			Vb4155	//
+#define Vb4156_AppMan_out_Pinza_carico_Su_Giu		Vb4156	//
+#define Vb4157_AppMan_out_C1_Cambio_Pinze			Vb4157	//
+#define Vb4158_AppMan_out_C1_Scalino_Piedino		Vb4158	//
+#define Vb4159_AppMan_out_C1_Ranocchia_retrat		Vb4159	//
+#define Vb4160_AppMan_out_Rullo_Rinforzo			Vb4160	//
+#define Vb4161_AppMan_out_Coltello_Rinforzo			Vb4161	//
+#define Vb4162_AppMan_out_MagneteSuGiu_Rinforzo		Vb4162	//
+#define	Vb4163_AppMan_out_C1_bloccaFiloMagente		Vb4163
+#define Vb4164_AppMan_out_Enable_AssiXY_C1			Vb4164	
 
-#define	Vb4165_AppMan_o33_Valvolone						Vb4165
-#define	Vb4166_AppMan_o34_CarPat_FrontBack				Vb4166
-#define	Vb4167_AppMan_o35_CarPat_Aghi					Vb4167
-#define	Vb4168_AppMan_o36_CarPat_SoffioAghi				Vb4168		
-#define	Vb4169_AppMan_o37_CarPat_SoffiPattina			Vb4169
-#define	Vb4170_AppMan_o38_CarPat_DCGiu					Vb4170
-#define	Vb4171_AppMan_o39_CarPat_DCSu					Vb4171
+#define	Vb4165_AppMan_out_Valvolone						Vb4165
+#define	Vb4166_AppMan_out_CarPat_FrontBack				Vb4166
+#define	Vb4167_AppMan_out_CarPat_Aghi					Vb4167
+#define	Vb4168_AppMan_out_CarPat_SoffioAghi				Vb4168		
+#define	Vb4169_AppMan_out_CarPat_SoffiPattina			Vb4169
+#define	Vb4170_AppMan_out_CarPat_DCGiu					Vb4170
+#define	Vb4171_AppMan_out_CarPat_DCSu					Vb4171
 #define	Vb4172_o40										Vb4172
-#define	Vb4173_o41										Vb4173 //
-#define	Vb4174_o42										Vb4174
-#define	Vb4175_o43										Vb4175 //
+#define	Vb4173_AppMan_out_CarPat_SpostLamLungo			Vb4173 //
+#define	Vb4174_AppMan_out_CarPat_SpostLamCorto			Vb4174
+#define	Vb4175_AppMan_out_CarPat_SoffioSuPiano			Vb4175 //
 #define	Vb4176_o44										Vb4176
 #define	Vb4177_o45										Vb4177 //
-#define	Vb4178_AppMan_o46_C2_rasafilo					Vb4178
+#define	Vb4178_AppMan_out_C2_rasafilo					Vb4178
 #define	Vb4179_o47										Vb4179
-#define	Vb4180_AppMano_48_Enable_AssiXY_C2				Vb4180
-#define	Vb4181_AppMan_o49_C2_Piedino					Vb4181
-#define	Vb4182_AppMan_o50_C2_Pinza_int					Vb4182
-#define	Vb4183_AppMan_o51_PinzaPattina_1				Vb4183
-#define	Vb4184_AppMan_o52_PinzaPattina_2				Vb4184
-#define	Vb4185_AppMan_o53_C2_RaffreddamentoAgo 			Vb4185 //
-#define	Vb4186_AppMan_o54_Scaric_dx_sx					Vb4186
+#define	Vb4180_AppMano_out_Enable_AssiXY_C2				Vb4180
+#define	Vb4181_AppMan_out_C2_Piedino					Vb4181
+#define	Vb4182_AppMan_out_C2_Pinza_int					Vb4182
+#define	Vb4183_AppMan_out_PinzaPattina_1				Vb4183
+#define	Vb4184_AppMan_out_PinzaPattina_2				Vb4184
+#define	Vb4185_AppMan_out_C2_RaffreddamentoAgo 			Vb4185 //
+#define	Vb4186_AppMan_out_Scaric_dx_sx					Vb4186
 #define	Vb4187_o55										Vb4187
-#define	Vb4188_AppMan_o56_Piza_tras_su_giu				Vb4188
-#define	Vb4189_AppMan_o57_C2_Cambio_Pinze				Vb4189
-#define	Vb4190_AppMan_o58_C2_Scalino_Piedino			Vb4190
+#define	Vb4188_AppMan_out_Piza_tras_su_giu				Vb4188
+#define	Vb4189_AppMan_out_C2_Cambio_Pinze				Vb4189
+#define	Vb4190_AppMan_out_C2_Scalino_Piedino			Vb4190
 #define	Vb4191_o59										Vb4191
-#define	Vb4192_AppMan_o60_Prima_barra					Vb4192
-#define	Vb4193_AppMan_o61_Seconda_barra					Vb4193
+#define	Vb4192_AppMan_out_Prima_barra					Vb4192
+#define	Vb4193_AppMan_out_Seconda_barra					Vb4193
 #define	Vb4194_o62										Vb4194 //
-#define	Vb4195_AppMan_C2_bloccaFiloMagente				Vb4195
+#define	Vb4195_AppMan_out_C2_bloccaFiloMagente			Vb4195
 #define	Vb4196_o64										Vb4196
 
 
@@ -514,70 +604,70 @@
 //------------------------------------------------------------------------
 // VB movimenti automatici Vb4300-Vb4499
 //------------------------------------------------------------------------
-#define Vb4333_AppAut_o1_Piegatore_1  					Vb4333
-#define Vb4334_AppAut_o2_Piegatore_2     				Vb4334
-#define Vb4335_AppAut_o3_Piegatore_3      				Vb4335
-#define Vb4336_AppAut_o4_Piegatore_4     				Vb4336 //
-#define Vb4337_AppAut_o5_Cambio_corpo       			Vb4337  //
-#define Vb4338_AppAut_o6_Cambio_lama_front				Vb4338
-#define Vb4339_AppAut_o7_Cambio_lame_lateral      		Vb4339 //
-#define Vb4340_AppAut_o8_Cambio_Lamelle_4_5          	Vb4340 //
-#define Vb4341_AppAut_o9_Lancia_AD       				Vb4341 //
-#define Vb4342_AppAut_o10_Piegatore_AD       			Vb4342  //
-#define Vb4343_AppAut_o11_Piegatore_Su_Giu    	    	Vb4343
-#define Vb4344_AppAut_o12_Bilanciere_Su_Giu      		Vb4344
-#define Vb4345_AppAut_o13_Lancia_Cargo_Aperta			Vb4345  //
-#define Vb4346_AppAut_o14_C1_rasafilo					Vb4346 //
-#define Vb4347_AppAut_o15_EvAspiratore					Vb4347
-#define Vb4348_AppAut_o16_Lancia_Cargo_Chiusa			Vb4348
-#define Vb4349_AppAut_o17_C1_Piedino         			Vb4349
-#define Vb4350_AppAut_o18_C1_Pinza_int        			Vb4350
-#define Vb4351_AppAut_o19_C1_Pinza_est          		Vb4351
-#define Vb4352_AppAut_o20_C1_Retrattile_AC        		Vb4352
-#define Vb4353_AppAut_o21_C1_RaffreddamentoAgo    		Vb4353
+#define Vb4333_AppAut_out_Piegatore_1  					Vb4333
+#define Vb4334_AppAut_out_Piegatore_2     				Vb4334
+#define Vb4335_AppAut_out_Piegatore_3      				Vb4335
+#define Vb4336_AppAut_out_Piegatore_4     				Vb4336 //
+#define Vb4337_AppAut_out_Cambio_corpo       			Vb4337  //
+#define Vb4338_AppAut_out_Cambio_lama_front				Vb4338
+#define Vb4339_AppAut_out_Cambio_lame_lateral      		Vb4339 //
+#define Vb4340_AppAut_out_Cambio_Lamelle_4_5          	Vb4340 //
+#define Vb4341_AppAut_out_Lancia_AD       				Vb4341 //
+#define Vb4342_AppAut_out_Piegatore_AD       			Vb4342  //
+#define Vb4343_AppAut_out_Piegatore_Su_Giu    	    	Vb4343
+#define Vb4344_AppAut_out_Bilanciere_Su_Giu      		Vb4344
+#define Vb4345_AppAut_out_Lancia_Cargo_Aperta			Vb4345  //
+#define Vb4346_AppAut_out_C1_rasafilo					Vb4346 //
+#define Vb4347_AppAut_out_EvAspiratore					Vb4347
+#define Vb4348_AppAut_out_Lancia_Cargo_Chiusa			Vb4348
+#define Vb4349_AppAut_out_C1_Piedino         			Vb4349
+#define Vb4350_AppAut_out_C1_Pinza_int        			Vb4350
+#define Vb4351_AppAut_out_C1_Pinza_est          		Vb4351
+#define Vb4352_AppAut_out_C1_Retrattile_AC        		Vb4352
+#define Vb4353_AppAut_out_C1_RaffreddamentoAgo    		Vb4353
 #define Vb4354_o22        								Vb4354 //
-#define Vb4355_AppAut_o23_Lentezza_Tasca_AD            	Vb4355 //
-#define Vb4356_AppAut_o24_Pinza_carico_Su_Giu         	Vb4356 //
-#define Vb4357_AppAut_o25_C1_Cambio_Pinze        		Vb4357 //
-#define Vb4358_AppAut_o26_C1_Scalino_Piedino          	Vb4358
-#define Vb4359_AppAut_o27_C1_Ranocchia_retrat			Vb4359 
-#define Vb4360_o28                						Vb4360 //
-#define Vb4361_o29               						Vb4361 //
-#define Vb4362_o30										Vb4362 //
-#define Vb4363_AppAut_o31_C1_bloccaFiloMagente			Vb4363  //
-#define Vb4364_AppAut_o32_Enable_AssiXY_C1				Vb4364 //
+#define Vb4355_AppAut_out_Lentezza_Tasca_AD            	Vb4355 //
+#define Vb4356_AppAut_out_Pinza_carico_Su_Giu         	Vb4356 //
+#define Vb4357_AppAut_out_C1_Cambio_Pinze        		Vb4357 //
+#define Vb4358_AppAut_out_C1_Scalino_Piedino          	Vb4358
+#define Vb4359_AppAut_out_C1_Ranocchia_retrat			Vb4359 
+#define Vb4360_AppAut_out_Rullo_Rinforzo				Vb4360 //
+#define Vb4361_AppAut_out_Coltello_Rinforzo				Vb4361 //
+#define Vb4362_AppAut_out_MagneteSuGiu_Rinforzo			Vb4362 //
+#define Vb4363_AppAut_out_C1_bloccaFiloMagente			Vb4363  //
+#define Vb4364_AppAut_out_Enable_AssiXY_C1				Vb4364 //
 
-#define Vb4365_AppAut_o33_Valvolone                 Vb4365
-#define	Vb4366_AppAut_o34_CarPat_FrontBack			Vb4366
-#define	Vb4367_AppAut_o35_CarPat_Aghi				Vb4367
-#define	Vb4368_AppAut_o36_CarPat_SoffioAghi			Vb4368		
-#define	Vb4369_AppAut_o37_CarPat_SoffiPattina		Vb4369
-#define	Vb4370_AppAut_o38_CarPat_DCGiu				Vb4370
-#define	Vb4371_AppAut_o39_CarPat_DCSu				Vb4371
+#define Vb4365_AppAut_out_Valvolone                 Vb4365
+#define	Vb4366_AppAut_out_CarPat_FrontBack			Vb4366
+#define	Vb4367_AppAut_out_CarPat_Aghi				Vb4367
+#define	Vb4368_AppAut_out_CarPat_SoffioAghi			Vb4368		
+#define	Vb4369_AppAut_out_CarPat_SoffiPattina		Vb4369
+#define	Vb4370_AppAut_out_CarPat_DCGiu				Vb4370
+#define	Vb4371_AppAut_out_CarPat_DCSu				Vb4371
 #define Vb4372_o40									Vb4372
-#define Vb4373_o41									Vb4373
-#define Vb4374_o42									Vb4374
-#define Vb4375_o43									Vb4375
+#define Vb4373_AppAut_out_CarPat_SpostLamLungo		Vb4373
+#define Vb4374_AppAut_out_CarPat_SpostLamCorto		Vb4374
+#define Vb4375_AppAut_out_CarPat_SoffioSuPiano		Vb4375
 #define Vb4376_o44									Vb4376
 #define Vb4377_o45									Vb4377
-#define Vb4378_AppAut_o46_C2_rasafilo				Vb4378  
+#define Vb4378_AppAut_out_C2_rasafilo				Vb4378  
 #define Vb4379_o47									Vb4379
-#define	Vb4380_AppAuto48_Enable_AssiXY_C2			Vb4380
-#define Vb4381_AppAut_o49_C2_Piedino				Vb4381
-#define	Vb4382_AppAut_o50_C2_Pinza_int				Vb4382
-#define Vb4383_AppAut_o51_PinzaPattina_1			Vb4383
-#define Vb4384_AppAut_o52_PinzaPattina_2			Vb4384
-#define Vb4385_AppAut_o53_C2_RaffreddamentoAgo		Vb4385
-#define Vb4386_AppAut_o54_Scaric_dx_sx				Vb4386
+#define	Vb4380_AppAuto_out_Enable_AssiXY_C2			Vb4380
+#define Vb4381_AppAut_out_C2_Piedino				Vb4381
+#define	Vb4382_AppAut_out_C2_Pinza_int				Vb4382
+#define Vb4383_AppAut_out_PinzaPattina_1			Vb4383
+#define Vb4384_AppAut_out_PinzaPattina_2			Vb4384
+#define Vb4385_AppAut_out_C2_RaffreddamentoAgo		Vb4385
+#define Vb4386_AppAut_out_Scaric_dx_sx				Vb4386
 #define Vb4387_o55									Vb4387
-#define	Vb4388_AppAut_o56_Pinza_tras_su_giu			Vb4388
-#define Vb4389_AppAut_o57_C2_Cambio_Pinze			Vb4389
-#define Vb4390_AppAut_o58_C2_Scalino_Piedino		Vb4390
+#define	Vb4388_AppAut_out_Pinza_tras_su_giu			Vb4388
+#define Vb4389_AppAut_out_C2_Cambio_Pinze			Vb4389
+#define Vb4390_AppAut_out_C2_Scalino_Piedino		Vb4390
 #define	Vb4391_o59									Vb4391
-#define Vb4392_AppAut_o60_Prima_barra				Vb4392
-#define Vb4393_AppAut_o61_Seconda_barra				Vb4393
+#define Vb4392_AppAut_out_Prima_barra				Vb4392
+#define Vb4393_AppAut_out_Seconda_barra				Vb4393
 #define Vb4394_o62									Vb4394
-#define Vb4395_AppAut_o63_C2_bloccaFiloMagente		Vb4395
+#define Vb4395_AppAut_out_C2_bloccaFiloMagente		Vb4395
 #define Vb4396_o64									Vb4396
 
 
@@ -602,13 +692,13 @@
 #define Vb4513_AppEnbCucitrice2						 vb4513		 // a ON abilito la cucitrice 2
 #define Vb4514_AppHmiScaricatore					 vb4514		 // a tasto hmi  scaricatore
 #define Vb4515_AppEnbScaricatore					 vb4515		 // a ON abilito lo scaricatore
-#define Vb4516_AppHmiScambioPinzeC1_Car2			 vb4516		 // a tasto hmi tipo scambio pinza tra cucitrice 1 e caricatore 2
+#define Vb4516_AppHmiScambioPinzeC1_Car2			 vb4516		 // Clamp mode impostato da parametro HMI
 #define Vb4518_EnbQuartoXL							 vb4518		 // a ON abilito quarto XL
 #define Vb4519_AppScaricoCortiConPinza				 vb4519		 // a ON abilitolo scarico dei pezzi piccoli con la pinza
 #define Vb4520_AppScaricoCortiConPinzaRunning		 vb4520		 // a ON mentre sta girando il ciclo scaricatore pezzi piccoli
 #define Vb4521_AppHmiTestPiegatore					 vb4521		 // a tasto hmi test piegatore 
 #define Vb4522_AppHmiTestTrasl						 vb4522		 // a tasto hmi test traslatore
-#define Vb4523_C2_PinzaDietroUnaTesta				 vb4523		 // a ON la pinza cucitura è nella posizione distro perchè ho Solo una testa
+#define Vb4523_C2_PinzaDietroUnaTesta				 vb4523		 // a ON la pinza cucitura è nella posizione dietro perchè ho Solo una testa
 
 ////// JT 350
 #define Vb4580_EnbSgancioPinzaDopoZero				 vb4580		 // a ON sgancia le pinze alla fine dell'azzeramento
@@ -769,7 +859,7 @@
 #define Vn115_CopiaSeqPiegFree		vn115			//copia sequenza piegatura Free per pagina touch
 
 //// tipologia scambio pinze
-#define Vn120_AppEnbScambioPinzeC1_Car2			vn120		 // a 1 abilito tipo scambio pinza tra cucitrice 1 e caricatore 2
+#define Vn120_AppEnbScambioPinzeC1_Car2			vn120		 // a 0 il traslo scende esterno alle pinze, a 1 il traslo scendo con la interna ancora bassa
 
 //// vn debug
 #define	Vn131_Debug					vn131		//debug su pagina AUTO touch
@@ -789,6 +879,7 @@
 #define mc_stati_Carica_Pattina			vn164
 
 #define Vn180_Device_Rinforzo			vn180	// 0= disabilitato, 1 = tipo JAM, 2 = tipo Turco
+#define Vn181_Step_Rinforzo				vn181
 
 
 #define	Vn196_Tasca_DX_C1				vn196
@@ -824,6 +915,20 @@
 #define vntest1						vn778
 #define vntest2						vn779
 #define vntest3						vn780
+
+
+
+
+#define Fun301_vn4000_err		vn800
+#define Fun301_vn4001_rete		vn801
+#define Fun301_vn4002_noto		vn802
+#define Fun301_vn4003_indice	vn803
+#define Fun301_vn4004_sub		vn804
+#define Fun301_vn4005_dim		vn805
+#define Fun301_vn4006_idResult	vn806
+
+
+
 
 //------------------------------------------------------------------------
 //
@@ -893,13 +998,8 @@
 #define Vn3804_PageID			vn3804		// Pagina in esecuzione
 
 
-#define Fun301_vn4000_err		vn4000
-#define Fun301_vn4001_rete		vn4001
-#define Fun301_vn4002_noto		vn4002
-#define Fun301_vn4003_indice	vn4003
-#define Fun301_vn4004_sub		vn4004
-#define Fun301_vn4005_dim		vn4005
-#define Fun301_vn4006_idResult	vn4006
+
+
 
 // ============================================================================
 //      ASSEGNAZIONE VQ
@@ -1131,6 +1231,9 @@
 #define Vq3203_Ritardo_PartenzaCuciPat	Vq3203		//dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura
 #define Vq3204_Ritardo_PiegaturaPat		Vq3204		//ritardo prima di piegare la pattina
 #define Vq3205_Ritardo_SecondaCuciPat	Vq3205		//ritardo la piegatura della pattina e la partenza della seconda cucitura
+#define Vq3206_Time_Soffio_PosPattina	Vq3206		//tempo per posizionare la pattina prima che arretra il piano							//// Mauro
+#define Vq3207_Time_CorsaC_PosPattina	Vq3207		//tempo per posizionare la pattina dopo che arretra il piano							//// Mauro
+
 //------------------------------------------------------------------------
 // VQ da utilizzare per il ciclo automatico pos ax Vq3500-Vq3599
 //------------------------------------------------------------------------
@@ -1235,11 +1338,11 @@
 
 	// Codici programma OP
 #define VCD11_OP1_IDX        	11           // [INT]
-#define Vcd11_OP1			    vcd11        // codice OP1		T1_o20_C1_Retrattile_AC
+#define Vcd11_OP1			    vcd11        // codice OP1		T1_C1_Retrattile_AC
 #define VCD12_OP2_IDX        	12           // [INT]
-#define Vcd12_OP2			    vcd12        // codice OP2		T1_o27_C1_Ranocchia_retrat
+#define Vcd12_OP2			    vcd12        // codice OP2		T1_C1_Ranocchia_retrat
 #define VCD13_OP3_IDX        	13           // [INT]
-#define Vcd13_OP3			    vcd13        // codice OP3		T1_o26_C1_Scalino_Piedino			T2_o101_C2_Scalino_Piedino
+#define Vcd13_OP3			    vcd13        // codice OP3		T1_C1_Scalino_Piedino			T2_C2_Scalino_Piedino
 #define VCD14_OP4_IDX        	14           // [INT]
 #define Vcd14_OP4			    vcd14        // codice OP4
 #define VCD15_OP5_IDX        	15           // [INT]
@@ -1289,65 +1392,71 @@
 //******************************************************************
 //----------------------- DEFINIZIONE  INGRESSI --------------------
 //******************************************************************
-#define i1_Pulsanti_start		din1	//
-#define i2_C1_Pedana			din2	//
-#define i3_C1_PedanaPiegatore	din3	//
-#define	i4_C1_FcZeroCrochet		din4	//
-#define i5_FcPinzaCaricoAlta	din5	//
-#define i6_FcMinCaricatore1   	din6	
-#define i7_FcPiegatore_AV    	din7	//
-#define i8_FcPiegatore_DI		din8	//
-#define i9_FcPiegatoreBasso		din9	//
-#define i10_Piegatore_Salito		din10
-#define i11_FcLancia_DI 		din11	//
-#define i12_Bilanciere_Alto		din12	//
-#define i13_Bilanciere_Basso	din13	//
-#define i14_Rinforzo_Attivo		din14	// 
-#define	i15_Rinforzo_ready		din15	//
+#define i1						din1	//
+#define i2						din2	//
+#define i3						din3	//
+#define	i4						din4	//C1_FcZeroCrochet
+#define i5						din5	//
+#define i6   					din6	//_FcMinCaricatore1
+#define i7    					din7	//
+#define i8						din8	//
+#define i9						din9	//
+#define i10						din10
+#define i11 					din11	//
+#define i12						din12	//
+#define i13						din13	//
+#define i14						din14	// 
+#define	i15						din15	//
 #define i16						din16	//
 
 #define i17						din17	//
-#define i18_C1_RotturaFilo	 	din18	//
-#define i19_C1_FcMinAsseX		din19	//
-#define i20_C1_FcMinAsseY		din20	//
-#define i21_Emg 				din21	//
-#define i22_C1_FcZeroAgo		din22	// 
-#define i23_C1_PinzaIntBassa 	din23	//
-#define i24_C1_PinzaEstAlta		din24
-#define i25_PulsResetFolder  	din25	//
-#define i26_C1_PulsStopTesta 	din26	//
-#define i27_C2_PulsStopTesta	din27
+#define i18	 					din18	//
+#define i19						din19	//
+#define i20						din20	//
+#define i21 					din21	//
+#define i22						din22	// 
+#define i23 					din23	//
+#define i24						din24
+#define i25  					din25	//
+#define i26 					din26	//
+#define i27						din27
 #define i28						din28
 #define i29						din29
 #define i30						din30	//
-#define i31_C1_ReadyAsseX		din31	//
-#define i32_C1_ReadyAsseY		din32	//
-#define i33_C2_Pedana			din33	//
+#define i31						din31	//
+#define i32						din32	//
+
+
+
+#define i33						din33	//
 #define i34						din34	//
-#define i35_Pressostato			din35	//
-#define i36						din36	//
-#define i37_C2_FcZeroCrochet	din37	//
-#define i38_FcPinzaTraslAlta	din38	//
-#define i39_FcMinCaricatore2	din39	//
-#define i40						din40	// 
-#define i41_CarPat_Top_SUGIu	din41	//
-#define i42_CarPat_Middle_SUGIu	din42	//
-#define	i43_CarPat_Bottom_SUGIu	din43	//
-#define i44_CarPat_Tastatore	din44	//
-#define i45_CarPat_Empty		din45	 //
-#define i46_CarPat_BackPos		din46	//
-#define i47_C2_ReadyAsseX		din47	//
-#define i48_C2_ReadyAsseY		din48	//
-#define i49						din49   //
-#define	i50_C2_RotturaFilo		din50	//
-#define i51_C2_FcMinAsseX		din51	//
-#define i52_C2_FcMinAsseY		din52	//
-#define i53_C2_FcMaxAsseY		din53	//
-#define i54_C2_FcZeroAgo		din54	//
-#define i55_C2_FcPinzaIntBassa	din55	//
+#define i35						din35	//
+#define i36						din36	// C2_FcZeroCrochet
+#define i37						din37	// C2_FcMinAsseX
+#define i38						din38	// C2_FcMinAsseY
+#define i39				 		din39	//
+#define i40						din40	// i40_C2_FcZeroAgo
+#define i41						din41	//
+#define i42						din42	//		
+#define	i43						din43	//		FcMinCaricatore2
+#define i44						din44	//
+#define i45						din45	 //
+#define i46						din46	//
+#define i47						din47	//
+#define i48						din48	//
+
+
+
+#define i49						din49   // _CarPat_Top_SUGIu
+#define	i50						din50	// _CarPat_Middle_SUGIu
+#define i51						din51	// _CarPat_Bottom_SUGIu  --------i51_C2_FcMinAsseX
+#define i52						din52	// _CarPat_Tastatore  ----------- i52_C2_FcMinAsseY
+#define i53						din53	//_CarPat_Empty  -------------i53_C2_FcMaxAsseY
+#define i54						din54	//_CarPat_BackPos   ------i54_C2_FcZeroAgo
+#define i55						din55	//
 #define i56						din56	//
 #define i57						din57	//
-#define i58_C2_PulsStopTesta	din58	//
+#define i58						din58	//
 #define i59						din59	//
 #define i60						din60	//
 #define i61						din61	//
@@ -1359,72 +1468,70 @@
 // ============================================================================
 
 
-#define o1_Piegatore_1				dout1       //
-#define o2_Piegatore_2				dout2       //
-#define o3_Piegatore_3 				dout3       //
-#define o4_Piegatore_4 				dout4       // 
-#define o5_Cambio_corpo 			dout5       // 
-#define o6_Cambio_lama_front 		dout6       //
-#define o7_Cambio_lame_lateral 		dout7       // 
-#define o8_Cambio_Lamelle_4_5 		dout8       //
-#define o9_Lancia_AD 				dout9       // 
-#define o10_Piegatore_AD			dout10      //
-#define o11_Piegatore_Su_Giu 		dout11      // 
-#define o12_Bilanciere_Su_Giu		dout12      // 
-#define o13_Lancia_Cargo_Aperta		dout13      // 
-#define o14_C1_rasafilo				dout14      // 
-#define o15_EvAspiratore 			dout15      // 
-#define o16_Lancia_Cargo_Chiusa		dout16      //
-
-#define o17_C1_Piedino				dout17      // 
-#define o18_C1_Pinza_int 			dout18      // 	
-#define o19_C1_Pinza_est			dout19      // 
-#define o20_C1_Retrattile_AC		dout20      //
-#define o21_C1_RaffreddamentoAgo	dout21      // 
-#define o22							dout22      // 
-#define o23_Lentezza_Tasca_AD		dout23      // 
-#define o24_Pinza_carico_Su_Giu		dout24	    // 
-#define o25_C1_Cambio_Pinze			dout25      // 
-#define o26_C1_Scalino_Piedino		dout26      // 
-#define o27_C1_Ranocchia_retrat		dout27      //
-#define o28							dout28      // 
-#define o29							dout29      // 
-#define o30							dout30      //
-#define o31_C1_bloccaFiloMagente	dout31      //
-#define o32_Enable_AssiXY_C1		dout32      // 
-
-#define o33_Valvolone				dout33		//
-#define o34_CarPat_FrontBack		dout34		//
-#define o35_CarPat_Aghi				dout35		//
-#define o36_CarPat_SoffioAghi		dout36		//
-#define o37_CarPat_SoffiPattina		dout37		//
-#define o38_CarPat_DCGiu			dout38		//
-#define o39_CarPat_DCSu				dout39		//
-#define o40							dout40		//
-#define o41							dout41		//
-#define o42							dout42		//
-#define o43							dout43      //
-#define o44							dout44		//
-#define o45							dout45		//
-#define o46_C2_rasafilo				dout46		//
-#define o47							dout47		//
-#define o48_Enable_AssiXY_C2		dout48		//
-#define	o49_C2_Piedino				dout49		//
-#define o50_C2_Pinza_int			dout50		//
-#define o51_PinzaPattina_1			dout51		//
-#define o52_PinzaPattina_2			dout52		//
-#define o53_C2_RaffreddamentoAgo 	dout53		//
-#define o54_Scaric_dx_sx			dout54		// 
-#define o55							dout55		//
-#define o56_Pinza_tras_su_giu		dout56		//
-#define o57_C2_Cambio_Pinze			dout57		//
-#define o58_C2_Scalino_Piedino		dout58		//
-#define o59_C2_Retrattile_AC		dout59		//
-#define o60_Prima_barra				dout60		//
-#define o61_Seconda_barra			dout61		//
-#define o62							dout62		//
-#define o63_C2_bloccaFiloMagente	dout63		//
-#define o64							dout64		//
+#define o1				dout1       //
+#define o2				dout2       //
+#define o3				dout3       //
+#define o4 				dout4       // 
+#define o5 				dout5       // 
+#define o6 				dout6       //
+#define o7				dout7       // 
+#define o8 				dout8       //
+#define o9				dout9       // 
+#define o10				dout10      //
+#define o11				dout11      // 
+#define o12				dout12      // 
+#define o13				dout13      // 
+#define o14				dout14      // 
+#define o15 			dout15      // 
+#define o16				dout16      //
+#define o17				dout17      // 
+#define o18 			dout18      // 	
+#define o19				dout19      // 
+#define o20				dout20      //
+#define o21				dout21      // 
+#define o22				dout22      // 
+#define o23				dout23      // 
+#define o24				dout24	    // 
+#define o25				dout25      // 
+#define o26				dout26      // 
+#define o27				dout27      //
+#define o28				dout28      // 
+#define o29				dout29      // 
+#define o30				dout30      //
+#define o31				dout31      //
+#define o32				dout32      // 
+#define o33				dout33		//
+#define o34				dout34		//
+#define o35				dout35		//
+#define o36				dout36		//
+#define o37				dout37		//
+#define o38				dout38		//
+#define o39				dout39		//
+#define o40				dout40		//
+#define o41				dout41		//
+#define o42				dout42		//
+#define o43				dout43      //
+#define o44				dout44		//
+#define o45				dout45		//
+#define o46 			dout46		//
+#define o47				dout47		//
+#define o48 			dout48		//
+#define	o49 			dout49		//
+#define o50 			dout50		//
+#define o51				dout51		//
+#define o52				dout52		//
+#define o53 			dout53		//
+#define o54 			dout54		// 
+#define o55				dout55		//
+#define o56				dout56		//
+#define o57 			dout57		//
+#define o58 			dout58		//
+#define o59				dout59		//
+#define o60				dout60		//
+#define o61 			dout61		//
+#define o62				dout62		//
+#define o63 			dout63		//
+#define o64				dout64		//
 
 
 

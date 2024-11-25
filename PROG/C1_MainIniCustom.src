@@ -55,12 +55,34 @@ sub ()
 //
         ax[ C1_AsseX ] = 0 
         ax[ C1_AsseY ] = 0
-        ISO G1 X C1_QuoHomeX Y C1_QuoHomeY F Vq3054_C1_VelFeed_Reset    
-        Delays (0.1)
-        Vb4350_AppAut_o18_C1_Pinza_int = ON
-        Vb4351_AppAut_o19_C1_Pinza_est = ON 
 
-	WaitCond ( i24_C1_PinzaEstAlta == 1)
+//ISO G1 X C1_QuoHomeX Y C1_QuoHomeY F Vq3054_C1_VelFeed_Reset    
+
+
+	C1_CmdHoldRelease = 0					//mi assicuro di spegnere Hold (TEST cucitura)
+	C1_CuciSimulaAuto = 0
+//	ISO G281 P CA_MD_NO_RES_NO_INS X C1_FirstPt_X Y C1_FirstPt_Y	//resetto il buffer di cucitura e parto dall'inizio
+	Delays (0.3)
+
+
+	fa[ C1_AsseX ] = Vq3054_C1_VelFeed_Reset
+	fa[ C1_AsseY ] = Vq3054_C1_VelFeed_Reset
+
+	ax[ C1_AsseX ] = C1_QuoHomeX ax[ C1_AsseY ] = C1_QuoHomeY
+
+	WaitCond ( Vb4045_C1_AxXFermo and Vb4046_C1_AxYFermo )
+	Delays (0.1)
+
+
+
+
+
+        Delays (0.1)
+        Vb4350_AppAut_out_C1_Pinza_int = ON
+        Vb4351_AppAut_out_C1_Pinza_est = ON 
+	Vb306 = ON
+
+	WaitCond ( Vb_ingresso_C1_PinzaEstAlta == 1)
 
 	Vb36_Clear_OPT1 = ON	//apro retrattile
 	Vb37_Clear_OPT2 = ON	//abbasso perni ranocchia

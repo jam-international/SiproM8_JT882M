@@ -24,6 +24,7 @@ sub ()
         Vb4382                         = 0  
 
 		  DelayS( 0.1 )    
+		vb2004           = 0  
 	    SyncVar( vb2003          )    
 		goto ZERO_X_Y
 	endif
@@ -38,9 +39,9 @@ sub ()
         // Start azzeramento asse AGO
 
         // Se il sensore e' scoperto si va avanti finche' non si copre il sensore
-    if ( din54            )
+    if ( vb240                    )
         AxAnt( 8         , 720 , -1, 2, 0 )         
-        WaitCond ( din54            )
+        WaitCond ( vb240                    )
         ExecPlcFun( 75         , (8          * 100)+1 , 0 )
         WaitCond( IsAxInStop( 8          ) ) 
         DelayS( 0.2 )
@@ -64,6 +65,7 @@ sub ()
     ax[ 8          ] = vq2703    
 
         // Piedino su
+	vb2004           = 0  
     SyncVar( vb2003          )    
 
         // -----------------------------------------

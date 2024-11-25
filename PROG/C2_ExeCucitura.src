@@ -21,6 +21,7 @@
 sub ()
 
         // Piedino su
+	C2_CmdPiedinoGiu = OFF
     SyncVar( C2_CmdPiedinoSu )    
 
         // --------------------------------------------------
@@ -179,6 +180,7 @@ sub ()
     loop        
 	
         // Piedino su
+	C2_CmdPiedinoGiu = OFF
     SyncVar( C2_CmdPiedinoSu )   
     
 
@@ -205,7 +207,8 @@ sub ()
         if ( C2_Udf_FeedG0 < C2_VelFeed )           // #M200717_1GF#
             C2_VelFeed = C2_Udf_FeedG0
         endif
-
+	 Vb4901_PulsStartHmiC2 = 0 //per DACCA, in alcuni casi dopo essere tornato al punto di carico eseguiva erroneamente il movimento XY di reset
+	Vb4902_PulsResetHmiC2 = 0 //per DACCA, in alcuni casi dopo essere tornato al punto di carico eseguiva erroneamente il movimento XY di reset
         ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_VelFeed  
         WaitCond ( Vb4074_AllarmeContSpolaC2 == 0 or Vb4073_AbilitaContSpolaC2 ==0 )
 	Vb89_TascaC2Completata = ON

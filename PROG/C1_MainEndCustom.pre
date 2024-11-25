@@ -19,74 +19,63 @@
 
 
 sub ()
-// se è attivo lo scaricatore pezzi corti mando la pinza dietro
-
-	if ( vb4515                   and vb4519                         and vn320          != 882)
-		vb4520                                = 1 
-		Vb4350                         = 1 
-		Vb4351                         = 1  
-		WaitCond ( din24               == 1)
-		ISO G1 X vq1911      Y (vq1912      + Vq3084                           ) F vq1962    
-		Vb4350                         = 0  
-		Vb4351                         = 0   
-		WaitCond ( din23                == 1)
-		Delays (0.1)
-		ISO G1 X vq1911      Y vq1912      F vq1962    
-
-		if ( vb4515                   and (Vb4034                    == 0 or vb4519                         ==1 ))
-			Vb4032                        = 1 
-		endif
-		vb4520                                = 0  
-
-
-	endif
 
 
 	// alzo le pinze dopo azzeramento
 
+//vn120 = 0, una testa + scaricatore, and Vb4000_Automatico ==0 non fa alzare le pinza ma lo avevo messo poco prima per un altro caso, da studiare
+	if((vb4513                  ==1 ) or (vb4515                   ==1)  )
 
-	if(vb4513                  ==1 or vb4515                   ==1)
 
 
 
-		if ( vn120                           == 1 and vb30               == 0 )
+		if ( vn120                           == 1 and vb30               == 0 and Vb4000            ==0 )
 		      // Attesa assi X Y fermi
 			WaitCond( IsAxInStop( 1        ) )
 			WaitCond( IsAxInStop( 2        ) )
+			vb303 = 1 
 			Vb4351                         = 1 
-			Waitcond ( din24               )
+			Waitcond ( vb224                       )
 
 			vb51                = 1 
 		endif
 
-	else
+		if ( vn120                           == 0 and vb30               == 0 )
+		      // Attesa assi X Y fermi
+			WaitCond( IsAxInStop( 1        ) )
+			WaitCond( IsAxInStop( 2        ) )
+			vb304 = 1 
+		//le pinze le devo alzare dopo che il traslatore si è abbassato 	Vb4350_AppAut_out_C1_Pinza_int = ON
+		//le pinze le devo alzare dopo che il traslatore si è abbassato	Vb4351_AppAut_out_C1_Pinza_est = ON 
+		//le pinze le devo alzare dopo che il traslatore si è abbassato	Waitcond ( Vb_ingresso_C1_PinzaEstAlta )
 
+
+		endif
+
+	else
+		//********** Modalità solo una testa (senza scarico), finito cucitura **********************
 		if ( vb4803               == 0 and vb4507            == 0 )
 			if(Vb4016                  == 0  )
 				Vb4350                         = 1 
 				Vb4351                         = 1  
+				vb305 = 1 
 			endif
 			Vb4096                   = 1 
-			WaitCond ( din24               == 1)
-			vb36            = 1 	//apro retrattile
-			vb37            = 1 	//abbasso perni ranocchia
-			vb38            = 1 	//disattivo salto piedino
+			WaitCond ( vb224                       == 1)
+
 
 		endif
 
 	endif
 
-
+	vb36            = 1 	//apro retrattile
+	vb37            = 1 	//abbasso perni ranocchia
+	vb38            = 1 	//disattivo salto piedino
 // azzero numero punti fatti 
 	vq1952          = 0
 
 
-// scaricatore
 
-	//if ( Vb4515_AppEnbScaricatore and (Vb4034_ScaricOnSuRasafilo == 0 or Vb4519_AppScaricoCortiConPinza ==1 ) and Vn_ID_macchina != 882)
-	//	Waitcond ( Vb4031_AppScaricatoreInPos ) /// aspetto il tempo per lo spostamento dx sx dello scaricatore
-	//	Vb4032_AppScaricatoreStrBarre = ON
-	//endif
 
 // gestione tasca dx/sx
 	if(vb21            )

@@ -31,7 +31,7 @@ sub ()
 				Delays (0.1)
 			/// alzo la pinza caricatore
 				Vb4356                                = 0  
-				WaitCond ( din5                 )
+				WaitCond ( vb205                         )
 			//	WaitCond ( Vb52RichiestaZeroAxDaHmiC1 == 0 )
 				Delays (0.2)
 						fp[ 5          ] = 20    
@@ -41,7 +41,7 @@ sub ()
 						Delays (0.5)
 			WaitCond ( Vb4081                       == 0 )
 						Vb4356                                = 0  
-						WaitCond ( din5                 )
+						WaitCond ( vb205                         )
 						Delays (0.5)
 						fp[ 5          ] = 20    
 						ax[ 5          ] = Vq3500                      
@@ -50,14 +50,14 @@ sub ()
 	endif
  ///  per centrare la pinza del caricatore sulla lancia 1
 	if ( Vb4082                        )
-				Vb4136                       = 1 
+				Vb4136                        = 1 
 				Vb4356                                = 0  
-				Waitcond ( din5                 )
+				Waitcond ( vb205                         )
 
 				fp[ 5          ] = 20    
 				ax[ 5          ] = Vq3500                      
 				Delays ( 0.5 )
-				Vb4341                     = 1 
+				Vb4341                      = 1 
 				Delays ( 1 )
 				Vb4344                              = 1 
 
@@ -68,20 +68,20 @@ sub ()
 			ax[ 5          ] = Vq3501                           
 						Delays ( 0.5 )
 					Vb4356                                = 1 
-					Waitcond ( din5                 == 0 )
+					Waitcond ( vb205                         == 0 )
 						Delays (0.5)
 			WaitCond ( Vb4082                        == 0 )
 					Vb4356                                = 0  
-					Waitcond ( din5                 )
+					Waitcond ( vb205                         )
 				Delays ( 0.5 )
 				fp[ 5          ] = 20    
 				ax[ 5          ] = Vq3500                      
 					Vb4344                              = 0  
-					Vb4136                       = 0  
+					Vb4136                        = 0  
 					//	WaitCond ( i40_FcBilancereSu )
 					//	Delays ( 0.2 )
-					Vb4341                     = 0  
-						WaitCond ( din11           )
+					Vb4341                      = 0  
+						WaitCond ( vb211                   )
 						Delays ( 0.2 )
 		Vb4082                        = 0  			
 			goto FINE
@@ -95,14 +95,14 @@ sub ()
 
 				///// Libero il caricatore
 				Vb4356                                = 0  
-				Waitcond ( din5                 )
+				Waitcond ( vb205                         )
 				Delays ( 0.5 )
 				fp[ 5          ] = 20    
 				ax[ 5          ] = Vq3500                      
 
 				// alzo la pinza del caricatore C2 
 				Vb4388                              = 0  
-					Waitcond ( din38                )
+					Waitcond ( vb242                        )
 				// pinza C1 azzerata
 				WaitCond ( Vb4080              == 0 )
 				// muovo caricatore C2
@@ -111,12 +111,12 @@ sub ()
 					Delays ( 0.5 )
 				// abbasso la pinza del caricatore C2 
 				Vb4388                              = 1 
-					Waitcond ( din38                == 0  )
+					Waitcond ( vb242                        == 0  )
 					Delays ( 0.5 )
 				// aspetto lo spegnimento
 			WaitCond ( Vb4083                          == 0 )
 					Vb4388                              = 0  
-					Waitcond ( din38                )
+					Waitcond ( vb242                        )
 					Delays ( 0.5 )
 				fp[ 10         ] = 20    
 				ax[ 10         ] = Vq3521                                
@@ -131,7 +131,7 @@ sub ()
 				vb7921      = 1
 				// alzo la pinza del caricatore C2 
 				Vb4388                              = 0  
-					Waitcond ( din38                )
+					Waitcond ( vb242                        )
 				// pinza C2 azzerata
 					WaitCond ( Vb4085              == 0 )
 				// muovo caricatore C2
@@ -140,12 +140,12 @@ sub ()
 					Delays ( 0.5 )
 				// abbasso la pinza del caricatore C2 
 				Vb4388                              = 1 
-					Waitcond ( din38                == 0  )
+					Waitcond ( vb242                        == 0  )
 					Delays ( 0.5 )
 				// aspetto lo spegnimento
  		WaitCond ( Vb4084                           == 0 )
 					Vb4388                              = 0  
-					Waitcond ( din38                )
+					Waitcond ( vb242                        )
 					Delays ( 0.5 )
 				fp[ 10         ] = 20    
 				ax[ 10         ] = Vq3521                                
@@ -155,8 +155,8 @@ sub ()
  ///  utilizzato per gestire l'anticipo tra pinza caricatore e C1
 	if ( Vb4087                           )
 			Vb4356                                = 0  
-				Waitcond ( din5                 )
-			Vb4351                         = 1 
+				Waitcond ( vb205                         )
+			Vb4350                         = 1 
 				Delays ( 0.1 )
 			fp[ 5          ] = Vq3510                    
 			ax[ 5          ] = Vq3502                            
@@ -164,13 +164,13 @@ sub ()
 			AxAnt( 5         , Vq3500                      , -Vq3510                    , 2, 0 )  
 				do
 	                if ( vq55             < Vq3504                                )
-						Vb4351                         = 0  
+						Vb4350                         = 0  
 						Exitdo
 					endif 
 				loop
 
 				WaitCond ( IsAxInQuote( 5          ) )
-				Vb4351                         = 1 
+				Vb4350                         = 1 
 			goto FINE
 	endif
 

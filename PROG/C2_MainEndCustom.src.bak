@@ -35,21 +35,27 @@ sub ()
 
 	if ( Vb4515_AppEnbScaricatore and Vb4519_AppScaricoCortiConPinza)
 		Vb4520_AppScaricoCortiConPinzaRunning = ON
-		Vb4382_AppAut_o50_C2_Pinza_int = ON
+		Vb4382_AppAut_out_C2_Pinza_int = ON
 			
 		Delays (0.3)
 		C2_VelFeed = C2_Par_FeedG0Reset
-		ISO G1 X C2_QuoHomeX Y (C2_QuoHomeY + Vq3084_SpostamentoPinzaPezziCorti) F C2_VelFeed
-		
-		Vb4382_AppAut_o50_C2_Pinza_int = OFF
+	//	ISO G1 X C2_QuoHomeX Y (C2_QuoHomeY + Vq3084_SpostamentoPinzaPezziCorti) F C2_VelFeed
 
-		WaitCond ( i55_C2_FcPinzaIntBassa == 1)
+		fa[ C2_AsseX ] = Vq3054_C1_VelFeed_Reset
+		fa[ C2_AsseY ] = Vq3054_C1_VelFeed_Reset
+
+		ax[ C2_AsseX ] = C2_QuoHomeX	ax[ C2_AsseY ] = C2_QuoHomeY + Vq3084_SpostamentoPinzaPezziCorti
+		
+		Vb4382_AppAut_out_C2_Pinza_int = OFF
+
+		WaitCond ( Vb_ingresso_C2_FcPinzaIntBassa == 1)
 		Delays (0.3)
-		ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_VelFeed
+	//	ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_VelFeed
 		
-
+		ax[ C2_AsseX ] = C2_QuoHomeX ax[ C2_AsseY ] = C2_QuoHomeY
+	
 		Vb4032_AppScaricatoreStrBarre = ON
-		Vb4382_AppAut_o50_C2_Pinza_int = ON
+		Vb4382_AppAut_out_C2_Pinza_int = ON
 		//endif
 		Vb4520_AppScaricoCortiConPinzaRunning = OFF
 		
@@ -62,15 +68,18 @@ sub ()
 				Vb4032_AppScaricatoreStrBarre = ON  //fa partire scarictore
 			endif
 
-			Vb4382_AppAut_o50_C2_Pinza_int = ON
+			Vb4382_AppAut_out_C2_Pinza_int = ON
 				
 		else
-			Vb4382_AppAut_o50_C2_Pinza_int = ON
+			Vb4382_AppAut_out_C2_Pinza_int = ON
 				
 		endif
 
 		Vb4097_AppOnScartafiloC2 = ON
 		Vb41_Clear_OPT3_C2 = ON  //clear OPT3
+		if(Vb152KitCarPAttine)
+			Vb4383_AppAut_out_PinzaPattina_1 = OFF
+		endif
 	endif
        
 // azzero numero punti fatti 

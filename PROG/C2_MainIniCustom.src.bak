@@ -39,16 +39,38 @@ sub ()
         fa[ C2_AsseX ] = C2_Par_FeedG0Reset
         fa[ C2_AsseY ] = C2_Par_FeedG0Reset
         // Movimento asse Y fuori ingombro ( finecorsa avanti )
-	if(PosAx_C2_AsseY < Vq3093_QuoteLimiteAsseY_C2 and C2_AssiAzzerati == 0)
+	if(PosAx_C2_AsseY < Vq3093_QuoteLimiteAsseY_C2 and C2_AssiAzzerati == 1)
 		AxAnt( C2_AsseY, Vq3093_QuoteLimiteAsseY_C2 , -15, 2, 0 )
 		WaitCond( IsAxInStop( C2_AsseY ) ) 
 	 endif
         ax[ C2_AsseX ] = 0 
         ax[ C2_AsseY ] = 0
-        ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_Par_FeedG0Reset  
+     //   ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_Par_FeedG0Reset  
+
+	C2_CmdHoldRelease = 0					//mi assicuro di spegnere Hold (TEST cucitura)
+	C2_CuciSimulaAuto = 0
+
+	Delays (0.3)
+
+
+	fa[ C2_AsseX ] = C2_Par_FeedG0Reset
+	fa[ C2_AsseY ] = C2_Par_FeedG0Reset
+
+	ax[ C2_AsseX ] = C2_QuoHomeX ax[ C2_AsseY ] = C2_QuoHomeY
+
+	WaitCond ( Vb4050_C2_AxXFermo and Vb4051_C2_AxYFermo )
+	Delays (0.1)
+
+
+
+
+
+
+
+
         Delays (0.1)
 
-        Vb4382_AppAut_o50_C2_Pinza_int = ON
+        Vb4382_AppAut_out_C2_Pinza_int = ON
 	Vb4097_AppOnScartafiloC2 = ON
 	
 	C2_VqActPntCuci = 0
@@ -56,7 +78,7 @@ sub ()
 	C2_VbRunCuci = OFF
 	Vb41_Clear_OPT3_C2 = ON  //clear OPT3
 	if(Vb152KitCarPAttine)
-		Vb4383_AppAut_o51_PinzaPattina_1 = OFF
+		Vb4383_AppAut_out_PinzaPattina_1 = OFF
 	endif
 	Vb31_C2_InCucitura = OFF
 	gosub "Halt.obj"						///// messo per non iniziare a cucire dopo il reset

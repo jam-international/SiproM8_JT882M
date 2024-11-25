@@ -21,6 +21,7 @@
 sub ()
 
         // Piedino su
+	vb2004           = 0  
     SyncVar( vb2003          )    
 
         // --------------------------------------------------
@@ -179,6 +180,7 @@ sub ()
     loop        
 
         // Piedino su
+	vb2004           = 0  
     SyncVar( vb2003          )   
 
 
@@ -205,7 +207,8 @@ sub ()
         if ( vq2918        < vq2962     )           // #M200717_1GF#
             vq2962     = vq2918       
         endif
-
+	 vb4901                = 0 //per DACCA, in alcuni casi dopo essere tornato al punto di carico eseguiva erroneamente il movimento XY di reset
+	vb4902                = 0 //per DACCA, in alcuni casi dopo essere tornato al punto di carico eseguiva erroneamente il movimento XY di reset
         ISO G1 X vq2911      Y vq2912      F vq2962      
         WaitCond ( Vb4074                    == 0 or Vb4073                    ==0 )
 	vb89                   = 1 

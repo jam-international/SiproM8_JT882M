@@ -24,8 +24,9 @@ sub ()
         // alzo le pinze dopo azzeramento
 	//  if ( Vb4803_AppResetHmiC1 == 0 and Vb52RichiestaZeroAxDaHmiC1 == 0 )   Daniele: quando torno da tool alza le pinze
 	if ( Vb4803_AppResetHmiC1 == 0 and Vb4807_PinzeAlteDopoPC ==1)
-		Vb4350_AppAut_o18_C1_Pinza_int = ON
-		Vb4351_AppAut_o19_C1_Pinza_est = ON 
+		Vb4350_AppAut_out_C1_Pinza_int = ON
+		Vb4351_AppAut_out_C1_Pinza_est = ON 
+		Vb300 = ON
 	endif
 	
         // azzero numero punti fatti 

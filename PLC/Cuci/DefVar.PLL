@@ -2,7 +2,7 @@
  *
  * MDPlc source file: DefVar.PLL
  *
- * Date = "09/07/2024 16:34:25"
+ * Date = "20/11/2024 15:02:24"
  *)
 
 
@@ -76,6 +76,7 @@ VAR_GLOBAL
     Vb67HmiJogXM_C2                         AT %MB300.67   : BOOL;         {DE:"vb67   - Richiesta jog - asse X C2"}
     Vb68HmiJogYP_C2                         AT %MB300.68   : BOOL;         {DE:"vb68   - Richiesta jog + asse Y C2"}
     Vb69HmiJogYM_C2                         AT %MB300.69   : BOOL;         {DE:"vb69   - Richiesta jog - asse Y C2"}
+    Vb70BilanciereSu_RigheCN                AT %MB300.70   : BOOL;         {DE:"vb70   - =1 nel ciclo Righe, se premo la pedana si alza il bilanciere"}
     Vb72HmiMoveXY_C1                        AT %MB300.72   : BOOL;         {DE:"vb72   - Richiesta di spostamento assi XY da Modifica_programmi.java"}
     Vb73HmiMoveXY_C2                        AT %MB300.73   : BOOL;         {DE:"vb73   - Richiesta di spostamento assi XY da Modifica_programmi.java"}
     Vb74HmiMoveXY_PieAlto_C1                AT %MB300.74   : BOOL;         {DE:"vb74   - Richiesta di spostamento assi XY da Modifica_programmi.java con piedino alto"}
@@ -101,11 +102,14 @@ VAR_GLOBAL
     Vb94_Cambiare_revolver                  AT %MB300.94   : BOOL;         {DE:"vb94   - =1 è ora di cambiare il revolver"}
     Vb95_ResetConteggio                     AT %MB300.95   : BOOL;         {DE:"vb95   - tasto Reset HMI rimette il conteggio 1/7"}
     Vb96_AnticipoTrasl_SX                   AT %MB300.96   : BOOL;         {DE:"vb96   - =1 anticipo il movimento del traslatore a sx sopra le pinze di cucitura della testa 1"}
+    Vb97_RiseScaricatoreAttivo              AT %MB300.97   : BOOL;         {DE:"vb97   - = 1 è un rise che mi dice che lo scaricatore è attivo ed è arrivato il segnale di fine cucitura"}
     VbTest                                  AT %MB300.99   : BOOL;         {DE:"vb99   - per test"}
     VbSimulaDbg                             AT %MB300.100  : BOOL;         {DE:"vb100  - Cucitrice simulata ( per debugger )"}
     VbSyncDbg                               AT %MB300.101  : BOOL;         {DE:"vb101  - Variabile di sync ( per debugger )"}
     VbSimulazionePedanaC1                   AT %MB300.102  : BOOL;         {DE:"vb102  - alza e abbassa le pinze tramite vb come se premessi la pedana"}
     VbSimulazionePedanaC2                   AT %MB300.103  : BOOL;         {DE:"vb103  - alza e abbassa le pinze tramite vb come se premessi la pedana"}
+    Vb115CricchettoRinforzo                 AT %MB300.115  : BOOL;         {DE:"vb115  - ad ON lancia il ciclo per inserire la fettuccia nei rulli"}
+    Vb116RinforzoGiu_HMI                    AT %MB300.116  : BOOL;         {DE:"vb116  - ad ON HMI chiede al PLC di abbassare i coltelli del rinforzo"}
     Vb151EnableCarPattine                   AT %MB300.151  : BOOL;         {DE:"vb151  - =1 device caricatore pattina attivo"}
     Vb152KitCarPAttine                      AT %MB300.152  : BOOL;         {DE:"vb152  - =1 il kit carica pattina è attivo (tasto HMI)"}
     Vb153GoCicloCarPAttina                  AT %MB300.153  : BOOL;         {DE:"vb153  - =1 fa partire un ciclo carica pattina"}
@@ -118,6 +122,89 @@ VAR_GLOBAL
     Vb160PartiACucire                       AT %MB300.160  : BOOL;         {DE:"vb160  - =1 il plc avverte il CN che la pattina è stata caricata e bloccata, ora può effettuare la prima cucitura"}
     Vb170KitTascaCargo                      AT %MB300.170  : BOOL;         {DE:"vb170  - =1 attivo il kit tasca cargo"}
     Vb_Fun301_run                           AT %MB300.171  : BOOL;         {DE:"vb171"}
+    Vb_3SchedeIOBelli                       AT %MB300.172  : BOOL;         {DE:"vb172  - =1 è una 882 con solo 3 schede IO fatte da Belli (NB in Argentina la prima 882 ne aveva 4 quindi questa vb va tenuta a false)"}
+    Vb_ingresso_Pulsanti_start              AT %MB300.201  : BOOL;         {DE:"vb201  - i1"}
+    Vb_ingresso_C1_Pedana                   AT %MB300.202  : BOOL;         {DE:"vb202  - i2"}
+    Vb_ingresso_C1_PedanaPiegatore          AT %MB300.203  : BOOL;         {DE:"vb203  - i3"}
+    Vb_ingresso_C1_FcZeroCrochet            AT %MB300.204  : BOOL;         {DE:"vb204"}
+    Vb_ingresso_FcPinzaCaricoAlta           AT %MB300.205  : BOOL;         {DE:"vb205"}
+    Vb_ingresso_FcMinCaricatore1            AT %MB300.206  : BOOL;         {DE:"vb206"}
+    Vb_ingresso_FcPiegatore_AV              AT %MB300.207  : BOOL;         {DE:"vb207"}
+    Vb_ingresso_FcPiegatore_DI              AT %MB300.208  : BOOL;         {DE:"vb208"}
+    Vb_ingresso_FcPiegatoreBasso            AT %MB300.209  : BOOL;         {DE:"vb209"}
+    Vb_ingresso_10                          AT %MB300.210  : BOOL;         {DE:"vb210"}
+    Vb_ingresso_FcLancia_DI                 AT %MB300.211  : BOOL;         {DE:"vb211"}
+    Vb_ingresso_Bilanciere_Alto             AT %MB300.212  : BOOL;         {DE:"vb212"}
+    Vb_ingresso_Bilanciere_Basso            AT %MB300.213  : BOOL;         {DE:"vb213"}
+    Vb_ingresso_Rinforzo_Attivo             AT %MB300.214  : BOOL;         {DE:"vb214"}
+    Vb_ingresso_Rinforzo_ready              AT %MB300.215  : BOOL;         {DE:"vb215"}
+    Vb_ingresso16                           AT %MB300.216  : BOOL;         {DE:"vb216"}
+    Vb_ingresso17                           AT %MB300.217  : BOOL;         {DE:"vb217"}
+    Vb_ingresso18                           AT %MB300.218  : BOOL;         {DE:"vb218"}
+    Vb_ingresso_C1_FcMinAsseX               AT %MB300.219  : BOOL;         {DE:"vb219"}
+    Vb_ingresso_C1_FcMinAsseY               AT %MB300.220  : BOOL;         {DE:"vb220"}
+    Vb_ingresso_Emg                         AT %MB300.221  : BOOL;         {DE:"vb221"}
+    Vb_ingresso_C1_FcZeroAgo                AT %MB300.222  : BOOL;         {DE:"vb222"}
+    Vb_ingresso_C1_PinzaIntBassa            AT %MB300.223  : BOOL;         {DE:"vb223"}
+    Vb_ingresso_C1_PinzaEstAlta             AT %MB300.224  : BOOL;         {DE:"vb224"}
+    Vb_ingresso_PulsResetFolder             AT %MB300.225  : BOOL;         {DE:"vb225"}
+    Vb_ingresso_C1_PulsStopTesta            AT %MB300.226  : BOOL;         {DE:"vb226"}
+    Vb_ingresso_C2_PulsStopTesta_suC1       AT %MB300.227  : BOOL;         {DE:"vb227"}
+    Vb_ingresso28                           AT %MB300.228  : BOOL;         {DE:"vb228"}
+    Vb_ingresso29                           AT %MB300.229  : BOOL;         {DE:"vb229"}
+    Vb_ingresso30                           AT %MB300.230  : BOOL;         {DE:"vb230"}
+    Vb_ingresso_C1_ReadyAsseX               AT %MB300.231  : BOOL;         {DE:"vb231"}
+    Vb_ingresso_C1_ReadyAsseY               AT %MB300.232  : BOOL;         {DE:"vb232"}
+    Vb_ingresso_C2_Pedana                   AT %MB300.233  : BOOL;         {DE:"vb233"}
+    Vb_ingresso34                           AT %MB300.234  : BOOL;         {DE:"vb234"}
+    Vb_ingresso_Pressostato                 AT %MB300.235  : BOOL;         {DE:"vb235"}
+    Vb_ingresso36                           AT %MB300.236  : BOOL;         {DE:"vb236"}
+    Vb_ingresso37                           AT %MB300.237  : BOOL;         {DE:"vb237"}
+    Vb_ingresso38                           AT %MB300.238  : BOOL;         {DE:"vb238"}
+    Vb_ingresso39                           AT %MB300.239  : BOOL;         {DE:"vb239"}
+    Vb_ingresso_C2_FcZeroAgo                AT %MB300.240  : BOOL;         {DE:"vb240"}
+    Vb_ingresso_C2_FcPinzaIntBassa          AT %MB300.241  : BOOL;         {DE:"vb241"}
+    Vb_ingresso_FcPinzaTraslAlta            AT %MB300.242  : BOOL;         {DE:"vb242"}
+    Vb_ingresso43                           AT %MB300.243  : BOOL;         {DE:"vb243"}
+    Vb_ingresso44                           AT %MB300.244  : BOOL;         {DE:"vb244"}
+    Vb_ingresso_C2_PulsStopTesta            AT %MB300.245  : BOOL;         {DE:"vb245"}
+    Vb_ingresso46                           AT %MB300.246  : BOOL;         {DE:"vb246"}
+    Vb_ingresso_C2_ReadyAsseX               AT %MB300.247  : BOOL;         {DE:"vb247"}
+    Vb_ingresso_C2_ReadyAsseY               AT %MB300.248  : BOOL;         {DE:"vb248"}
+    Vb_ingresso_CarPat_Top_SUGIu            AT %MB300.249  : BOOL;         {DE:"vb249"}
+    Vb_ingresso_CarPat_Middle_SUGIu         AT %MB300.250  : BOOL;         {DE:"vb250"}
+    Vb_ingresso_CarPat_Bottom_SUGIu         AT %MB300.251  : BOOL;         {DE:"vb251"}
+    Vb_ingresso_CarPat_Tastatore            AT %MB300.252  : BOOL;         {DE:"vb252"}
+    Vb_ingresso_CarPat_Empty                AT %MB300.253  : BOOL;         {DE:"vb253"}
+    Vb_ingresso_CarPat_BackPos              AT %MB300.254  : BOOL;         {DE:"vb254"}
+    Vb_ingresso_CarPat_SpoLamLungoL         AT %MB300.255  : BOOL;         {DE:"vb255"}
+    Vb_ingresso_CarPat_SpoLamLungoR         AT %MB300.256  : BOOL;         {DE:"vb256"}
+    Vb_ingresso_CarPat_SpoLamCortoL         AT %MB300.257  : BOOL;         {DE:"vb257"}
+    Vb_ingresso_CarPat_SpoLamCortoR         AT %MB300.258  : BOOL;         {DE:"vb258"}
+    Vb_ingresso59                           AT %MB300.259  : BOOL;         {DE:"vb259"}
+    Vb_ingresso60                           AT %MB300.260  : BOOL;         {DE:"vb260"}
+    Vb_ingresso61                           AT %MB300.261  : BOOL;         {DE:"vb261"}
+    Vb_ingresso62                           AT %MB300.262  : BOOL;         {DE:"vb262"}
+    Vb_ingresso63                           AT %MB300.263  : BOOL;         {DE:"vb263"}
+    Vb_ingresso64                           AT %MB300.264  : BOOL;         {DE:"vb264"}
+    Vb300                                   AT %MB300.300  : BOOL;         {DE:"vb300"}
+    Vb301                                   AT %MB300.301  : BOOL;         {DE:"vb301"}
+    Vb302                                   AT %MB300.302  : BOOL;         {DE:"vb302"}
+    Vb303                                   AT %MB300.303  : BOOL;         {DE:"vb303"}
+    Vb304                                   AT %MB300.304  : BOOL;         {DE:"vb304"}
+    Vb305                                   AT %MB300.305  : BOOL;         {DE:"vb305"}
+    Vb306                                   AT %MB300.306  : BOOL;         {DE:"vb306"}
+    Vb307                                   AT %MB300.307  : BOOL;         {DE:"vb307"}
+    Vb308                                   AT %MB300.308  : BOOL;         {DE:"vb308"}
+    Vb309                                   AT %MB300.309  : BOOL;         {DE:"vb309"}
+    Vb310                                   AT %MB300.310  : BOOL;         {DE:"vb310"}
+    Vb311                                   AT %MB300.311  : BOOL;         {DE:"vb311"}
+    Vb312                                   AT %MB300.312  : BOOL;         {DE:"vb312"}
+    Vb313                                   AT %MB300.313  : BOOL;         {DE:"vb313"}
+    Vb314                                   AT %MB300.314  : BOOL;         {DE:"vb314"}
+    Vb315                                   AT %MB300.315  : BOOL;         {DE:"vb315"}
+    Vb316                                   AT %MB300.316  : BOOL;         {DE:"vb316"}
+    Vb317                                   AT %MB300.317  : BOOL;         {DE:"vb317"}
     Vb4000_Automatico                       AT %MB300.4000 : BOOL;         {DE:"vb4000 - /// messa a ON da HMI sono in automatico"}
     Vb4001_StepPiegatore                    AT %MB300.4001 : BOOL;         {DE:"vb4001 - /// messa a ON da HMI il piegatore è passo passo"}
     Vb4002_StepPiegatoreStop                AT %MB300.4002 : BOOL;         {DE:"vb4002 - /// punto di stop piegatore"}
@@ -145,7 +232,7 @@ VAR_GLOBAL
     Vb4026_Piegatore2_OFF                   AT %MB300.4026 : BOOL;         {DE:"vb4026 - Secondo piegatore disattivato"}
     Vb4027_Piegatore3_OFF                   AT %MB300.4027 : BOOL;         {DE:"vb4027 - Terzo piegatore disattivato"}
     Vb4028_Piegatore4_OFF                   AT %MB300.4028 : BOOL;         {DE:"vb4028 - Quarto piegatore disattivato"}
-    Vb4031_AppScaricatoreInPos              AT %MB300.4031 : BOOL;         {DE:"vb4031 - dopo un tempo che la valvola o54_Scaric_dx_sx è a ON"}
+    Vb4031_AppScaricatoreInPos              AT %MB300.4031 : BOOL;         {DE:"vb4031 - dopo un tempo che la valvola Scaric_dx_sx è a ON"}
     Vb4032_AppScaricatoreStrBarre           AT %MB300.4032 : BOOL;         {DE:"vb4032 - avvio le barre insieme alla pinza alta"}
     Vb4033_RitardoAvanzataCaricatore        AT %MB300.4033 : BOOL;         {DE:"vb4033 - finchè è ad 1 il caricatore non può avanzare (ritardo dopo la barra2 on)"}
     Vb4034_ScaricOnSuRasafilo               AT %MB300.4034 : BOOL;         {DE:"vb4034 - se On la prima barra parte sul rasafilo finale, se off dopo che le pinze solo alte"}
@@ -207,137 +294,137 @@ VAR_GLOBAL
     Vb4098_OnSeqScartafiloC1                AT %MB300.4098 : BOOL;         {DE:"vb4098 - /// utilizzato da plc per abilitare scartafilo C1"}
     Vb4099_OnSeqScartafiloC2                AT %MB300.4099 : BOOL;         {DE:"vb4099 - /// utilizzato da plc per abilitare scartafilo C2"}
     Vb4100_                                 AT %MB300.4100 : BOOL;         {DE:"vb4100"}
-    Vb4133_AppMan_o1_Piegatore_1            AT %MB300.4133 : BOOL;         {DE:"vb4133"}
-    Vb4134_AppMan_o2_Piegatore_2            AT %MB300.4134 : BOOL;         {DE:"vb4134"}
-    Vb4135_AppMan_o3_Piegatore_3            AT %MB300.4135 : BOOL;         {DE:"vb4135"}
-    Vb4136_AppMan_o4_Piegatore_4            AT %MB300.4136 : BOOL;         {DE:"vb4136"}
-    Vb4137_AppMan_o5_Cambio_corpo           AT %MB300.4137 : BOOL;         {DE:"vb4137"}
-    Vb4138_AppMan_o6_Cambio_lama_front      AT %MB300.4138 : BOOL;         {DE:"vb4138"}
-    Vb4139_AppMan_o7_Cambio_lame_lateral    AT %MB300.4139 : BOOL;         {DE:"vb4139"}
-    Vb4140_AppMan_o8_Cambio_Lamelle_4_5     AT %MB300.4140 : BOOL;         {DE:"vb4140"}
-    Vb4141_AppMan_o9_Lancia_AD              AT %MB300.4141 : BOOL;         {DE:"vb4141"}
-    Vb4142_AppMan_o10_Piegatore_AD          AT %MB300.4142 : BOOL;         {DE:"vb4142"}
-    Vb4143_AppMan_o11_Piegatore_Su_Giu      AT %MB300.4143 : BOOL;         {DE:"vb4143"}
-    Vb4144_AppMan_o12_Bilanciere_Su_Giu     AT %MB300.4144 : BOOL;         {DE:"vb4144"}
-    Vb4145_AppMan_o13_Lancia_Cargo_Aperta   AT %MB300.4145 : BOOL;         {DE:"vb4145"}
-    Vb4146_AppMan_o14_C1_rasafilo           AT %MB300.4146 : BOOL;         {DE:"vb4146"}
-    Vb4147_AppMan_o15_EvAspiratore          AT %MB300.4147 : BOOL;         {DE:"vb4147"}
-    Vb4148_AppMan_o16_Lancia_Cargo_Chiusa   AT %MB300.4148 : BOOL;         {DE:"vb4148"}
-    Vb4149_AppMan_o17_C1_Piedino            AT %MB300.4149 : BOOL;         {DE:"vb4149"}
-    Vb4150_AppMan_o18_C1_Pinza_int          AT %MB300.4150 : BOOL;         {DE:"vb4150"}
-    Vb4151_AppMan_o19_C1_Pinza_est          AT %MB300.4151 : BOOL;         {DE:"vb4151"}
-    Vb4152_AppMan_o20_C1_Retrattile_AC      AT %MB300.4152 : BOOL;         {DE:"vb4152"}
-    Vb4153_AppMan_o21_C1_RaffreddamentoAgo  AT %MB300.4153 : BOOL;         {DE:"vb4153"}
+    Vb4133_AppMan_out_Piegatore_1           AT %MB300.4133 : BOOL;         {DE:"vb4133"}
+    Vb4134_AppMan_out_Piegatore_2           AT %MB300.4134 : BOOL;         {DE:"vb4134"}
+    Vb4135_AppMan_out_Piegatore_3           AT %MB300.4135 : BOOL;         {DE:"vb4135"}
+    Vb4136_AppMan_out_Piegatore_4           AT %MB300.4136 : BOOL;         {DE:"vb4136"}
+    Vb4137_AppMan_out_Cambio_corpo          AT %MB300.4137 : BOOL;         {DE:"vb4137"}
+    Vb4138_AppMan_out_Cambio_lama_front     AT %MB300.4138 : BOOL;         {DE:"vb4138"}
+    Vb4139_AppMan_out_Cambio_lame_lateral   AT %MB300.4139 : BOOL;         {DE:"vb4139"}
+    Vb4140_AppMan_out_Cambio_Lamelle_4_5    AT %MB300.4140 : BOOL;         {DE:"vb4140"}
+    Vb4141_AppMan_out_Lancia_AD             AT %MB300.4141 : BOOL;         {DE:"vb4141"}
+    Vb4142_AppMan_out_Piegatore_AD          AT %MB300.4142 : BOOL;         {DE:"vb4142"}
+    Vb4143_AppMan_out_Piegatore_Su_Giu      AT %MB300.4143 : BOOL;         {DE:"vb4143"}
+    Vb4144_AppMan_out_Bilanciere_Su_Giu     AT %MB300.4144 : BOOL;         {DE:"vb4144"}
+    Vb4145_AppMan_out_Lancia_Cargo_Aperta   AT %MB300.4145 : BOOL;         {DE:"vb4145"}
+    Vb4146_AppMan_out_C1_rasafilo           AT %MB300.4146 : BOOL;         {DE:"vb4146"}
+    Vb4147_AppMan_out_EvAspiratore          AT %MB300.4147 : BOOL;         {DE:"vb4147"}
+    Vb4148_AppMan_out_Lancia_Cargo_Chiusa   AT %MB300.4148 : BOOL;         {DE:"vb4148"}
+    Vb4149_AppMan_out_C1_Piedino            AT %MB300.4149 : BOOL;         {DE:"vb4149"}
+    Vb4150_AppMan_out_C1_Pinza_int          AT %MB300.4150 : BOOL;         {DE:"vb4150"}
+    Vb4151_AppMan_out_C1_Pinza_est          AT %MB300.4151 : BOOL;         {DE:"vb4151"}
+    Vb4152_AppMan_out_C1_Retrattile_AC      AT %MB300.4152 : BOOL;         {DE:"vb4152"}
+    Vb4153_AppMan_out_C1_RaffreddamentoAgo  AT %MB300.4153 : BOOL;         {DE:"vb4153"}
     Vb4154_22                               AT %MB300.4154 : BOOL;         {DE:"vb4154"}
-    Vb4155_AppMan_o23_Lentezza_Tasca_AD     AT %MB300.4155 : BOOL;         {DE:"vb4155"}
-    Vb4156_AppMan_o24_Pinza_carico_Su_Giu   AT %MB300.4156 : BOOL;         {DE:"vb4156"}
-    Vb4157_AppMan_o25_C1_Cambio_Pinze       AT %MB300.4157 : BOOL;         {DE:"vb4157"}
-    Vb4158_AppMan_o26_C1_Scalino_Piedino    AT %MB300.4158 : BOOL;         {DE:"vb4158"}
-    Vb4159_AppMan_o27_C1_Ranocchia_retrat   AT %MB300.4159 : BOOL;         {DE:"vb4159"}
-    Vb4160_28                               AT %MB300.4160 : BOOL;         {DE:"vb4160"}
-    Vb4161_29                               AT %MB300.4161 : BOOL;         {DE:"vb4161"}
-    Vb4162_30                               AT %MB300.4162 : BOOL;         {DE:"vb4162"}
-    Vb4163_AppMan_o31_C1_bloccaFiloMagente  AT %MB300.4163 : BOOL;         {DE:"vb4163"}
-    Vb4164_AppMan_o32_Enable_AssiXY_C1      AT %MB300.4164 : BOOL;         {DE:"vb4164"}
-    Vb4165_AppMan_o33_Valvolone             AT %MB300.4165 : BOOL;         {DE:"vb4165"}
-    Vb4166_AppMan_o34_CarPat_FrontBack      AT %MB300.4166 : BOOL;         {DE:"vb4166"}
-    Vb4167_AppMan_o35_CarPat_Aghi           AT %MB300.4167 : BOOL;         {DE:"vb4167"}
-    Vb4168_AppMan_o36_CarPat_SoffioAghi     AT %MB300.4168 : BOOL;         {DE:"vb4168"}
-    Vb4169_AppMan_o37_CarPat_SoffiPattina   AT %MB300.4169 : BOOL;         {DE:"vb4169"}
-    Vb4170_AppMan_o38_CarPat_DCGiu          AT %MB300.4170 : BOOL;         {DE:"vb4170"}
-    Vb4171_AppMan_o39_CarPat_DCSu           AT %MB300.4171 : BOOL;         {DE:"vb4171"}
+    Vb4155_AppMan_out_Lentezza_Tasca_AD     AT %MB300.4155 : BOOL;         {DE:"vb4155"}
+    Vb4156_AppMan_out_Pinza_carico_Su_Giu   AT %MB300.4156 : BOOL;         {DE:"vb4156"}
+    Vb4157_AppMan_out_C1_Cambio_Pinze       AT %MB300.4157 : BOOL;         {DE:"vb4157"}
+    Vb4158_AppMan_out_C1_Scalino_Piedino    AT %MB300.4158 : BOOL;         {DE:"vb4158"}
+    Vb4159_AppMan_out_C1_Ranocchia_retrat   AT %MB300.4159 : BOOL;         {DE:"vb4159"}
+    Vb4160_AppMan_out_Rullo_Rinforzo        AT %MB300.4160 : BOOL;         {DE:"vb4160"}
+    Vb4161_AppMan_out_Coltello_Rinforzo     AT %MB300.4161 : BOOL;         {DE:"vb4161"}
+    Vb4162_AppMan_out_MagneteSuGiu_Rinforzo AT %MB300.4162 : BOOL;         {DE:"vb4162"}
+    Vb4163_AppMan_out_C1_bloccaFiloMagente  AT %MB300.4163 : BOOL;         {DE:"vb4163"}
+    Vb4164_AppMan_out_Enable_AssiXY_C1      AT %MB300.4164 : BOOL;         {DE:"vb4164"}
+    Vb4165_AppMan_out_Valvolone             AT %MB300.4165 : BOOL;         {DE:"vb4165"}
+    Vb4166_AppMan_out_CarPat_FrontBack      AT %MB300.4166 : BOOL;         {DE:"vb4166"}
+    Vb4167_AppMan_out_CarPat_Aghi           AT %MB300.4167 : BOOL;         {DE:"vb4167"}
+    Vb4168_AppMan_out_CarPat_SoffioAghi     AT %MB300.4168 : BOOL;         {DE:"vb4168"}
+    Vb4169_AppMan_out_CarPat_SoffiPattina   AT %MB300.4169 : BOOL;         {DE:"vb4169"}
+    Vb4170_AppMan_out_CarPat_DCGiu          AT %MB300.4170 : BOOL;         {DE:"vb4170"}
+    Vb4171_AppMan_out_CarPat_DCSu           AT %MB300.4171 : BOOL;         {DE:"vb4171"}
     Vb4172_o40                              AT %MB300.4172 : BOOL;         {DE:"vb4172"}
-    Vb4173_o41                              AT %MB300.4173 : BOOL;         {DE:"vb4173"}
-    Vb4174_o42                              AT %MB300.4174 : BOOL;         {DE:"vb4174"}
-    Vb4175_o43                              AT %MB300.4175 : BOOL;         {DE:"vb4175"}
+    Vb4173_AppMan_out_CarPat_SpostLamLungo  AT %MB300.4173 : BOOL;         {DE:"vb4173"}
+    Vb4174_AppMan_out_CarPat_SpostLamCorto  AT %MB300.4174 : BOOL;         {DE:"vb4174"}
+    Vb4175_AppMan_out_CarPat_SoffioSuPiano  AT %MB300.4175 : BOOL;         {DE:"vb4175"}
     Vb4176_o44                              AT %MB300.4176 : BOOL;         {DE:"vb4176"}
     Vb4177_o45                              AT %MB300.4177 : BOOL;         {DE:"vb4177"}
-    Vb4178_AppMan_o46_C2_rasafilo           AT %MB300.4178 : BOOL;         {DE:"vb4178"}
+    Vb4178_AppMan_out_C2_rasafilo           AT %MB300.4178 : BOOL;         {DE:"vb4178"}
     Vb4179_o47                              AT %MB300.4179 : BOOL;         {DE:"vb4179"}
-    Vb4180_AppMano_48_Enable_AssiXY_C2      AT %MB300.4180 : BOOL;         {DE:"vb4180"}
-    Vb4181_AppMan_o49_C2_Piedino            AT %MB300.4181 : BOOL;         {DE:"vb4181"}
-    Vb4182_AppMan_o50_C2_Pinza_int          AT %MB300.4182 : BOOL;         {DE:"vb4182"}
-    Vb4183_AppMan_o51_PinzaPattina_1        AT %MB300.4183 : BOOL;         {DE:"vb4183"}
-    Vb4184_AppMan_o52_PinzaPattina_2        AT %MB300.4184 : BOOL;         {DE:"vb4184"}
-    Vb4185_AppMan_o53_C2_RaffreddamentoAgo  AT %MB300.4185 : BOOL;         {DE:"vb4185"}
-    Vb4186_AppMan_o54_Scaric_dx_sx          AT %MB300.4186 : BOOL;         {DE:"vb4186"}
+    Vb4180_AppMano_out_Enable_AssiXY_C2     AT %MB300.4180 : BOOL;         {DE:"vb4180"}
+    Vb4181_AppMan_out_C2_Piedino            AT %MB300.4181 : BOOL;         {DE:"vb4181"}
+    Vb4182_AppMan_out_C2_Pinza_int          AT %MB300.4182 : BOOL;         {DE:"vb4182"}
+    Vb4183_AppMan_out_PinzaPattina_1        AT %MB300.4183 : BOOL;         {DE:"vb4183"}
+    Vb4184_AppMan_out_PinzaPattina_2        AT %MB300.4184 : BOOL;         {DE:"vb4184"}
+    Vb4185_AppMan_out_C2_RaffreddamentoAgo  AT %MB300.4185 : BOOL;         {DE:"vb4185"}
+    Vb4186_AppMan_out_Scaric_dx_sx          AT %MB300.4186 : BOOL;         {DE:"vb4186"}
     Vb4187_o55                              AT %MB300.4187 : BOOL;         {DE:"vb4187"}
-    Vb4188_AppMan_o56_Piza_tras_su_giu      AT %MB300.4188 : BOOL;         {DE:"vb4188"}
-    Vb4189_AppMan_o57_C2_Cambio_Pinze       AT %MB300.4189 : BOOL;         {DE:"vb4189"}
-    Vb4190_AppMan_o58_C2_Scalino_Piedino    AT %MB300.4190 : BOOL;         {DE:"vb4190"}
+    Vb4188_AppMan_out_Piza_tras_su_giu      AT %MB300.4188 : BOOL;         {DE:"vb4188"}
+    Vb4189_AppMan_out_C2_Cambio_Pinze       AT %MB300.4189 : BOOL;         {DE:"vb4189"}
+    Vb4190_AppMan_out_C2_Scalino_Piedino    AT %MB300.4190 : BOOL;         {DE:"vb4190"}
     Vb4191_o59                              AT %MB300.4191 : BOOL;         {DE:"vb4191"}
-    Vb4192_AppMan_o60_Prima_barra           AT %MB300.4192 : BOOL;         {DE:"vb4192"}
-    Vb4193_AppMan_o61_Seconda_barra         AT %MB300.4193 : BOOL;         {DE:"vb4193"}
+    Vb4192_AppMan_out_Prima_barra           AT %MB300.4192 : BOOL;         {DE:"vb4192"}
+    Vb4193_AppMan_out_Seconda_barra         AT %MB300.4193 : BOOL;         {DE:"vb4193"}
     Vb4194_o62                              AT %MB300.4194 : BOOL;         {DE:"vb4194"}
-    Vb4195_AppMan_C2_bloccaFiloMagente      AT %MB300.4195 : BOOL;         {DE:"vb4195"}
+    Vb4195_AppMan_out_C2_bloccaFiloMagente  AT %MB300.4195 : BOOL;         {DE:"vb4195"}
     Vb4196_o64                              AT %MB300.4196 : BOOL;         {DE:"vb4196"}
     Vb4208_AppMagneteTensione               AT %MB300.4208 : BOOL;         {DE:"vb4208"}
     Vb4209_AppMagneteTensioneT2             AT %MB300.4209 : BOOL;         {DE:"vb4209"}
     Vb4210_AppMagneteSopraPiegatore         AT %MB300.4210 : BOOL;         {DE:"vb4210"}
     Vb4211_AppMagneteSottoPiegatore         AT %MB300.4211 : BOOL;         {DE:"vb4211"}
-    Vb4333_AppAut_o1_Piegatore_1            AT %MB300.4333 : BOOL;         {DE:"vb4333"}
-    Vb4334_AppAut_o2_Piegatore_2            AT %MB300.4334 : BOOL;         {DE:"vb4334"}
-    Vb4335_AppAut_o3_Piegatore_3            AT %MB300.4335 : BOOL;         {DE:"vb4335"}
-    Vb4336_AppAut_o4_Piegatore_4            AT %MB300.4336 : BOOL;         {DE:"vb4336"}
-    Vb4337_AppAut_o5_Cambio_corpo           AT %MB300.4337 : BOOL;         {DE:"vb4337"}
-    Vb4338_AppAut_o6_Cambio_lama_front      AT %MB300.4338 : BOOL;         {DE:"vb4338"}
-    Vb4339_AppAut_o7_Cambio_lame_lateral    AT %MB300.4339 : BOOL;         {DE:"vb4339"}
-    Vb4340_AppAut_o8_Cambio_Lamelle_4_5     AT %MB300.4340 : BOOL;         {DE:"vb4340"}
-    Vb4341_AppAut_o9_Lancia_AD              AT %MB300.4341 : BOOL;         {DE:"vb4341"}
-    Vb4342_AppAut_o10_Piegatore_AD          AT %MB300.4342 : BOOL;         {DE:"vb4342"}
-    Vb4343_AppAut_o11_Piegatore_Su_Giu      AT %MB300.4343 : BOOL;         {DE:"vb4343"}
-    Vb4344_AppAut_o12_Bilanciere_Su_Giu     AT %MB300.4344 : BOOL;         {DE:"vb4344"}
-    Vb4345_AppAut_o13_Lancia_Cargo_Aperta   AT %MB300.4345 : BOOL;         {DE:"vb4345"}
-    Vb4346_AppAut_o14_C1_rasafilo           AT %MB300.4346 : BOOL;         {DE:"vb4346"}
-    Vb4347_AppAut_o15_EvAspiratore          AT %MB300.4347 : BOOL;         {DE:"vb4347"}
-    Vb4348_AppAut_o16_Lancia_Cargo_Chiusa   AT %MB300.4348 : BOOL;         {DE:"vb4348"}
-    Vb4349_AppAut_o17_C1_Piedino            AT %MB300.4349 : BOOL;         {DE:"vb4349"}
-    Vb4350_AppAut_o18_C1_Pinza_int          AT %MB300.4350 : BOOL;         {DE:"vb4350"}
-    Vb4351_AppAut_o19_C1_Pinza_est          AT %MB300.4351 : BOOL;         {DE:"vb4351"}
-    Vb4352_AppAut_o20_C1_Retrattile_AC      AT %MB300.4352 : BOOL;         {DE:"vb4352"}
-    Vb4353_AppAut_o21_C1_RaffreddamentoAgo  AT %MB300.4353 : BOOL;         {DE:"vb4353"}
+    Vb4333_AppAut_out_Piegatore_1           AT %MB300.4333 : BOOL;         {DE:"vb4333"}
+    Vb4334_AppAut_out_Piegatore_2           AT %MB300.4334 : BOOL;         {DE:"vb4334"}
+    Vb4335_AppAut_out_Piegatore_3           AT %MB300.4335 : BOOL;         {DE:"vb4335"}
+    Vb4336_AppAut_out_Piegatore_4           AT %MB300.4336 : BOOL;         {DE:"vb4336"}
+    Vb4337_AppAut_out_Cambio_corpo          AT %MB300.4337 : BOOL;         {DE:"vb4337"}
+    Vb4338_AppAut_out_Cambio_lama_front     AT %MB300.4338 : BOOL;         {DE:"vb4338"}
+    Vb4339_AppAut_out_Cambio_lame_lateral   AT %MB300.4339 : BOOL;         {DE:"vb4339"}
+    Vb4340_AppAut_out_Cambio_Lamelle_4_5    AT %MB300.4340 : BOOL;         {DE:"vb4340"}
+    Vb4341_AppAut_out_Lancia_AD             AT %MB300.4341 : BOOL;         {DE:"vb4341"}
+    Vb4342_AppAut_out_Piegatore_AD          AT %MB300.4342 : BOOL;         {DE:"vb4342"}
+    Vb4343_AppAut_out_Piegatore_Su_Giu      AT %MB300.4343 : BOOL;         {DE:"vb4343"}
+    Vb4344_AppAut_out_Bilanciere_Su_Giu     AT %MB300.4344 : BOOL;         {DE:"vb4344"}
+    Vb4345_AppAut_out_Lancia_Cargo_Aperta   AT %MB300.4345 : BOOL;         {DE:"vb4345"}
+    Vb4346_AppAut_out_C1_rasafilo           AT %MB300.4346 : BOOL;         {DE:"vb4346"}
+    Vb4347_AppAut_out_EvAspiratore          AT %MB300.4347 : BOOL;         {DE:"vb4347"}
+    Vb4348_AppAut_out_Lancia_Cargo_Chiusa   AT %MB300.4348 : BOOL;         {DE:"vb4348"}
+    Vb4349_AppAut_out_C1_Piedino            AT %MB300.4349 : BOOL;         {DE:"vb4349"}
+    Vb4350_AppAut_out_C1_Pinza_int          AT %MB300.4350 : BOOL;         {DE:"vb4350"}
+    Vb4351_AppAut_out_C1_Pinza_est          AT %MB300.4351 : BOOL;         {DE:"vb4351"}
+    Vb4352_AppAut_out_C1_Retrattile_AC      AT %MB300.4352 : BOOL;         {DE:"vb4352"}
+    Vb4353_AppAut_out_C1_RaffreddamentoAgo  AT %MB300.4353 : BOOL;         {DE:"vb4353"}
     Vb4354_o22                              AT %MB300.4354 : BOOL;         {DE:"vb4354"}
-    Vb4355_AppAut_o23_Lentezza_Tasca_AD     AT %MB300.4355 : BOOL;         {DE:"vb4355"}
-    Vb4356_AppAut_o24_Pinza_carico_Su_Giu   AT %MB300.4356 : BOOL;         {DE:"vb4356"}
-    Vb4357_AppAut_o25_C1_Cambio_Pinze       AT %MB300.4357 : BOOL;         {DE:"vb4357"}
-    Vb4358_AppAut_o26_C1_Scalino_Piedino    AT %MB300.4358 : BOOL;         {DE:"vb4358"}
-    Vb4359_AppAut_o27_C1_Ranocchia_retrat   AT %MB300.4359 : BOOL;         {DE:"vb4359"}
-    Vb4360_o28                              AT %MB300.4360 : BOOL;         {DE:"vb4360"}
-    Vb4361_o29                              AT %MB300.4361 : BOOL;         {DE:"vb4361"}
-    Vb4362_o30                              AT %MB300.4362 : BOOL;         {DE:"vb4362"}
-    Vb4363_AppAut_o31_C1_bloccaFiloMagente  AT %MB300.4363 : BOOL;         {DE:"vb4363"}
-    Vb4364_AppAut_o32_Enable_AssiXY_C1      AT %MB300.4364 : BOOL;         {DE:"vb4364"}
-    Vb4365_AppAut_o33_Valvolone             AT %MB300.4365 : BOOL;         {DE:"vb4365"}
-    Vb4366_AppAut_o34_CarPat_FrontBack      AT %MB300.4366 : BOOL;         {DE:"vb4366"}
-    Vb4367_AppAut_o35_CarPat_Aghi           AT %MB300.4367 : BOOL;         {DE:"vb4367"}
-    Vb4368_AppAut_o36_CarPat_SoffioAghi     AT %MB300.4368 : BOOL;         {DE:"vb4368"}
-    Vb4369_AppAut_o37_CarPat_SoffiPattina   AT %MB300.4369 : BOOL;         {DE:"vb4369"}
-    Vb4370_AppAut_o38_CarPat_DCGiu          AT %MB300.4370 : BOOL;         {DE:"vb4370"}
-    Vb4371_AppAut_o39_CarPat_DCSu           AT %MB300.4371 : BOOL;         {DE:"vb4371"}
+    Vb4355_AppAut_out_Lentezza_Tasca_AD     AT %MB300.4355 : BOOL;         {DE:"vb4355"}
+    Vb4356_AppAut_out_Pinza_carico_Su_Giu   AT %MB300.4356 : BOOL;         {DE:"vb4356"}
+    Vb4357_AppAut_out_C1_Cambio_Pinze       AT %MB300.4357 : BOOL;         {DE:"vb4357"}
+    Vb4358_AppAut_out_C1_Scalino_Piedino    AT %MB300.4358 : BOOL;         {DE:"vb4358"}
+    Vb4359_AppAut_out_C1_Ranocchia_retrat   AT %MB300.4359 : BOOL;         {DE:"vb4359"}
+    Vb4360_AppAut_out_Rullo_Rinforzo        AT %MB300.4360 : BOOL;         {DE:"vb4360"}
+    Vb4361_AppAut_out_Coltello_Rinforzo     AT %MB300.4361 : BOOL;         {DE:"vb4361"}
+    Vb4362_AppAut_out_MagneteSuGiu_Rinforzo AT %MB300.4362 : BOOL;         {DE:"vb4362"}
+    Vb4363_AppAut_out_C1_bloccaFiloMagente  AT %MB300.4363 : BOOL;         {DE:"vb4363"}
+    Vb4364_AppAut_out_Enable_AssiXY_C1      AT %MB300.4364 : BOOL;         {DE:"vb4364"}
+    Vb4365_AppAut_out_Valvolone             AT %MB300.4365 : BOOL;         {DE:"vb4365"}
+    Vb4366_AppAut_out_CarPat_FrontBack      AT %MB300.4366 : BOOL;         {DE:"vb4366"}
+    Vb4367_AppAut_out_CarPat_Aghi           AT %MB300.4367 : BOOL;         {DE:"vb4367"}
+    Vb4368_AppAut_out_CarPat_SoffioAghi     AT %MB300.4368 : BOOL;         {DE:"vb4368"}
+    Vb4369_AppAut_out_CarPat_SoffiPattina   AT %MB300.4369 : BOOL;         {DE:"vb4369"}
+    Vb4370_AppAut_out_CarPat_DCGiu          AT %MB300.4370 : BOOL;         {DE:"vb4370"}
+    Vb4371_AppAut_out_CarPat_DCSu           AT %MB300.4371 : BOOL;         {DE:"vb4371"}
     Vb4372_o40                              AT %MB300.4372 : BOOL;         {DE:"vb4372"}
-    Vb4373_o41                              AT %MB300.4373 : BOOL;         {DE:"vb4373"}
-    Vb4374_o42                              AT %MB300.4374 : BOOL;         {DE:"vb4374"}
-    Vb4375_o43                              AT %MB300.4375 : BOOL;         {DE:"vb4375"}
+    Vb4373_AppAut_out_CarPat_SpostLamLungo  AT %MB300.4373 : BOOL;         {DE:"vb4373"}
+    Vb4374_AppAut_out_CarPat_SpostLamCorto  AT %MB300.4374 : BOOL;         {DE:"vb4374"}
+    Vb4375_AppAut_out_CarPat_SoffioSuPiano  AT %MB300.4375 : BOOL;         {DE:"vb4375"}
     Vb4376_o44                              AT %MB300.4376 : BOOL;         {DE:"vb4376"}
     Vb4377_o45                              AT %MB300.4377 : BOOL;         {DE:"vb4377"}
-    Vb4378_AppAut_o46_C2_rasafilo           AT %MB300.4378 : BOOL;         {DE:"vb4378"}
+    Vb4378_AppAut_out_C2_rasafilo           AT %MB300.4378 : BOOL;         {DE:"vb4378"}
     Vb4379_o47                              AT %MB300.4379 : BOOL;         {DE:"vb4379"}
-    Vb4380_AppAuto48_Enable_AssiXY_C2       AT %MB300.4380 : BOOL;         {DE:"vb4380"}
-    Vb4381_AppAut_o49_C2_Piedino            AT %MB300.4381 : BOOL;         {DE:"vb4381"}
-    Vb4382_AppAut_o50_C2_Pinza_int          AT %MB300.4382 : BOOL;         {DE:"vb4382"}
-    Vb4383_AppAut_o51_PinzaPattina_1        AT %MB300.4383 : BOOL;         {DE:"vb4383"}
-    Vb4384_AppAut_o52_PinzaPattina_2        AT %MB300.4384 : BOOL;         {DE:"vb4384"}
-    Vb4385_AppAut_o53_C2_RaffreddamentoAgo  AT %MB300.4385 : BOOL;         {DE:"vb4385"}
-    Vb4386_AppAut_o54_Scaric_dx_sx          AT %MB300.4386 : BOOL;         {DE:"vb4386"}
+    Vb4380_AppAuto_out_Enable_AssiXY_C2     AT %MB300.4380 : BOOL;         {DE:"vb4380"}
+    Vb4381_AppAut_out_C2_Piedino            AT %MB300.4381 : BOOL;         {DE:"vb4381"}
+    Vb4382_AppAut_out_C2_Pinza_int          AT %MB300.4382 : BOOL;         {DE:"vb4382"}
+    Vb4383_AppAut_out_PinzaPattina_1        AT %MB300.4383 : BOOL;         {DE:"vb4383"}
+    Vb4384_AppAut_out_PinzaPattina_2        AT %MB300.4384 : BOOL;         {DE:"vb4384"}
+    Vb4385_AppAut_out_C2_RaffreddamentoAgo  AT %MB300.4385 : BOOL;         {DE:"vb4385"}
+    Vb4386_AppAut_out_Scaric_dx_sx          AT %MB300.4386 : BOOL;         {DE:"vb4386"}
     Vb4387_o55                              AT %MB300.4387 : BOOL;         {DE:"vb4387"}
-    Vb4388_AppAut_o56_Pinza_tras_su_giu     AT %MB300.4388 : BOOL;         {DE:"vb4388"}
-    Vb4389_AppAut_o57_C2_Cambio_Pinze       AT %MB300.4389 : BOOL;         {DE:"vb4389"}
-    Vb4390_AppAut_o58_C2_Scalino_Piedino    AT %MB300.4390 : BOOL;         {DE:"vb4390"}
+    Vb4388_AppAut_out_Pinza_tras_su_giu     AT %MB300.4388 : BOOL;         {DE:"vb4388"}
+    Vb4389_AppAut_out_C2_Cambio_Pinze       AT %MB300.4389 : BOOL;         {DE:"vb4389"}
+    Vb4390_AppAut_out_C2_Scalino_Piedino    AT %MB300.4390 : BOOL;         {DE:"vb4390"}
     Vb4391_o59                              AT %MB300.4391 : BOOL;         {DE:"vb4391"}
-    Vb4392_AppAut_o60_Prima_barra           AT %MB300.4392 : BOOL;         {DE:"vb4392"}
-    Vb4393_AppAut_o61_Seconda_barra         AT %MB300.4393 : BOOL;         {DE:"vb4393"}
+    Vb4392_AppAut_out_Prima_barra           AT %MB300.4392 : BOOL;         {DE:"vb4392"}
+    Vb4393_AppAut_out_Seconda_barra         AT %MB300.4393 : BOOL;         {DE:"vb4393"}
     Vb4394_o62                              AT %MB300.4394 : BOOL;         {DE:"vb4394"}
-    Vb4395_AppAut_o63_C2_bloccaFiloMagente  AT %MB300.4395 : BOOL;         {DE:"vb4395"}
+    Vb4395_AppAut_out_C2_bloccaFiloMagente  AT %MB300.4395 : BOOL;         {DE:"vb4395"}
     Vb4396_o64                              AT %MB300.4396 : BOOL;         {DE:"vb4396"}
     Vb4501_AppVbChn3StartHMI                AT %MB300.4501 : BOOL;         {DE:"vb4501 - app pulsante hmi start"}
     Vb4502_AppPosMacchinaPerZero            AT %MB300.4502 : BOOL;         {DE:"vb4502 - a ON tutte i cilindri sono posizionati correttamente per azzeramento"}
@@ -354,13 +441,13 @@ VAR_GLOBAL
     Vb4513_AppEnbCucitrice2                 AT %MB300.4513 : BOOL;         {DE:"vb4513 - a ON abilito la cucitrice 2"}
     Vb4514_AppHmiScaricatore                AT %MB300.4514 : BOOL;         {DE:"vb4514 - a tasto hmi  scaricatore"}
     Vb4515_AppEnbScaricatore                AT %MB300.4515 : BOOL;         {DE:"vb4515 - a ON abilito lo scaricatore"}
-    Vb4516_AppHmiScambioPinzeC1_Car2        AT %MB300.4516 : BOOL;         {DE:"vb4516 - a tasto hmi tipo scambio pinza tra cucitrice 1 e caricatore 2"}
+    Vb4516_AppHmiScambioPinzeC1_Car2        AT %MB300.4516 : BOOL;         {DE:"vb4516 - Clamp mode impostato da parametro HMI"}
     Vb4518_EnbQuartoXL                      AT %MB300.4518 : BOOL;         {DE:"vb4518 - a ON abilito quarto XL"}
     Vb4519_AppScaricoCortiConPinza          AT %MB300.4519 : BOOL;         {DE:"vb4519 - a ON abilitolo scarico dei pezzi piccoli con la pinza"}
     Vb4520_AppScaricoCortiConPinzaRunning   AT %MB300.4520 : BOOL;         {DE:"vb4520 - a ON mentre sta girando il ciclo scaricatore pezzi piccoli"}
     Vb4521_AppHmiTestPiegatore              AT %MB300.4521 : BOOL;         {DE:"vb4521 - a tasto hmi test piegatore"}
     Vb4522_AppHmiTestTrasl                  AT %MB300.4522 : BOOL;         {DE:"vb4522 - a tasto hmi test traslatore"}
-    Vb4523_C2_PinzaDietroUnaTesta           AT %MB300.4523 : BOOL;         {DE:"vb4523 - a ON la pinza cucitura è nella posizione distro perchè ho Solo una testa"}
+    Vb4523_C2_PinzaDietroUnaTesta           AT %MB300.4523 : BOOL;         {DE:"vb4523 - a ON la pinza cucitura è nella posizione dietro perchè ho Solo una testa"}
     Vb4580_EnbSgancioPinzaDopoZero          AT %MB300.4580 : BOOL;         {DE:"vb4580 - a ON sgancia le pinze alla fine dell'azzeramento"}
     Vb4581_EnbAggancioPinzaAutomatico       AT %MB300.4581 : BOOL;         {DE:"vb4581 - a ON aggancia le pinze in automatico"}
     Vb4582_EnbSgancioPinzaFineCucitura      AT %MB300.4582 : BOOL;         {DE:"vb4582 - a ON sgancia le pinze alla fine della cucitura"}
@@ -453,7 +540,7 @@ VAR_GLOBAL
     Vn111_EnbEtichetta                      AT %MW400.111  : INT;          {DE:"vn111  - /// a ON abilito la pausa per mettere l'etichetta ( 1 = tutte) ( 2 = 1 si 1 no )"}
     Vn112_AppEtichettaMod_2                 AT %MW400.112  : INT;          {DE:"vn112  - /// utilizzata come appoggio modo 2 ( se serve mettere reset )"}
     Vn115_CopiaSeqPiegFree                  AT %MW400.115  : INT;          {DE:"vn115  - copia sequenza piegatura Free per pagina touch"}
-    Vn120_AppEnbScambioPinzeC1_Car2         AT %MW400.120  : INT;          {DE:"vn120  - a 1 abilito tipo scambio pinza tra cucitrice 1 e caricatore 2"}
+    Vn120_AppEnbScambioPinzeC1_Car2         AT %MW400.120  : INT;          {DE:"vn120  - a 0 il traslo scende esterno alle pinze, a 1 il traslo scendo con la interna ancora bassa"}
     Vn131_Debug                             AT %MW400.131  : INT;          {DE:"vn131  - debug su pagina AUTO touch"}
     Vn132_DebugPie                          AT %MW400.132  : INT;          {DE:"vn132  - debug su pagina AUTO touch"}
     Vn133_DebugAuto                         AT %MW400.133  : INT;          {DE:"vn133  - debug su pagina AUTO touch"}
@@ -466,6 +553,7 @@ VAR_GLOBAL
     Vn163_Read_anaout100                    AT %MW400.163  : INT;          {DE:"vn163"}
     mc_stati_Carica_Pattina                 AT %MW400.164  : INT;          {DE:"vn164"}
     Vn180_Device_Rinforzo                   AT %MW400.180  : INT;          {DE:"vn180  - 0= disabilitato, 1 = tipo JAM, 2 = tipo Turco"}
+    Vn181_Step_Rinforzo                     AT %MW400.181  : INT;          {DE:"vn181"}
     Vn196_Tasca_DX_C1                       AT %MW400.196  : INT;          {DE:"vn196"}
     Vn197_Tasca_SX_C1                       AT %MW400.197  : INT;          {DE:"vn197"}
     Vn198_Tasca_DX_C2                       AT %MW400.198  : INT;          {DE:"vn198"}
@@ -696,6 +784,8 @@ VAR_GLOBAL
     Vq3203_Ritardo_PartenzaCuciPat          AT %MD500.3203 : DINT;         {DE:"vq3203 - dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura"}
     Vq3204_Ritardo_PiegaturaPat             AT %MD500.3204 : DINT;         {DE:"vq3204 - ritardo prima di piegare la pattina"}
     Vq3205_Ritardo_SecondaCuciPat           AT %MD500.3205 : DINT;         {DE:"vq3205 - ritardo la piegatura della pattina e la partenza della seconda cucitura"}
+    Vq3206_Time_Soffio_PosPattina           AT %MD500.3206 : DINT;         {DE:"vq3206 - tempo per posizionare la pattina prima che arretra il piano                            //// Mauro"}
+    Vq3207_Time_CorsaC_PosPattina           AT %MD500.3207 : DINT;         {DE:"vq3207 - tempo per posizionare la pattina dopo che arretra il piano                            //// Mauro"}
     Vq3500_PosizioneCaricRiposo             AT %MD500.3500 : DINT;         {DE:"vq3500 - posizione caricatore a riposo fuori ingombro"}
     Vq3501_PosizioneCaricCaricoTasca        AT %MD500.3501 : DINT;         {DE:"vq3501 - posizione caricatore carico tasca"}
     Vq3502_PosizioneCaricScaricoTasca       AT %MD500.3502 : DINT;         {DE:"vq3502 - posizione caricatore scarico tasca"}
@@ -747,64 +837,64 @@ VAR_GLOBAL
     VdTmpOP_T3                              AT %ML600.6    : LREAL;        {DE:"vd6    - Usato per calcoli temporanei nel PLC"}
 
 
-    i1_Pulsanti_start                       AT %IX100.0    : BOOL;         {DE:"i1"}
-    i2_C1_Pedana                            AT %IX100.1    : BOOL;         {DE:"i2"}
-    i3_C1_PedanaPiegatore                   AT %IX100.2    : BOOL;         {DE:"i3"}
-    i4_C1_FcZeroCrochet                     AT %IX100.3    : BOOL;         {DE:"i4"}
-    i5_FcPinzaCaricoAlta                    AT %IX100.4    : BOOL;         {DE:"i5"}
-    i6_FcMinCaricatore1                     AT %IX100.5    : BOOL;         {DE:"i6"}
-    i7_FcPiegatore_AV                       AT %IX100.6    : BOOL;         {DE:"i7"}
-    i8_FcPiegatore_DI                       AT %IX100.7    : BOOL;         {DE:"i8"}
-    i9_FcPiegatoreBasso                     AT %IX100.8    : BOOL;         {DE:"i9"}
-    i10_Piegatore_Salito                    AT %IX100.9    : BOOL;         {DE:"i10"}
-    i11_FcLancia_DI                         AT %IX100.10   : BOOL;         {DE:"i11"}
-    i12_Bilanciere_Alto                     AT %IX100.11   : BOOL;         {DE:"i12"}
-    i13_Bilanciere_Basso                    AT %IX100.12   : BOOL;         {DE:"i13"}
-    i14_Rinforzo_Attivo                     AT %IX100.13   : BOOL;         {DE:"i14"}
-    i15_Rinforzo_ready                      AT %IX100.14   : BOOL;         {DE:"i15"}
+    i1                                      AT %IX100.0    : BOOL;         {DE:"i1"}
+    i2                                      AT %IX100.1    : BOOL;         {DE:"i2"}
+    i3                                      AT %IX100.2    : BOOL;         {DE:"i3"}
+    i4                                      AT %IX100.3    : BOOL;         {DE:"i4     - C1_FcZeroCrochet"}
+    i5                                      AT %IX100.4    : BOOL;         {DE:"i5"}
+    i6                                      AT %IX100.5    : BOOL;         {DE:"i6     - _FcMinCaricatore1"}
+    i7                                      AT %IX100.6    : BOOL;         {DE:"i7"}
+    i8                                      AT %IX100.7    : BOOL;         {DE:"i8"}
+    i9                                      AT %IX100.8    : BOOL;         {DE:"i9"}
+    i10                                     AT %IX100.9    : BOOL;         {DE:"i10"}
+    i11                                     AT %IX100.10   : BOOL;         {DE:"i11"}
+    i12                                     AT %IX100.11   : BOOL;         {DE:"i12"}
+    i13                                     AT %IX100.12   : BOOL;         {DE:"i13"}
+    i14                                     AT %IX100.13   : BOOL;         {DE:"i14"}
+    i15                                     AT %IX100.14   : BOOL;         {DE:"i15"}
     i16                                     AT %IX100.15   : BOOL;         {DE:"i16"}
     i17                                     AT %IX100.16   : BOOL;         {DE:"i17"}
-    i18_C1_RotturaFilo                      AT %IX100.17   : BOOL;         {DE:"i18"}
-    i19_C1_FcMinAsseX                       AT %IX100.18   : BOOL;         {DE:"i19"}
-    i20_C1_FcMinAsseY                       AT %IX100.19   : BOOL;         {DE:"i20"}
-    i21_Emg                                 AT %IX100.20   : BOOL;         {DE:"i21"}
-    i22_C1_FcZeroAgo                        AT %IX100.21   : BOOL;         {DE:"i22"}
-    i23_C1_PinzaIntBassa                    AT %IX100.22   : BOOL;         {DE:"i23"}
-    i24_C1_PinzaEstAlta                     AT %IX100.23   : BOOL;         {DE:"i24"}
-    i25_PulsResetFolder                     AT %IX100.24   : BOOL;         {DE:"i25"}
-    i26_C1_PulsStopTesta                    AT %IX100.25   : BOOL;         {DE:"i26"}
-    i27_C2_PulsStopTesta                    AT %IX100.26   : BOOL;         {DE:"i27"}
+    i18                                     AT %IX100.17   : BOOL;         {DE:"i18"}
+    i19                                     AT %IX100.18   : BOOL;         {DE:"i19"}
+    i20                                     AT %IX100.19   : BOOL;         {DE:"i20"}
+    i21                                     AT %IX100.20   : BOOL;         {DE:"i21"}
+    i22                                     AT %IX100.21   : BOOL;         {DE:"i22"}
+    i23                                     AT %IX100.22   : BOOL;         {DE:"i23"}
+    i24                                     AT %IX100.23   : BOOL;         {DE:"i24"}
+    i25                                     AT %IX100.24   : BOOL;         {DE:"i25"}
+    i26                                     AT %IX100.25   : BOOL;         {DE:"i26"}
+    i27                                     AT %IX100.26   : BOOL;         {DE:"i27"}
     i28                                     AT %IX100.27   : BOOL;         {DE:"i28"}
     i29                                     AT %IX100.28   : BOOL;         {DE:"i29"}
     i30                                     AT %IX100.29   : BOOL;         {DE:"i30"}
-    i31_C1_ReadyAsseX                       AT %IX100.30   : BOOL;         {DE:"i31"}
-    i32_C1_ReadyAsseY                       AT %IX100.31   : BOOL;         {DE:"i32"}
-    i33_C2_Pedana                           AT %IX100.32   : BOOL;         {DE:"i33"}
+    i31                                     AT %IX100.30   : BOOL;         {DE:"i31"}
+    i32                                     AT %IX100.31   : BOOL;         {DE:"i32"}
+    i33                                     AT %IX100.32   : BOOL;         {DE:"i33"}
     i34                                     AT %IX100.33   : BOOL;         {DE:"i34"}
-    i35_Pressostato                         AT %IX100.34   : BOOL;         {DE:"i35"}
-    i36                                     AT %IX100.35   : BOOL;         {DE:"i36"}
-    i37_C2_FcZeroCrochet                    AT %IX100.36   : BOOL;         {DE:"i37"}
-    i38_FcPinzaTraslAlta                    AT %IX100.37   : BOOL;         {DE:"i38"}
-    i39_FcMinCaricatore2                    AT %IX100.38   : BOOL;         {DE:"i39"}
-    i40                                     AT %IX100.39   : BOOL;         {DE:"i40"}
-    i41_CarPat_Top_SUGIu                    AT %IX100.40   : BOOL;         {DE:"i41"}
-    i42_CarPat_Middle_SUGIu                 AT %IX100.41   : BOOL;         {DE:"i42"}
-    i43_CarPat_Bottom_SUGIu                 AT %IX100.42   : BOOL;         {DE:"i43"}
-    i44_CarPat_Tastatore                    AT %IX100.43   : BOOL;         {DE:"i44"}
-    i45_CarPat_Empty                        AT %IX100.44   : BOOL;         {DE:"i45"}
-    i46_CarPat_BackPos                      AT %IX100.45   : BOOL;         {DE:"i46"}
-    i47_C2_ReadyAsseX                       AT %IX100.46   : BOOL;         {DE:"i47"}
-    i48_C2_ReadyAsseY                       AT %IX100.47   : BOOL;         {DE:"i48"}
-    i49                                     AT %IX100.48   : BOOL;         {DE:"i49"}
-    i50_C2_RotturaFilo                      AT %IX100.49   : BOOL;         {DE:"i50"}
-    i51_C2_FcMinAsseX                       AT %IX100.50   : BOOL;         {DE:"i51"}
-    i52_C2_FcMinAsseY                       AT %IX100.51   : BOOL;         {DE:"i52"}
-    i53_C2_FcMaxAsseY                       AT %IX100.52   : BOOL;         {DE:"i53"}
-    i54_C2_FcZeroAgo                        AT %IX100.53   : BOOL;         {DE:"i54"}
-    i55_C2_FcPinzaIntBassa                  AT %IX100.54   : BOOL;         {DE:"i55"}
+    i35                                     AT %IX100.34   : BOOL;         {DE:"i35"}
+    i36                                     AT %IX100.35   : BOOL;         {DE:"i36    - C2_FcZeroCrochet"}
+    i37                                     AT %IX100.36   : BOOL;         {DE:"i37    - C2_FcMinAsseX"}
+    i38                                     AT %IX100.37   : BOOL;         {DE:"i38    - C2_FcMinAsseY"}
+    i39                                     AT %IX100.38   : BOOL;         {DE:"i39"}
+    i40                                     AT %IX100.39   : BOOL;         {DE:"i40_C2_FcZeroAgo"}
+    i41                                     AT %IX100.40   : BOOL;         {DE:"i41"}
+    i42                                     AT %IX100.41   : BOOL;         {DE:"i42"}
+    i43                                     AT %IX100.42   : BOOL;         {DE:"i43    - FcMinCaricatore2"}
+    i44                                     AT %IX100.43   : BOOL;         {DE:"i44"}
+    i45                                     AT %IX100.44   : BOOL;         {DE:"i45"}
+    i46                                     AT %IX100.45   : BOOL;         {DE:"i46"}
+    i47                                     AT %IX100.46   : BOOL;         {DE:"i47"}
+    i48                                     AT %IX100.47   : BOOL;         {DE:"i48"}
+    i49                                     AT %IX100.48   : BOOL;         {DE:"i49    - _CarPat_Top_SUGIu"}
+    i50                                     AT %IX100.49   : BOOL;         {DE:"i50    - _CarPat_Middle_SUGIu"}
+    i51                                     AT %IX100.50   : BOOL;         {DE:"i51    - _CarPat_Bottom_SUGIu  --------i51_C2_FcMinAsseX"}
+    i52                                     AT %IX100.51   : BOOL;         {DE:"i52    - _CarPat_Tastatore  ----------- i52_C2_FcMinAsseY"}
+    i53                                     AT %IX100.52   : BOOL;         {DE:"i53    - _CarPat_Empty  -------------i53_C2_FcMaxAsseY"}
+    i54                                     AT %IX100.53   : BOOL;         {DE:"i54    - _CarPat_BackPos   ------i54_C2_FcZeroAgo"}
+    i55                                     AT %IX100.54   : BOOL;         {DE:"i55"}
     i56                                     AT %IX100.55   : BOOL;         {DE:"i56"}
     i57                                     AT %IX100.56   : BOOL;         {DE:"i57"}
-    i58_C2_PulsStopTesta                    AT %IX100.57   : BOOL;         {DE:"i58"}
+    i58                                     AT %IX100.57   : BOOL;         {DE:"i58"}
     i59                                     AT %IX100.58   : BOOL;         {DE:"i59"}
     i60                                     AT %IX100.59   : BOOL;         {DE:"i60"}
     i61                                     AT %IX100.60   : BOOL;         {DE:"i61"}
@@ -813,69 +903,69 @@ VAR_GLOBAL
     i64                                     AT %IX100.63   : BOOL;         {DE:"i64"}
 
 
-    o1_Piegatore_1                          AT %QX200.0    : BOOL;         {DE:"o1"}
-    o2_Piegatore_2                          AT %QX200.1    : BOOL;         {DE:"o2"}
-    o3_Piegatore_3                          AT %QX200.2    : BOOL;         {DE:"o3"}
-    o4_Piegatore_4                          AT %QX200.3    : BOOL;         {DE:"o4"}
-    o5_Cambio_corpo                         AT %QX200.4    : BOOL;         {DE:"o5"}
-    o6_Cambio_lama_front                    AT %QX200.5    : BOOL;         {DE:"o6"}
-    o7_Cambio_lame_lateral                  AT %QX200.6    : BOOL;         {DE:"o7"}
-    o8_Cambio_Lamelle_4_5                   AT %QX200.7    : BOOL;         {DE:"o8"}
-    o9_Lancia_AD                            AT %QX200.8    : BOOL;         {DE:"o9"}
-    o10_Piegatore_AD                        AT %QX200.9    : BOOL;         {DE:"o10"}
-    o11_Piegatore_Su_Giu                    AT %QX200.10   : BOOL;         {DE:"o11"}
-    o12_Bilanciere_Su_Giu                   AT %QX200.11   : BOOL;         {DE:"o12"}
-    o13_Lancia_Cargo_Aperta                 AT %QX200.12   : BOOL;         {DE:"o13"}
-    o14_C1_rasafilo                         AT %QX200.13   : BOOL;         {DE:"o14"}
-    o15_EvAspiratore                        AT %QX200.14   : BOOL;         {DE:"o15"}
-    o16_Lancia_Cargo_Chiusa                 AT %QX200.15   : BOOL;         {DE:"o16"}
-    o17_C1_Piedino                          AT %QX200.16   : BOOL;         {DE:"o17"}
-    o18_C1_Pinza_int                        AT %QX200.17   : BOOL;         {DE:"o18"}
-    o19_C1_Pinza_est                        AT %QX200.18   : BOOL;         {DE:"o19"}
-    o20_C1_Retrattile_AC                    AT %QX200.19   : BOOL;         {DE:"o20"}
-    o21_C1_RaffreddamentoAgo                AT %QX200.20   : BOOL;         {DE:"o21"}
+    o1                                      AT %QX200.0    : BOOL;         {DE:"o1"}
+    o2                                      AT %QX200.1    : BOOL;         {DE:"o2"}
+    o3                                      AT %QX200.2    : BOOL;         {DE:"o3"}
+    o4                                      AT %QX200.3    : BOOL;         {DE:"o4"}
+    o5                                      AT %QX200.4    : BOOL;         {DE:"o5"}
+    o6                                      AT %QX200.5    : BOOL;         {DE:"o6"}
+    o7                                      AT %QX200.6    : BOOL;         {DE:"o7"}
+    o8                                      AT %QX200.7    : BOOL;         {DE:"o8"}
+    o9                                      AT %QX200.8    : BOOL;         {DE:"o9"}
+    o10                                     AT %QX200.9    : BOOL;         {DE:"o10"}
+    o11                                     AT %QX200.10   : BOOL;         {DE:"o11"}
+    o12                                     AT %QX200.11   : BOOL;         {DE:"o12"}
+    o13                                     AT %QX200.12   : BOOL;         {DE:"o13"}
+    o14                                     AT %QX200.13   : BOOL;         {DE:"o14"}
+    o15                                     AT %QX200.14   : BOOL;         {DE:"o15"}
+    o16                                     AT %QX200.15   : BOOL;         {DE:"o16"}
+    o17                                     AT %QX200.16   : BOOL;         {DE:"o17"}
+    o18                                     AT %QX200.17   : BOOL;         {DE:"o18"}
+    o19                                     AT %QX200.18   : BOOL;         {DE:"o19"}
+    o20                                     AT %QX200.19   : BOOL;         {DE:"o20"}
+    o21                                     AT %QX200.20   : BOOL;         {DE:"o21"}
     o22                                     AT %QX200.21   : BOOL;         {DE:"o22"}
-    o23_Lentezza_Tasca_AD                   AT %QX200.22   : BOOL;         {DE:"o23"}
-    o24_Pinza_carico_Su_Giu                 AT %QX200.23   : BOOL;         {DE:"o24"}
-    o25_C1_Cambio_Pinze                     AT %QX200.24   : BOOL;         {DE:"o25"}
-    o26_C1_Scalino_Piedino                  AT %QX200.25   : BOOL;         {DE:"o26"}
-    o27_C1_Ranocchia_retrat                 AT %QX200.26   : BOOL;         {DE:"o27"}
+    o23                                     AT %QX200.22   : BOOL;         {DE:"o23"}
+    o24                                     AT %QX200.23   : BOOL;         {DE:"o24"}
+    o25                                     AT %QX200.24   : BOOL;         {DE:"o25"}
+    o26                                     AT %QX200.25   : BOOL;         {DE:"o26"}
+    o27                                     AT %QX200.26   : BOOL;         {DE:"o27"}
     o28                                     AT %QX200.27   : BOOL;         {DE:"o28"}
     o29                                     AT %QX200.28   : BOOL;         {DE:"o29"}
     o30                                     AT %QX200.29   : BOOL;         {DE:"o30"}
-    o31_C1_bloccaFiloMagente                AT %QX200.30   : BOOL;         {DE:"o31"}
-    o32_Enable_AssiXY_C1                    AT %QX200.31   : BOOL;         {DE:"o32"}
-    o33_Valvolone                           AT %QX200.32   : BOOL;         {DE:"o33"}
-    o34_CarPat_FrontBack                    AT %QX200.33   : BOOL;         {DE:"o34"}
-    o35_CarPat_Aghi                         AT %QX200.34   : BOOL;         {DE:"o35"}
-    o36_CarPat_SoffioAghi                   AT %QX200.35   : BOOL;         {DE:"o36"}
-    o37_CarPat_SoffiPattina                 AT %QX200.36   : BOOL;         {DE:"o37"}
-    o38_CarPat_DCGiu                        AT %QX200.37   : BOOL;         {DE:"o38"}
-    o39_CarPat_DCSu                         AT %QX200.38   : BOOL;         {DE:"o39"}
+    o31                                     AT %QX200.30   : BOOL;         {DE:"o31"}
+    o32                                     AT %QX200.31   : BOOL;         {DE:"o32"}
+    o33                                     AT %QX200.32   : BOOL;         {DE:"o33"}
+    o34                                     AT %QX200.33   : BOOL;         {DE:"o34"}
+    o35                                     AT %QX200.34   : BOOL;         {DE:"o35"}
+    o36                                     AT %QX200.35   : BOOL;         {DE:"o36"}
+    o37                                     AT %QX200.36   : BOOL;         {DE:"o37"}
+    o38                                     AT %QX200.37   : BOOL;         {DE:"o38"}
+    o39                                     AT %QX200.38   : BOOL;         {DE:"o39"}
     o40                                     AT %QX200.39   : BOOL;         {DE:"o40"}
     o41                                     AT %QX200.40   : BOOL;         {DE:"o41"}
     o42                                     AT %QX200.41   : BOOL;         {DE:"o42"}
     o43                                     AT %QX200.42   : BOOL;         {DE:"o43"}
     o44                                     AT %QX200.43   : BOOL;         {DE:"o44"}
     o45                                     AT %QX200.44   : BOOL;         {DE:"o45"}
-    o46_C2_rasafilo                         AT %QX200.45   : BOOL;         {DE:"o46"}
+    o46                                     AT %QX200.45   : BOOL;         {DE:"o46"}
     o47                                     AT %QX200.46   : BOOL;         {DE:"o47"}
-    o48_Enable_AssiXY_C2                    AT %QX200.47   : BOOL;         {DE:"o48"}
-    o49_C2_Piedino                          AT %QX200.48   : BOOL;         {DE:"o49"}
-    o50_C2_Pinza_int                        AT %QX200.49   : BOOL;         {DE:"o50"}
-    o51_PinzaPattina_1                      AT %QX200.50   : BOOL;         {DE:"o51"}
-    o52_PinzaPattina_2                      AT %QX200.51   : BOOL;         {DE:"o52"}
-    o53_C2_RaffreddamentoAgo                AT %QX200.52   : BOOL;         {DE:"o53"}
-    o54_Scaric_dx_sx                        AT %QX200.53   : BOOL;         {DE:"o54"}
+    o48                                     AT %QX200.47   : BOOL;         {DE:"o48"}
+    o49                                     AT %QX200.48   : BOOL;         {DE:"o49"}
+    o50                                     AT %QX200.49   : BOOL;         {DE:"o50"}
+    o51                                     AT %QX200.50   : BOOL;         {DE:"o51"}
+    o52                                     AT %QX200.51   : BOOL;         {DE:"o52"}
+    o53                                     AT %QX200.52   : BOOL;         {DE:"o53"}
+    o54                                     AT %QX200.53   : BOOL;         {DE:"o54"}
     o55                                     AT %QX200.54   : BOOL;         {DE:"o55"}
-    o56_Pinza_tras_su_giu                   AT %QX200.55   : BOOL;         {DE:"o56"}
-    o57_C2_Cambio_Pinze                     AT %QX200.56   : BOOL;         {DE:"o57"}
-    o58_C2_Scalino_Piedino                  AT %QX200.57   : BOOL;         {DE:"o58"}
-    o59_C2_Retrattile_AC                    AT %QX200.58   : BOOL;         {DE:"o59"}
-    o60_Prima_barra                         AT %QX200.59   : BOOL;         {DE:"o60"}
-    o61_Seconda_barra                       AT %QX200.60   : BOOL;         {DE:"o61"}
+    o56                                     AT %QX200.55   : BOOL;         {DE:"o56"}
+    o57                                     AT %QX200.56   : BOOL;         {DE:"o57"}
+    o58                                     AT %QX200.57   : BOOL;         {DE:"o58"}
+    o59                                     AT %QX200.58   : BOOL;         {DE:"o59"}
+    o60                                     AT %QX200.59   : BOOL;         {DE:"o60"}
+    o61                                     AT %QX200.60   : BOOL;         {DE:"o61"}
     o62                                     AT %QX200.61   : BOOL;         {DE:"o62"}
-    o63_C2_bloccaFiloMagente                AT %QX200.62   : BOOL;         {DE:"o63"}
+    o63                                     AT %QX200.62   : BOOL;         {DE:"o63"}
     o64                                     AT %QX200.63   : BOOL;         {DE:"o64"}
 
 END_VAR

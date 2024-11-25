@@ -55,12 +55,34 @@ sub ()
 //
         ax[ 1        ] = 0 
         ax[ 2        ] = 0
-        ISO G1 X vq1911      Y vq1912      F vq3054                     
+
+//ISO G1 X C1_QuoHomeX Y C1_QuoHomeY F Vq3054_C1_VelFeed_Reset    
+
+
+	vb1009            = 0					//mi assicuro di spegnere Hold (TEST cucitura)
+	vb1034            = 0
+//	ISO G281 P CA_MD_NO_RES_NO_INS X C1_FirstPt_X Y C1_FirstPt_Y	//resetto il buffer di cucitura e parto dall'inizio
+	Delays (0.3)
+
+
+	fa[ 1        ] = vq3054                 
+	fa[ 2        ] = vq3054                 
+
+	ax[ 1        ] = vq1911      ax[ 2        ] = vq1912     
+
+	WaitCond ( Vb4045             and Vb4046             )
+	Delays (0.1)
+
+
+
+
+
         Delays (0.1)
         Vb4350                         = 1 
         Vb4351                         = 1  
+	vb306 = 1 
 
-	WaitCond ( din24               == 1)
+	WaitCond ( vb224                       == 1)
 
 	vb36            = 1 	//apro retrattile
 	vb37            = 1 	//abbasso perni ranocchia

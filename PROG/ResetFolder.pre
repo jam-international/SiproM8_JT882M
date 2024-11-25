@@ -28,7 +28,8 @@ sub ()
 		endif
 		Vb4356                                = 0  
 		Vb4350                         = 1 
-		Vb4351                         = 1 		
+		Vb4351                         = 1 
+		vb310 = 1 
 		vn10               = 0
 		Vb4015                  = 0  
 			goto FINE
@@ -36,7 +37,7 @@ sub ()
 
 	if ( vn10               == 11 or vn10               == 12 or vn10               == 13 or vn10               == 14 )
 		Vb4356                                = 0  
-		WaitCond ( din5                 )
+		WaitCond ( vb205                         )
 		WaitCond ( Vb4049                 )
 		fp[ 5          ] = 5
 		if(vb4511                  == 1 ) 
@@ -46,7 +47,8 @@ sub ()
 
 		endif
 		Vb4350                         = 1 
-		Vb4351                         = 1 		
+		Vb4351                         = 1 
+		vb311 = 1 
 		vn10               = 0
 		Vb4015                  = 0  
 		goto FINE

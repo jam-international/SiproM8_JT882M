@@ -19,7 +19,7 @@
 
 
 sub ()
-    
+	//CASO ESTREMO, L'operatore chiede di ripartire a cucire quando è in HOLD sull'ultimo punto
 	// Verifica cucitura terminata
 	if ( C1_VqActPntCuci >= C1_VqTotPntCuci )
 		// Movimento a posizione di home ( coordinate macchina )
@@ -44,16 +44,24 @@ sub ()
 
 		//Daniele x fine test
 		if(Vb4006_StepTraslatore == OFF)
-			Vb4350_AppAut_o18_C1_Pinza_int = ON
-			Vb4351_AppAut_o19_C1_Pinza_est = ON 
 
-			WaitCond ( i24_C1_PinzaEstAlta == 1)
+		//provo a semplificare	if(Vb4513_AppEnbCucitrice2 ==1  and Vn120_AppEnbScambioPinzeC1_Car2 == 1)
+				
+		//provo a semplificare		Vb4351_AppAut_out_C1_Pinza_est = ON 
+		//provo a semplificare		Vb301 = ON
+		//provo a semplificare	else
+				Vb4350_AppAut_out_C1_Pinza_int = ON
+				Vb4351_AppAut_out_C1_Pinza_est = ON 
+				Vb302 = ON
+		//provo a semplificare	endif
+			WaitCond ( Vb_ingresso_C1_PinzaEstAlta == 1)
 
 		else
 
 			if(VbChn3AutoRun == 0)
-				if(VbChn2AutoRun == 0 and C2_VbRunCuci == 0 and Vb4382_AppAut_o50_C2_Pinza_int == OFF)
-					Vb4382_AppAut_o50_C2_Pinza_int = ON
+				if(VbChn2AutoRun == 0 and C2_VbRunCuci == 0 and Vb4382_AppAut_out_C2_Pinza_int == OFF)
+					Vb4382_AppAut_out_C2_Pinza_int = ON
+					C2_CmdPiedinoGiu = OFF
 					 SyncVar( C2_CmdPiedinoSu )    
 					
 

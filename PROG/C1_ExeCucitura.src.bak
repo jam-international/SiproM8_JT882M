@@ -52,7 +52,7 @@ sub ()
 
         // --------------------------------------------------
         // Esegue solo se e' necessario ricalcolare i parametri
-	vntest1 = 10
+
     if ( C1_ReloadParam )
 
             // --------------------------------------------------
@@ -155,6 +155,19 @@ do
     Vb30_C1_InCucitura = ON 
 
 
+//Per Debuggare
+Vb300 = OFF
+Vb301 = OFF
+Vb302 = OFF
+Vb303 = OFF
+Vb304 = OFF
+Vb305 = OFF
+Vb306 = OFF
+Vb307 = OFF
+Vb308 = OFF
+Vb309 = OFF
+
+
 	//C1_CmdPiedinoSu =OFF
 	//C1_CmdPiedinoGiu = ON
     do
@@ -171,11 +184,11 @@ do
         if ( C1_CmdHoldRelease == 0 )
 
 		//****** 882 traslatore 
-		if(Vn_ID_macchina == 882)
+		if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824)
 			if((Vb4513_AppEnbCucitrice2 ==1 and Vb4000_Automatico == 0) or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1))	//controllo se ho due teste inserite e piegatore spento
 
 			
-				if ( Vb4513_AppEnbCucitrice2 and Vn120_AppEnbScambioPinzeC1_Car2 == 0)
+				if ( (Vb4513_AppEnbCucitrice2 and Vn120_AppEnbScambioPinzeC1_Car2 == 0)or  (Vb4513_AppEnbCucitrice2==0 and Vb4515_AppEnbScaricatore)) 
 					Vb4805_AppStartCaricatoreC1 = OFF
 					RichiestaStartCuci2 = 1
 				endif
@@ -187,8 +200,9 @@ do
 					VnStatoCuci2 = 0
 					VbChn3Start = 1
 
-					if(VbChn2AutoRun == 0 and C2_VbRunCuci == 0 and Vb4382_AppAut_o50_C2_Pinza_int == OFF)
-						Vb4382_AppAut_o50_C2_Pinza_int = ON
+					if(VbChn2AutoRun == 0 and C2_VbRunCuci == 0 and Vb4382_AppAut_out_C2_Pinza_int == OFF)
+						Vb4382_AppAut_out_C2_Pinza_int = ON
+						C2_CmdPiedinoGiu = OFF
 						 SyncVar( C2_CmdPiedinoSu )    
 						
 
@@ -250,6 +264,9 @@ do
     if ( C1_Udf_FeedG0 < C1_VelFeed )           // #M200717_1GF#
         C1_VelFeed = C1_Udf_FeedG0
     endif
+    Vb4802_PulsResetHmiC1 = 0 //per DACCA, in alcuni casi dopo essere tornato al punto di carico eseguiva erroneamente il movimento XY di reset
+    Vb4803_AppResetHmiC1 = 0 //per DACCA, in alcuni casi dopo essere tornato al punto di carico eseguiva erroneamente il movimento XY di reset
+    
     ISO G1 X C1_QuoHomeX Y C1_QuoHomeY F C1_VelFeed
     
            // Attesa assi X Y fermi

@@ -32,7 +32,7 @@ sub ()
 	loop
 
 	do	// attendo la cucitrice 1 libera e poi faccio avanzare il caricatore
-		if ( vb1955       == 0   and din24               and din23                == 0 ) // and ( vq60             < ( Vq3522                             - 1 ))) 
+		if ( vb1955       == 0   and vb224                       and vb223                        == 0 ) // and ( vq60             < ( Vq3522                             - 1 ))) 
 			AxAnt( 5         , Vq3502                            , -Vq3511                    , 2, 0 )  
 			exitdo
 		endif

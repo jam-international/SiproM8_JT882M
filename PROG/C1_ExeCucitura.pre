@@ -155,6 +155,20 @@ do
     vb30               = 1  
 
 
+//Per Debuggare
+vb300 = 0  
+vb301 = 0  
+vb302 = 0  
+vb303 = 0  
+vb304 = 0  
+vb305 = 0  
+vb306 = 0  
+vb307 = 0  
+vb308 = 0  
+vb309 = 0  
+
+	vb96                  = 0  	//pulisco
+
 	//C1_CmdPiedinoSu =OFF
 	//C1_CmdPiedinoGiu = ON
     do
@@ -171,11 +185,11 @@ do
         if ( vb1009            == 0 )
 
 		//****** 882 traslatore 
-		if(vn320          == 882)
+		if(vn320          == 8823 or vn320          == 8824)
 			if((vb4513                  ==1 and Vb4000            == 0) or (vb4513                  ==0 and vb4515                   ==1))	//controllo se ho due teste inserite e piegatore spento
 
 
-				if ( vb4513                  and vn120                           == 0)
+				if ( (vb4513                  and vn120                           == 0)or  (vb4513                 ==0 and vb4515                  )) 
 					vb4805                      = 0  
 					vb51                = 1
 				endif
@@ -189,6 +203,7 @@ do
 
 					if(vb7928        == 0 and vb2955       == 0 and Vb4382                         == 0  )
 						Vb4382                         = 1 
+						vb2004           = 0  
 						 SyncVar( vb2003          )    
 
 
@@ -250,6 +265,9 @@ do
     if ( vq1918        < vq1962     )           // #M200717_1GF#
         vq1962     = vq1918       
     endif
+    vb4802                = 0 //per DACCA, in alcuni casi dopo essere tornato al punto di carico eseguiva erroneamente il movimento XY di reset
+    vb4803               = 0 //per DACCA, in alcuni casi dopo essere tornato al punto di carico eseguiva erroneamente il movimento XY di reset
+
     ISO G1 X vq1911      Y vq1912      F vq1962    
 
            // Attesa assi X Y fermi

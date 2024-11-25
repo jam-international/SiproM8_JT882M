@@ -24,6 +24,7 @@ sub ()
 	    
 		// Ciclo di azzeramento vado solo se serve 
 	    if ( C2_AssiAzzerati == 0 )
+		C2_CmdLoadParam = 1
 		gosub "C2_Azzeramento.obj"
 	    else    
 

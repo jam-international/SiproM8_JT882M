@@ -39,14 +39,20 @@ sub ()
 
 		Delays (0.3)
 		vq2962     = vq2717            
-		ISO G1 X vq2911      Y (vq2912      + Vq3084                           ) F vq2962    
+	//	ISO G1 X C2_QuoHomeX Y (C2_QuoHomeY + Vq3084_SpostamentoPinzaPezziCorti) F C2_VelFeed
+
+		fa[ 6        ] = vq2962    
+		fa[ 7        ] = vq2962    
+
+		ax[ 6        ] = vq2911     	ax[ 7        ] = vq2912      + Vq3084                           
 
 		Vb4382                         = 0  
 
-		WaitCond ( din55                  == 1)
+		WaitCond ( vb241                          == 1)
 		Delays (0.3)
-		ISO G1 X vq2911      Y vq2912      F vq2962    
+	//	ISO G1 X C2_QuoHomeX Y C2_QuoHomeY F C2_VelFeed
 
+		ax[ 6        ] = vq2911      ax[ 7        ] = vq2912     
 
 		Vb4032                        = 1 
 		Vb4382                         = 1 

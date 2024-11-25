@@ -1,0 +1,143 @@
+//******************************************************************
+//----------------------- DEFINIZIONE  INGRESSI --------------------
+//******************************************************************
+#define i1_Pulsanti_start		din1		//
+#define i2_C1_Pedana			din2		//
+#define i3_C1_PedanaPiegatore	din3		//
+#define i4_C1_FcZeroCrochet		din4		//
+#define i5_FcPinzaCaricoAlta		din5		//
+#define i6_FcMinCaricatore1   	din6		//
+#define i7_FcPiegatore_AV    	din7		//
+#define i8_FcPiegatore_DI		din8		//
+#define i9_FcPiegatoreBasso		din9		//
+#define i10_Piegatore_Salito		din10	//
+#define i11_FcLancia_DI 		din11	//
+#define i12_Bilanciere_Alto		din12	//
+#define i13_Bilanciere_Basso		din13	//
+#define i14_Rinforzo_Attivo		din14	// 
+#define i15_Rinforzo_ready		din15	//
+#define i16					din16	//
+
+#define i17					din17	//
+#define i18	 				din18	//	ex rottura filo
+#define i19_C1_FcMinAsseX		din19	//
+#define i20_C1_FcMinAsseY		din20	//
+#define i21_Emg 				din21	//
+#define i22_C1_FcZeroAgo		din22	// 
+#define i23_C1_PinzaIntBassa 	din23	//
+#define i24_C1_PinzaEstAlta		din24	//
+#define i25_PulsResetFolder  	din25	//
+#define i26_C1_PulsStopTesta 	din26	//
+#define i27_C2_PulsStopTesta		din27	//
+#define i28					din28	//	
+#define i29					din29	//
+#define i30					din30	//
+#define i31_C1_ReadyAsseX		din31	//
+#define i32_C1_ReadyAsseY		din32	//
+
+#define i33					din33	// ex i33_C2_Pedana
+#define i34_C2_Pedana			din34	//	//ex NC
+#define i35					din35	// ex i35_Pressostato
+#define i36_C2_FcZeroCrochet		din36	//	// ex NC
+#define i37_C2_FcMinAsseX		din37	//	//ex i37_C2_FcZeroCrochet
+#define i38_C2_FcMinAsseY		din38	//	//ex i38_FcPinzaTraslAlta
+#define i39_C2_FcMaxAsseY		din39	//	//ex i39_FcMinCaricatore2
+#define i40_C2_FcZeroAgo		din40	//	//ex vuoto
+#define i41_C2_FcPinzaIntBassa	din41	//		//ex i41_CarPat_Top_SUGIu
+#define i42_FcPinzaTraslAlta		din42	//	//ex i42_CarPat_Middle_SUGIu
+#define i43_FcMinCaricatore2		din43	//	//ex i43_CarPat_Bottom_SUGIu
+#define i44_Pressostato			din44	//	//ex i44_CarPat_Tastatore
+#define i45_C2_PulsStopTesta		din45	//	// ex i45_CarPat_Empty
+#define i46					din46	//ex i46_CarPat_BackPos
+#define i47_C2_ReadyAsseX		din47	//
+#define i48_C2_ReadyAsseY		din48	//
+
+#define i49_CarPat_Top_SUGIu		din49   	//
+#define i50_CarPat_Middle_SUGIu	din50	//
+#define i51_CarPat_Bottom_SUGIu	din51	//
+#define i52_CarPat_Tastatore	 	din52	//
+#define i53_CarPat_Empty		din53	//
+#define i54_CarPat_BackPos		din54	//
+#define i55_CarPat_SpoLamLungoL	din55	//
+#define i56_CarPat_SpoLamLungoR	din56	//
+#define i57_CarPat_SpoLamCortoL	din57	//
+#define i58_CarPat_SpoLamCortoR	din58	//
+#define i59					din59	//
+#define i60					din60	//
+#define i61					din61	//
+#define i62					din62 	//
+#define i63					din63	//
+#define i64					din64	//
+// ============================================================================
+//      USCITE DIGITALI
+// ============================================================================
+
+
+#define o1_Piegatore_1				dout1       //
+#define o2_Piegatore_2				dout2       //
+#define o3_Piegatore_3 				dout3       //
+#define o4_Piegatore_4 				dout4       // 
+#define o5_Cambio_corpo 			dout5       // 
+#define o6_Cambio_lama_front 		dout6       //
+#define o7_Cambio_lame_lateral 		dout7       // 
+#define o8_Cambio_Lamelle_4_5 		dout8       //
+#define o9_Lancia_AD 				dout9       // 
+#define o10_Piegatore_AD			dout10      //
+#define o11_Piegatore_Su_Giu 		dout11      // 
+#define o12_Bilanciere_Su_Giu		dout12      // 
+#define o13	Lancia_Cargo_Aperta		dout13      // 
+#define o14_C1_rasafilo				dout14      // 
+#define o15_EvAspiratore 			dout15      // 
+#define o16	Lancia_Cargo_Chiusa		dout16      //
+
+#define o17_C1_Piedino				dout17      // 
+#define o18_C1_Pinza_int 			dout18      // 	
+#define o19_C1_Pinza_est			dout19      // 
+#define o20_C1_Retrattile_AC			dout20      //
+#define o21_C1_RaffreddamentoAgo		dout21      // 
+#define o22						dout22      // 
+#define o23_Lentezza_Tasca_AD		dout23      // 
+#define o24_Pinza_carico_Su_Giu		dout24	  // 
+#define o25_C1_Cambio_Pinze			dout25      // 
+#define o26_C1_Scalino_Piedino		dout26      // 
+#define o27_C1_Ranocchia_retrat		dout27      //
+#define o28_Rullo_Rinforzo						dout28      // 
+#define o29_Coltello_Rinforzo						dout29      // 
+#define o30_MagneteSuGiu_Rinforzo					dout30      //
+#define o31_C1_bloccaFiloMagente		dout31      //
+#define o32_Enable_AssiXY_C1			dout32      // 
+
+#define o33_Valvolone				dout33	//
+#define o34_C2_Piedino				dout34	//
+#define o35_C2_Pinza_int			dout35	//
+#define o36_C2_RaffreddamentoAgo		dout36	//
+#define o37_Scaric_dx_sx			dout37	//
+#define o38_Pinza_tras_su_giu		dout38	//
+#define o39_C2_Cambio_Pinze			dout39	//
+#define o40_C2_Scalino_Piedino		dout40	//
+#define o41_C2_Retrattile_AC			dout41	//
+#define o42_Prima_barra				dout42	//
+#define o43_Seconda_barra			dout43   	//
+#define o44						dout44	//
+#define o45						dout45	//
+#define o46_C2_bloccaFiloMagente		dout46	//
+#define o47_C2_rasafilo				dout47	//
+#define o48_Enable_AssiXY_C2			dout48	//
+
+#define o49_CarPat_FrontBack			dout49	//
+#define o50_CarPat_Aghi				dout50	//
+#define o51_CarPat_SoffioAghi		dout51	//
+#define o52_CarPat_SoffioPattina		dout52	//
+#define o53_CarPat_DCGiu 			dout53	//
+#define o54_CarPat_DCSu				dout54	// 
+#define o55_CarPat_SpostLamLungo		dout55	//
+#define o56_CarPat_SpostLamorto		dout56	//
+#define o57_CarPat_offioSuPiano		dout57	//
+#define o58						dout58	//
+#define o59						dout59	//
+#define o60						dout60	//
+#define o61						dout61	//
+#define o62						dout62	//
+#define o63						dout63	//
+#define o64						dout64	//
+

@@ -18,7 +18,7 @@
 
 sub ()
 
-v_ntest = 50	
+
  // Verifica se necessario il ciclo di azzeramento
 if ( MacchinaAzzerata == 0 )
 
@@ -27,13 +27,13 @@ if ( MacchinaAzzerata == 0 )
 		VbChn1Start = 1
 	endif
 	// Verifica azzeramenti cucitrice 2
-	if ( C2_AssiAzzerati == 0 and Vn_ID_macchina == 882)
+	if ( C2_AssiAzzerati == 0 and (Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824))
 		if(Vb152KitCarPAttine) 
-			Vb4371_AppAut_o39_CarPat_DCSu = 1
-			WaitCond(i41_CarPat_Top_SUGIu)
-			Vb4371_AppAut_o39_CarPat_DCSu = 0
-			Vb4366_AppAut_o34_CarPat_FrontBack = 1
-			WaitCond(i46_CarPat_BackPos)
+			Vb4371_AppAut_out_CarPat_DCSu = 1
+			WaitCond(Vb_ingresso_CarPat_Top_SUGIu)
+			Vb4371_AppAut_out_CarPat_DCSu = 0
+			Vb4366_AppAut_out_CarPat_FrontBack = 1
+			WaitCond(Vb_ingresso_CarPat_BackPos)
 			
 			//Vb154CarInPosAltaOK = 1
 			//Vb153GoCicloCarPAttina = 1	//preparo una pattina
@@ -45,7 +45,7 @@ if ( MacchinaAzzerata == 0 )
 	
 	
 	VbCmdAzzAx5 = 1
-	if(Vn_ID_macchina == 882 ) 
+	if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824) 
 		VbCmdAzzAx10 = 1 
 	endif
 
@@ -55,14 +55,14 @@ if ( MacchinaAzzerata == 0 )
 	//se alla pressione del verde avevo il pulsante reset piegatore premuto il plc aveva alazato la pinza esterna per non far incastrare le dime
 	if(Vb81PremutoResetAccensione == 1)
 		
-		Vb4351_AppAut_o19_C1_Pinza_est =0
+		Vb4351_AppAut_out_C1_Pinza_est =0
 		Delays ( 1.0 )
 		Vb81PremutoResetAccensione =0
 	endif
 	//
 
 
-	if(Vn_ID_macchina == 882 ) 
+	if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824 ) 
 		WaitCond ( ( VbFlgAzzAx10 == 1 ) and ( VnFaseZeroAx10 >= 7 ) )
 	endif
 		
@@ -70,7 +70,7 @@ if ( MacchinaAzzerata == 0 )
 		gosub "Halt.obj"
 	endif    
 
-	if(Vn_ID_macchina == 882 )	
+	if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824 )	
 		if ( VnFaseZeroAx10 > 7 ) 
 			gosub "Halt.obj"
 		endif    
@@ -78,7 +78,7 @@ if ( MacchinaAzzerata == 0 )
 
 	fp[ C1_AsseCAR ] = Vq3512_VelocitaCaricTastiPieCar
 
-	if(Vn_ID_macchina == 882 )	
+	if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824 )	
 		fp[ C2_AsseCAR ] = Vq3530_VelocitaTraslRiposo
 	endif
 	
@@ -88,13 +88,7 @@ if ( MacchinaAzzerata == 0 )
 		
 		ax[ C1_AsseCAR ] = Vq3501_PosizioneCaricCaricoTasca
 		Vb4507_AppManAuto = ON	//quanto arrivo in posizione alzo la variabile ciclo Automatico per poter iniziare
-		//if(Vn_ID_macchina == 882 )
-		//	ax[ C2_AsseCAR ] = Vq3524_AppPosInizio
-		//endif
-	//else
-		//if(Vn_ID_macchina == 882 )
-		//	ax[ C2_AsseCAR ] = Vq3524_AppPosInizio
-		//endif
+		
 	endif
 
 	WaitCond( MacchinaAzzerata == 1 )
@@ -102,7 +96,7 @@ if ( MacchinaAzzerata == 0 )
 	gosub "Halt.obj"
 endif
 
-v_ntest = 51
+
 
 /////////////////////////////////////////// tarature pinze lancia e caricatori
             // lancio automatico per centrare la pinza su ago Cucitrice 1
@@ -130,11 +124,11 @@ v_ntest = 51
             // lancio automatico per centrare la caricatore su pinza cucitrice
     if ( MacchinaAzzerata and ( Vb4081_TestCaricatorePinzaC1 or Vb4082_TestCaricatoreLanciaC1 or Vb4083_TestCaricatoreC2CaricoC1 or Vb4084_TestCaricatoreC2ScaricoC2 or Vb4087_TestLiberaPinzaCaricatore ))
 				Vb7_TestManutRun = ON
-		        Vb4350_AppAut_o18_C1_Pinza_int = OFF
-				Vb4351_AppAut_o19_C1_Pinza_est = OFF 
-				Vb4356_AppAut_o24_Pinza_carico_Su_Giu = OFF
-				Vb4382_AppAut_o50_C2_Pinza_int = OFF
-				Vb4388_AppAut_o56_Pinza_tras_su_giu = OFF				
+				Vb4350_AppAut_out_C1_Pinza_int = OFF
+				Vb4351_AppAut_out_C1_Pinza_est = OFF 
+				Vb4356_AppAut_out_Pinza_carico_Su_Giu = OFF
+				Vb4382_AppAut_out_C2_Pinza_int = OFF
+				Vb4388_AppAut_out_Pinza_tras_su_giu = OFF				
             // lancio automatico per centrare la caricatore su pinza cucitrice
 		gosub "TestManutenzione.obj"	
 			Vb7_TestManutRun = OFF
@@ -193,20 +187,20 @@ fp[ C2_AsseCAR ] = Vq3530_VelocitaTraslRiposo
 // posizioni caricatore per piegatore o manuale
 if( Vb4507_AppManAuto and Vb4509_AppEnbPiegatore )
 	ax[ C1_AsseCAR ] = Vq3500_PosizioneCaricRiposo
-	if(Vn_ID_macchina == 882 )
+	if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824 )
 		ax[ C2_AsseCAR ] = Vq3524_AppPosInizio
 	endif
 endif
 // posizione caricatore per ciclo solo caricatore
 if( Vb4507_AppManAuto and Vb4511_AppEnbCaricatore )
 	ax[ C1_AsseCAR ] = Vq3501_PosizioneCaricCaricoTasca
-	if(Vn_ID_macchina == 882 )
+	if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824 )
 		ax[ C2_AsseCAR ] = Vq3524_AppPosInizio
 	endif
 endif
  
 
-	 v_ntest = 52
+	
 do
  //if(Vb96_AnticipoTrasl_SX == 0)
 	// Macchina a stati cucitrice 1
@@ -269,7 +263,7 @@ do
 			//----- step reset piegatore fine
 
 			if ( IsAxInQuote( C1_AsseCAR ) )
-				Vb4350_AppAut_o18_C1_Pinza_int = OFF
+				Vb4350_AppAut_out_C1_Pinza_int = OFF
 				VnStatoCuci1 = 11
 			endif
 
@@ -285,7 +279,7 @@ do
 			Vb11_StepResetCanale3_1 = OFF
 			//----- step reset piegatore fine
 
-			if ( i23_C1_PinzaIntBassa )
+			if ( Vb_ingresso_C1_PinzaIntBassa )
 
 
 				if(Vb4001_StepPiegatore == OFF)		//se non sono in passo passo faccio partire il fork Chn1 per anticipare la cucitura altrimenti proseguo normale
@@ -298,7 +292,7 @@ do
 
 
 
-				Vb4356_AppAut_o24_Pinza_carico_Su_Giu = OFF
+				Vb4356_AppAut_out_Pinza_carico_Su_Giu = OFF
 				VnStatoCuci1 = 12
 			endif
 			if(Vn2CodiceAllarmeXHmi ==24)
@@ -316,7 +310,7 @@ do
 			Vb11_StepResetCanale3_1 = OFF
 			//----- step reset piegatore fine
 
-			if ( i5_FcPinzaCaricoAlta )
+			if ( Vb_ingresso_FcPinzaCaricoAlta )
 
 				
 
@@ -344,7 +338,7 @@ do
 			//----- step reset piegatore fine
 
 			if ( PosAx_C1_AsseCAR < Vq3504_AppPosizioneCaricLiberaPinzaC1 )
-				Vb4351_AppAut_o19_C1_Pinza_est = OFF		
+				Vb4351_AppAut_out_C1_Pinza_est = OFF		
 			
 				
 
@@ -371,7 +365,7 @@ do
 			break
 
 		case 16
-			if ( (Vb4601_AppRit_i24_C1_PinzaEstAlta or Vb11_StepResetCanale3_1 or Vb4001_StepPiegatore) and i23_C1_PinzaIntBassa  )
+			if ( (Vb4601_AppRit_i24_C1_PinzaEstAlta or Vb11_StepResetCanale3_1 or Vb4001_StepPiegatore) and Vb_ingresso_C1_PinzaIntBassa  )
 				//se sono in passo passo faccio partire il Chn1 per la cucitura
 				if( Vb4001_StepPiegatore )
 					
@@ -388,7 +382,9 @@ do
 
 
 		case 30// parto a cucire
-
+			Vb4802_PulsResetHmiC1 = 0 //per DACCA, in alcuni casi effettuava lo spostamento al primo punto di cucitura e poi tornava al punto di carico.
+			Vb4803_AppResetHmiC1 = 0 //per DACCA, in alcuni casi effettuava lo spostamento al primo punto di cucitura e poi tornava al punto di carico.
+		
 			Vn16GoCuci = 1
 				
 			VnStatoCuci1 = 31
@@ -417,7 +413,7 @@ do
 						endif
 						Vb4013_DisableLancia = OFF
 						if(Vb22_device_lentezza_tasca)  //se è attivo il kit lentezza tasca lo faccio avanzare
-							Vb4355_AppAut_o23_Lentezza_Tasca_AD = ON
+							Vb4355_AppAut_out_Lentezza_Tasca_AD = ON
 						endif
 					endif
 					if ( Vb4507_AppManAuto and Vb4511_AppEnbCaricatore )	//se Caricatore acceso lancio il suo Fork
@@ -467,16 +463,17 @@ do
 				//****** 882 traslatore 
 				if ( Vb4513_AppEnbCucitrice2 or Vb4515_AppEnbScaricatore )
 					Vb4805_AppStartCaricatoreC1 = OFF
-					if ( Vn120_AppEnbScambioPinzeC1_Car2 == 0 )
-						////RichiestaStartCuci2 = 1 
+					if ( Vn120_AppEnbScambioPinzeC1_Car2 == 0 ) // a 0 il traslo scende esterno alle pinze
+						RichiestaStartCuci2 = 1 
 						VnStatoCuci1 = 60
 						break
 					endif
-					if ( Vn120_AppEnbScambioPinzeC1_Car2 == 1 )
-						////RichiestaStartCuci2 = 1 
+					if ( Vn120_AppEnbScambioPinzeC1_Car2 == 1 ) // a 1 il traslo scendo con la interna ancora bassa
+						RichiestaStartCuci2 = 1 
 						WaitCond( IsAxInStop( C1_AsseX ) )
 						WaitCond( IsAxInStop( C1_AsseY ) )
-						Vb4351_AppAut_o19_C1_Pinza_est = ON
+						Vb4351_AppAut_out_C1_Pinza_est = ON
+						Vb307 = ON
 						VnStatoCuci1 = 60
 						break
 					endif
@@ -487,8 +484,9 @@ do
 
 				if (  VbChn1AutoRun == 0 and Vb4803_AppResetHmiC1 == 0 ) //se il canale della cucitura ha finito e non è stato premuto il reset cucitura ...
 					Vb4805_AppStartCaricatoreC1 = OFF
-					Vb4350_AppAut_o18_C1_Pinza_int = ON	//alzo la pinza interna
-					Vb4351_AppAut_o19_C1_Pinza_est = ON	//alzo la pinza esterna
+					Vb4350_AppAut_out_C1_Pinza_int = ON	//alzo la pinza interna
+					Vb4351_AppAut_out_C1_Pinza_est = ON	//alzo la pinza esterna
+					Vb308 = ON
 					Vb4096_AppOnScartafiloC1 = ON
 					
 					if(Vb4001_StepPiegatore )	//se la cucitura è finita e il passo passo piegatore attivo  faccio partire il fork piegatore
@@ -503,7 +501,7 @@ do
 					VnStatoCuci1 = 55
 				endif 
 			endif
-			if(Vb4001_StepPiegatore and i3_C1_PedanaPiegatore == ON)	//se mentre cuce e passo passo piegatore attivo e premo la pedana faccio partire il fork piegatore
+			if(Vb4001_StepPiegatore and Vb_ingresso_C1_PedanaPiegatore == ON)	//se mentre cuce e passo passo piegatore attivo e premo la pedana faccio partire il fork piegatore
 				if ( Vb4507_AppManAuto and Vb4509_AppEnbPiegatore )	//se Piegatore acceso lancio il suo Fork
 					if ( IsForkActive( Vn201PrgForkPiegatore ) == 0 )
 						Vn201PrgForkPiegatore = ForkProg ( "Piegatore", 1 )
@@ -515,7 +513,7 @@ do
 			break
 
 		case 55	//aspetto pinze alte e poi riapro la retrattile
-			if(i24_C1_PinzaEstAlta == 1)
+			if(Vb_ingresso_C1_PinzaEstAlta == 1)
 				Vb36_Clear_OPT1 = ON	//apro retrattile
 				Vb37_Clear_OPT2 = ON	//abbasso perni ranocchia
 				Vb38_Clear_OPT3 = ON	//disattivo salto piedino
@@ -533,16 +531,16 @@ do
 					
 		case 200 //-----case PASSO PASSO oppure RESET ----  aspetto la pedana piegatore o il reset
 			Vb4015_PrgCaricatoreRun = OFF
-			if ( Vb10_StepResetCanale3 or i3_C1_PedanaPiegatore )
+			if ( Vb10_StepResetCanale3 or Vb_ingresso_C1_PedanaPiegatore )
 				VnStatoCuci1 = 201
 			endif 
-			if ( Vb10_StepResetCanale3 or i25_PulsResetFolder )
+			if ( Vb10_StepResetCanale3 or Vb_ingresso_PulsResetFolder )
 				VnStatoCuci1 = 202
 			endif
 			break
 					
 		case 201 // aspetto la pedana piegatore o il reset
-			if ( Vb10_StepResetCanale3 or i3_C1_PedanaPiegatore == 0 )
+			if ( Vb10_StepResetCanale3 or Vb_ingresso_C1_PedanaPiegatore == 0 )
 				VnStatoCuci1 = Vn10MemoStatoCuci1
 				Vn10MemoStatoCuci1 = 0
 				Vb11_StepResetCanale3_1 = ON
@@ -550,7 +548,7 @@ do
 			break
 
 		case 202 //se chiamato lancio il fork Reset
-			if ( Vb10_StepResetCanale3 or i25_PulsResetFolder == 0 )
+			if ( Vb10_StepResetCanale3 or Vb_ingresso_PulsResetFolder == 0 )
 				Vb4003_RqsStopPiegatore = OFF
 				Vn203PrgForkResetFolder = ForkProg ( "ResetFolder", 1 )
 				VnStatoCuci1 = 203
@@ -570,7 +568,7 @@ do
 
 //endif
         
-        if(Vn_ID_macchina == 882)
+        if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824)
 		    // Macchina a stati cucitrice 2
 		//  0 = stato iniziale
 		//  1e2 = aspetto la richiesta di attivazione traslatore RichiestaStartCuci2 
@@ -596,17 +594,17 @@ do
 		switch ( VnStatoCuci2 )
 		    
 		    case 0
-		    v_ntest = 2
+
 		    
 			if(Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1 and Vb4507_AppManAuto ==1)
-			 v_ntest = 3
+
 				if(RichiestaStartCuci2)
 					VnStatoCuci2 = 1
-					 v_ntest = 4
+			
 				endif
 			else
 				VnStatoCuci2 = 1
-				 v_ntest = 5
+			
 			endif
 				
 			break
@@ -616,7 +614,7 @@ do
 			//se non devo cucire con la seconda e ho lo scaricatore lo faccio avanzare
 			if ( Vb4513_AppEnbCucitrice2 == 0 and Vb4515_AppEnbScaricatore and ( Vb4523_C2_PinzaDietroUnaTesta or Vb4519_AppScaricoCortiConPinza)) 
 				
-				Vb4386_AppAut_o54_Scaric_dx_sx = ON
+				Vb4386_AppAut_out_Scaric_dx_sx = ON
 				
 			endif
 
@@ -633,9 +631,9 @@ do
 			break
 
 		case 2
-			
-			if(Vn120_AppEnbScambioPinzeC1_Car2 == 1 and Vb30_C1_InCucitura == 0)
-				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) or Vb4006_StepTraslatore)	//scambio con pinza esterna alta
+			// Vn120_AppEnbScambioPinzeC1_Car2 a 0 il traslo scende esterno alle pinze, a 1 il traslo scendo con la interna ancora bassa
+			if(Vn120_AppEnbScambioPinzeC1_Car2 == 1 and Vb30_C1_InCucitura == 0)  
+				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1 and RichiestaStartCuci2) or Vb4006_StepTraslatore)	//scambio con pinza esterna alta
 					//RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
 					VnStatoCuci2 = 5
 					Vb4016_PrgTraslatoreRun = ON	//segnalo che il ciclo trasalatore è in fasi di movimento
@@ -644,7 +642,7 @@ do
 			endif
 
 
-			if(Vn120_AppEnbScambioPinzeC1_Car2 == 0 and RichiestaStartCuci2 == 1)
+			if(Vn120_AppEnbScambioPinzeC1_Car2 == 0 and RichiestaStartCuci2 == 1 or (Vn120_AppEnbScambioPinzeC1_Car2 == 0 and Vb4513_AppEnbCucitrice2==0 and Vb4515_AppEnbScaricatore))
 
 				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) or Vb4006_StepTraslatore  )	//scambio con pinza esterna bassa
 					RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
@@ -661,7 +659,7 @@ do
 
 
 		case 5 /// aspetto la pinza esterna C1 (ScambioPinzeC1 = 1 = esterna)
-			if ( i24_C1_PinzaEstAlta and Vb30_C1_InCucitura == OFF)
+			if ( Vb_ingresso_C1_PinzaEstAlta  and Vb30_C1_InCucitura == OFF)
 				VnStatoCuci2 = 10
 			endif
 			break	
@@ -677,7 +675,7 @@ do
 									Vb12_StepResetCanale3_2 = OFF
 								// step reset piegatore fine
 				
-			if( (RichiestaStartCuci2 == 1 or   (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) )and i38_FcPinzaTraslAlta ) /// vado a prendere la tasca
+			if( (RichiestaStartCuci2 == 1 or   (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) )and Vb_ingresso_FcPinzaTraslAlta ) /// vado a prendere la tasca
 				RichiestaStartCuci2 = 0
 				AxAnt( C2_AsseCAR,  Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
 				VnStatoCuci2 = 20
@@ -721,7 +719,7 @@ do
 				
 			if ( IsAxInQuote( C2_AsseCAR) and  Vb4072_AllarmeContSpolaC1 == OFF and IsAxInQuote( C1_AsseX)  and IsAxInQuote( C1_AsseY) )	// aspetto il caricatore in posizione per abbassare la pinza
 				Delays(0.1)
-				Vb4388_AppAut_o56_Pinza_tras_su_giu = ON
+				Vb4388_AppAut_out_Pinza_tras_su_giu = ON
 				Vb96_AnticipoTrasl_SX = OFF
 				VnStatoCuci2 = 21
 			endif
@@ -729,6 +727,10 @@ do
 
 
 		case 21 //aspetto pinza traslatore bassa poi alzo le pinze cucitura C1
+
+				RichiestaStartCuci2 = 0
+				
+
 								// step reset piegatore inizio
 									if ( Vb4006_StepTraslatore and Vb12_StepResetCanale3_2 == OFF )
 											Vn13MemoStatoCuci2 = VnStatoCuci2  
@@ -745,9 +747,25 @@ do
 
 			if(Vb30_C1_InCucitura == OFF)	//aspetto che le pinze C1 siano tornate al punto di carico
 				
-				if ( Vb4602_AppRit_i49_FcPinzaTraslBassa == ON )	// aspetto la pinza del caricatore bassa per alzare l'interna C1
-					Vb4350_AppAut_o18_C1_Pinza_int = ON
-					Vb4351_AppAut_o19_C1_Pinza_est = ON 
+				if ( Vb4602_AppRit_i49_FcPinzaTraslBassa == ON  )	// aspetto la pinza del caricatore bassa per alzare l'interna C1
+					//se ho la modalità Vn120_AppEnbScambioPinzeC1_Car2 == 0 (traslo a sx con 2 pinze basse) allora alzo entrambe le pinze
+					
+					if(Vn120_AppEnbScambioPinzeC1_Car2 == 0)
+						Vb301 = ON
+						Vb4350_AppAut_out_C1_Pinza_int = ON
+						Vb4351_AppAut_out_C1_Pinza_est = ON 
+						Waitcond ( Vb_ingresso_C1_PinzaEstAlta )
+
+					endif
+					
+					//se ho la modalità Vn120_AppEnbScambioPinzeC1_Car2 == 1 (traslo a sx con pinza interna bassa) allora alzo la pinza interna
+					
+					if(Vn120_AppEnbScambioPinzeC1_Car2 == 1)
+						Vb4350_AppAut_out_C1_Pinza_int = ON
+						//tolgo vb309			Vb4351_AppAut_out_C1_Pinza_est = ON 
+						Vb309 = ON
+					endif
+
 				
 
 					VnStatoCuci2 = 22
@@ -766,18 +784,18 @@ do
 								// step reset piegatore fine
 				
 			// se la cucitrice 2 è disabilitata e lo scaricatore attivo sposto dx-sx
-			if ( Vb4513_AppEnbCucitrice2 == 0 and Vb4515_AppEnbScaricatore and ( Vb4523_C2_PinzaDietroUnaTesta or Vb4519_AppScaricoCortiConPinza) and i24_C1_PinzaEstAlta and i23_C1_PinzaIntBassa ==0 ) 
+			if ( Vb4513_AppEnbCucitrice2 == 0 and Vb4515_AppEnbScaricatore and ( Vb4523_C2_PinzaDietroUnaTesta or Vb4519_AppScaricoCortiConPinza) and Vb_ingresso_C1_PinzaEstAlta and Vb_ingresso_C1_PinzaIntBassa ==0 ) 
 				AxAnt( C2_AsseCAR, Vq3520_PosizioneTraslScaricaC2 , -Vq3531_VelocitaTraslLavoro, 2, 0 ) 
 				
-				//Vb4386_AppAut_o54_Scaric_dx_sx = ON
+				//Vb4386_AppAut_out_Scaric_dx_sx = ON
 				VnStatoCuci2 = 30  //80
 			endif
 			
 				// aspetto la pinza l'interna C1 alta per partire con il traslatore verso DX
-			waitcond(i23_C1_PinzaIntBassa ==0)
+			waitcond(Vb_ingresso_C1_PinzaIntBassa ==0)
 			Delays(0.2)
-			if ( Vb4513_AppEnbCucitrice2  and i24_C1_PinzaEstAlta  )
-					if ( VbChn2AutoRun == 0 and o50_C2_Pinza_int  )
+			if ( Vb4513_AppEnbCucitrice2  and Vb_ingresso_C1_PinzaEstAlta  )
+					if ( VbChn2AutoRun == 0 and Vb4382_AppAut_out_C2_Pinza_int )
 						//se C2 non cuce e la pinza esterna è alta muovo direttamente
 						AxAnt( C2_AsseCAR, Vq3520_PosizioneTraslScaricaC2 , -Vq3531_VelocitaTraslLavoro, 2, 0 ) 
 						VnStatoCuci2 = 23
@@ -839,7 +857,7 @@ do
 									endif
 									Vb12_StepResetCanale3_2 = OFF
 								// step reset piegatore fine
-			if ( VbChn2AutoRun == 0 and i55_C2_FcPinzaIntBassa == 0 and o50_C2_Pinza_int )	 //aspetto che la C2 finisce di cucire poi..
+			if ( VbChn2AutoRun == 0 and Vb_ingresso_C2_FcPinzaIntBassa == 0 and Vb4382_AppAut_out_C2_Pinza_int )	 //aspetto che la C2 finisce di cucire poi..
 			
 				VnStatoCuci2 = 27
 			endif
@@ -905,7 +923,7 @@ do
 
 
 
-					Vb4382_AppAut_o50_C2_Pinza_int = OFF
+					Vb4382_AppAut_out_C2_Pinza_int = OFF
 					VnStatoCuci2 = 32
 				endif
 					
@@ -925,10 +943,10 @@ do
 									Vb12_StepResetCanale3_2 = OFF
 								// step reset piegatore fine
 				
-			if ( i55_C2_FcPinzaIntBassa )	// aspetto la pinza int C2 bassa per alzare la pinza tralatore
+			if ( Vb_ingresso_C2_FcPinzaIntBassa )	// aspetto la pinza int C2 bassa per alzare la pinza tralatore
 				if ( Vb4006_StepTraslatore)
 
-					Vb4388_AppAut_o56_Pinza_tras_su_giu = OFF			
+					Vb4388_AppAut_out_Pinza_tras_su_giu = OFF			
 					VnStatoCuci2 = 40
 					
 				else
@@ -945,7 +963,7 @@ do
 					
 				endif
 
-				Vb4388_AppAut_o56_Pinza_tras_su_giu = OFF			
+				Vb4388_AppAut_out_Pinza_tras_su_giu = OFF			
 				VnStatoCuci2 = 40
 						
 			
@@ -957,7 +975,7 @@ do
 				if(Vb4031_AppScaricatoreInPos)
 
 					Vb4032_AppScaricatoreStrBarre = ON   //faccio partire le barre
-					Vb4388_AppAut_o56_Pinza_tras_su_giu = OFF
+					Vb4388_AppAut_out_Pinza_tras_su_giu = OFF
 					VnStatoCuci2 = 40
 
 				endif
@@ -978,7 +996,7 @@ do
 									Vb12_StepResetCanale3_2 = OFF
 								// step reset piegatore fine
 				
-			if ( i38_FcPinzaTraslAlta )	// aspetto la pinza traslatore alta per spostare il traslatore e iniziare a cucire
+			if ( Vb_ingresso_FcPinzaTraslAlta )	// aspetto la pinza traslatore alta per spostare il traslatore e iniziare a cucire
 			
 					if ( Vb4518_EnbQuartoXL )
 						AxAnt( C2_AsseCAR, Vq3525_PosizioneTraslAspScaricoC2_XL , -Vq3530_VelocitaTraslRiposo, 2, 0 )
@@ -1006,9 +1024,9 @@ do
 					//endif
 					
 				else
-v_ntest = 21
+
 					if ( RichiestaStartCuci2  )
-v_ntest = 22	 
+ 
 						VnStatoCuci2 = 1				//torno sopra in attesa di una nuova tasca
 					else
 						Vb4016_PrgTraslatoreRun = OFF	//segnalo che il ciclo trasalatore non è più in fasi di movimento e non ha altre chiamate
@@ -1040,7 +1058,7 @@ v_ntest = 22
 
 
 		    case 200		//// aspetto la pedana C2 per ciclo passo passo
-			if ( Vb4006_StepTraslatore and i33_C2_Pedana )
+			if ( Vb4006_StepTraslatore and Vb_ingresso_C2_Pedana )
 				VnStatoCuci2 = 201
 			endif 
 			if ( Vb4006_StepTraslatore == OFF )
@@ -1052,7 +1070,7 @@ v_ntest = 22
 
 					
 		    case 201		////aspetto rilascio pedana C2 per ciclo passo passo
-			if ( Vb4006_StepTraslatore or i33_C2_Pedana == 0 )
+			if ( Vb4006_StepTraslatore or Vb_ingresso_C2_Pedana == 0 )
 				VnStatoCuci2 = Vn13MemoStatoCuci2
 				Vn13MemoStatoCuci2 = 0
 				Vb12_StepResetCanale3_2 = ON

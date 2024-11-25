@@ -56,6 +56,7 @@ As2000 Simbols Table
 #vb67;Vb67HmiJogXM_C2;Richiesta jog - asse X C2
 #vb68;Vb68HmiJogYP_C2;Richiesta jog + asse Y C2
 #vb69;Vb69HmiJogYM_C2;Richiesta jog - asse Y C2
+#vb70;Vb70BilanciereSu_RigheCN;=1 nel ciclo Righe, se premo la pedana si alza il bilanciere
 #vb72;Vb72HmiMoveXY_C1;Richiesta di spostamento assi XY da Modifica_programmi.java
 #vb73;Vb73HmiMoveXY_C2;Richiesta di spostamento assi XY da Modifica_programmi.java
 #vb74;Vb74HmiMoveXY_PieAlto_C1;Richiesta di spostamento assi XY da Modifica_programmi.java con piedino alto
@@ -81,11 +82,14 @@ As2000 Simbols Table
 #vb94;Vb94_Cambiare_revolver;=1 è ora di cambiare il revolver
 #vb95;Vb95_ResetConteggio;tasto Reset HMI rimette il conteggio 1/7
 #vb96;Vb96_AnticipoTrasl_SX;=1 anticipo il movimento del traslatore a sx sopra le pinze di cucitura della testa 1
+#vb97;Vb97_RiseScaricatoreAttivo;= 1 è un rise che mi dice che lo scaricatore è attivo ed è arrivato il segnale di fine cucitura
 #vb99;VbTest;per test
 #vb100;VbSimulaDbg;Cucitrice simulata ( per debugger )
 #vb101;VbSyncDbg;Variabile di sync ( per debugger )
 #vb102;VbSimulazionePedanaC1;alza e abbassa le pinze tramite vb come se premessi la pedana
 #vb103;VbSimulazionePedanaC2;alza e abbassa le pinze tramite vb come se premessi la pedana
+#vb115;Vb115CricchettoRinforzo;ad ON lancia il ciclo per inserire la fettuccia nei rulli
+#vb116;Vb116RinforzoGiu_HMI;ad ON HMI chiede al PLC di abbassare i coltelli del rinforzo
 #vb151;Vb151EnableCarPattine;=1 device caricatore pattina attivo
 #vb152;Vb152KitCarPAttine;=1 il kit carica pattina è attivo (tasto HMI)
 #vb153;Vb153GoCicloCarPAttina;=1 fa partire un ciclo carica pattina
@@ -98,6 +102,89 @@ As2000 Simbols Table
 #vb160;Vb160PartiACucire;=1 il plc avverte il CN che la pattina è stata caricata e bloccata, ora può effettuare la prima cucitura
 #vb170;Vb170KitTascaCargo;=1 attivo il kit tasca cargo
 #vb171;Vb_Fun301_run;
+#vb172;Vb_3SchedeIOBelli;=1 è una 882 con solo 3 schede IO fatte da Belli (NB in Argentina la prima 882 ne aveva 4 quindi questa vb va tenuta a false)
+#vb201;Vb_ingresso_Pulsanti_start;i1
+#vb202;Vb_ingresso_C1_Pedana;i2
+#vb203;Vb_ingresso_C1_PedanaPiegatore;i3
+#vb204;Vb_ingresso_C1_FcZeroCrochet;
+#vb205;Vb_ingresso_FcPinzaCaricoAlta;
+#vb206;Vb_ingresso_FcMinCaricatore1;
+#vb207;Vb_ingresso_FcPiegatore_AV;
+#vb208;Vb_ingresso_FcPiegatore_DI;
+#vb209;Vb_ingresso_FcPiegatoreBasso;
+#vb210;Vb_ingresso_10;
+#vb211;Vb_ingresso_FcLancia_DI;
+#vb212;Vb_ingresso_Bilanciere_Alto;
+#vb213;Vb_ingresso_Bilanciere_Basso;
+#vb214;Vb_ingresso_Rinforzo_Attivo;
+#vb215;Vb_ingresso_Rinforzo_ready;
+#vb216;Vb_ingresso16;
+#vb217;Vb_ingresso17;
+#vb218;Vb_ingresso18;
+#vb219;Vb_ingresso_C1_FcMinAsseX;
+#vb220;Vb_ingresso_C1_FcMinAsseY;
+#vb221;Vb_ingresso_Emg;
+#vb222;Vb_ingresso_C1_FcZeroAgo;
+#vb223;Vb_ingresso_C1_PinzaIntBassa;
+#vb224;Vb_ingresso_C1_PinzaEstAlta;
+#vb225;Vb_ingresso_PulsResetFolder;
+#vb226;Vb_ingresso_C1_PulsStopTesta;
+#vb227;Vb_ingresso_C2_PulsStopTesta_suC1;
+#vb228;Vb_ingresso28;
+#vb229;Vb_ingresso29;
+#vb230;Vb_ingresso30;
+#vb231;Vb_ingresso_C1_ReadyAsseX;
+#vb232;Vb_ingresso_C1_ReadyAsseY;
+#vb233;Vb_ingresso_C2_Pedana;
+#vb234;Vb_ingresso34;
+#vb235;Vb_ingresso_Pressostato;
+#vb236;Vb_ingresso36;
+#vb237;Vb_ingresso37;
+#vb238;Vb_ingresso38;
+#vb239;Vb_ingresso39;
+#vb240;Vb_ingresso_C2_FcZeroAgo;
+#vb241;Vb_ingresso_C2_FcPinzaIntBassa;
+#vb242;Vb_ingresso_FcPinzaTraslAlta;
+#vb243;Vb_ingresso43;
+#vb244;Vb_ingresso44;
+#vb245;Vb_ingresso_C2_PulsStopTesta;
+#vb246;Vb_ingresso46;
+#vb247;Vb_ingresso_C2_ReadyAsseX;
+#vb248;Vb_ingresso_C2_ReadyAsseY;
+#vb249;Vb_ingresso_CarPat_Top_SUGIu;
+#vb250;Vb_ingresso_CarPat_Middle_SUGIu;
+#vb251;Vb_ingresso_CarPat_Bottom_SUGIu;
+#vb252;Vb_ingresso_CarPat_Tastatore;
+#vb253;Vb_ingresso_CarPat_Empty;
+#vb254;Vb_ingresso_CarPat_BackPos;
+#vb255;Vb_ingresso_CarPat_SpoLamLungoL;
+#vb256;Vb_ingresso_CarPat_SpoLamLungoR;
+#vb257;Vb_ingresso_CarPat_SpoLamCortoL;
+#vb258;Vb_ingresso_CarPat_SpoLamCortoR;
+#vb259;Vb_ingresso59;
+#vb260;Vb_ingresso60;
+#vb261;Vb_ingresso61;
+#vb262;Vb_ingresso62;
+#vb263;Vb_ingresso63;
+#vb264;Vb_ingresso64;
+#vb300;Vb300;
+#vb301;Vb301;
+#vb302;Vb302;
+#vb303;Vb303;
+#vb304;Vb304;
+#vb305;Vb305;
+#vb306;Vb306;
+#vb307;Vb307;
+#vb308;Vb308;
+#vb309;Vb309;
+#vb310;Vb310;
+#vb311;Vb311;
+#vb312;Vb312;
+#vb313;Vb313;
+#vb314;Vb314;
+#vb315;Vb315;
+#vb316;Vb316;
+#vb317;Vb317;
 #vb4000;Vb4000_Automatico;/// messa a ON da HMI sono in automatico
 #vb4001;Vb4001_StepPiegatore;/// messa a ON da HMI il piegatore è passo passo
 #vb4002;Vb4002_StepPiegatoreStop;/// punto di stop piegatore
@@ -125,7 +212,7 @@ As2000 Simbols Table
 #vb4026;Vb4026_Piegatore2_OFF;Secondo piegatore disattivato
 #vb4027;Vb4027_Piegatore3_OFF;Terzo piegatore disattivato
 #vb4028;Vb4028_Piegatore4_OFF;Quarto piegatore disattivato
-#vb4031;Vb4031_AppScaricatoreInPos;dopo un tempo che la valvola o54_Scaric_dx_sx è a ON
+#vb4031;Vb4031_AppScaricatoreInPos;dopo un tempo che la valvola Scaric_dx_sx è a ON
 #vb4032;Vb4032_AppScaricatoreStrBarre;avvio le barre insieme alla pinza alta
 #vb4033;Vb4033_RitardoAvanzataCaricatore;finchè è ad 1 il caricatore non può avanzare (ritardo dopo la barra2 on)
 #vb4034;Vb4034_ScaricOnSuRasafilo;se On la prima barra parte sul rasafilo finale, se off dopo che le pinze solo alte
@@ -187,137 +274,137 @@ As2000 Simbols Table
 #vb4098;Vb4098_OnSeqScartafiloC1;/// utilizzato da plc per abilitare scartafilo C1
 #vb4099;Vb4099_OnSeqScartafiloC2;/// utilizzato da plc per abilitare scartafilo C2
 #vb4100;Vb4100_;
-#vb4133;Vb4133_AppMan_o1_Piegatore_1;
-#vb4134;Vb4134_AppMan_o2_Piegatore_2;
-#vb4135;Vb4135_AppMan_o3_Piegatore_3;
-#vb4136;Vb4136_AppMan_o4_Piegatore_4;
-#vb4137;Vb4137_AppMan_o5_Cambio_corpo;
-#vb4138;Vb4138_AppMan_o6_Cambio_lama_front;
-#vb4139;Vb4139_AppMan_o7_Cambio_lame_lateral;
-#vb4140;Vb4140_AppMan_o8_Cambio_Lamelle_4_5;
-#vb4141;Vb4141_AppMan_o9_Lancia_AD;
-#vb4142;Vb4142_AppMan_o10_Piegatore_AD;
-#vb4143;Vb4143_AppMan_o11_Piegatore_Su_Giu;
-#vb4144;Vb4144_AppMan_o12_Bilanciere_Su_Giu;
-#vb4145;Vb4145_AppMan_o13_Lancia_Cargo_Aperta;
-#vb4146;Vb4146_AppMan_o14_C1_rasafilo;
-#vb4147;Vb4147_AppMan_o15_EvAspiratore;
-#vb4148;Vb4148_AppMan_o16_Lancia_Cargo_Chiusa;
-#vb4149;Vb4149_AppMan_o17_C1_Piedino;
-#vb4150;Vb4150_AppMan_o18_C1_Pinza_int;
-#vb4151;Vb4151_AppMan_o19_C1_Pinza_est;
-#vb4152;Vb4152_AppMan_o20_C1_Retrattile_AC;
-#vb4153;Vb4153_AppMan_o21_C1_RaffreddamentoAgo;
+#vb4133;Vb4133_AppMan_out_Piegatore_1;
+#vb4134;Vb4134_AppMan_out_Piegatore_2;
+#vb4135;Vb4135_AppMan_out_Piegatore_3;
+#vb4136;Vb4136_AppMan_out_Piegatore_4;
+#vb4137;Vb4137_AppMan_out_Cambio_corpo;
+#vb4138;Vb4138_AppMan_out_Cambio_lama_front;
+#vb4139;Vb4139_AppMan_out_Cambio_lame_lateral;
+#vb4140;Vb4140_AppMan_out_Cambio_Lamelle_4_5;
+#vb4141;Vb4141_AppMan_out_Lancia_AD;
+#vb4142;Vb4142_AppMan_out_Piegatore_AD;
+#vb4143;Vb4143_AppMan_out_Piegatore_Su_Giu;
+#vb4144;Vb4144_AppMan_out_Bilanciere_Su_Giu;
+#vb4145;Vb4145_AppMan_out_Lancia_Cargo_Aperta;
+#vb4146;Vb4146_AppMan_out_C1_rasafilo;
+#vb4147;Vb4147_AppMan_out_EvAspiratore;
+#vb4148;Vb4148_AppMan_out_Lancia_Cargo_Chiusa;
+#vb4149;Vb4149_AppMan_out_C1_Piedino;
+#vb4150;Vb4150_AppMan_out_C1_Pinza_int;
+#vb4151;Vb4151_AppMan_out_C1_Pinza_est;
+#vb4152;Vb4152_AppMan_out_C1_Retrattile_AC;
+#vb4153;Vb4153_AppMan_out_C1_RaffreddamentoAgo;
 #vb4154;Vb4154_22;
-#vb4155;Vb4155_AppMan_o23_Lentezza_Tasca_AD;
-#vb4156;Vb4156_AppMan_o24_Pinza_carico_Su_Giu;
-#vb4157;Vb4157_AppMan_o25_C1_Cambio_Pinze;
-#vb4158;Vb4158_AppMan_o26_C1_Scalino_Piedino;
-#vb4159;Vb4159_AppMan_o27_C1_Ranocchia_retrat;
-#vb4160;Vb4160_28;
-#vb4161;Vb4161_29;
-#vb4162;Vb4162_30;
-#vb4163;Vb4163_AppMan_o31_C1_bloccaFiloMagente;
-#vb4164;Vb4164_AppMan_o32_Enable_AssiXY_C1;
-#vb4165;Vb4165_AppMan_o33_Valvolone;
-#vb4166;Vb4166_AppMan_o34_CarPat_FrontBack;
-#vb4167;Vb4167_AppMan_o35_CarPat_Aghi;
-#vb4168;Vb4168_AppMan_o36_CarPat_SoffioAghi;
-#vb4169;Vb4169_AppMan_o37_CarPat_SoffiPattina;
-#vb4170;Vb4170_AppMan_o38_CarPat_DCGiu;
-#vb4171;Vb4171_AppMan_o39_CarPat_DCSu;
+#vb4155;Vb4155_AppMan_out_Lentezza_Tasca_AD;
+#vb4156;Vb4156_AppMan_out_Pinza_carico_Su_Giu;
+#vb4157;Vb4157_AppMan_out_C1_Cambio_Pinze;
+#vb4158;Vb4158_AppMan_out_C1_Scalino_Piedino;
+#vb4159;Vb4159_AppMan_out_C1_Ranocchia_retrat;
+#vb4160;Vb4160_AppMan_out_Rullo_Rinforzo;
+#vb4161;Vb4161_AppMan_out_Coltello_Rinforzo;
+#vb4162;Vb4162_AppMan_out_MagneteSuGiu_Rinforzo;
+#vb4163;Vb4163_AppMan_out_C1_bloccaFiloMagente;
+#vb4164;Vb4164_AppMan_out_Enable_AssiXY_C1;
+#vb4165;Vb4165_AppMan_out_Valvolone;
+#vb4166;Vb4166_AppMan_out_CarPat_FrontBack;
+#vb4167;Vb4167_AppMan_out_CarPat_Aghi;
+#vb4168;Vb4168_AppMan_out_CarPat_SoffioAghi;
+#vb4169;Vb4169_AppMan_out_CarPat_SoffiPattina;
+#vb4170;Vb4170_AppMan_out_CarPat_DCGiu;
+#vb4171;Vb4171_AppMan_out_CarPat_DCSu;
 #vb4172;Vb4172_o40;
-#vb4173;Vb4173_o41;
-#vb4174;Vb4174_o42;
-#vb4175;Vb4175_o43;
+#vb4173;Vb4173_AppMan_out_CarPat_SpostLamLungo;
+#vb4174;Vb4174_AppMan_out_CarPat_SpostLamCorto;
+#vb4175;Vb4175_AppMan_out_CarPat_SoffioSuPiano;
 #vb4176;Vb4176_o44;
 #vb4177;Vb4177_o45;
-#vb4178;Vb4178_AppMan_o46_C2_rasafilo;
+#vb4178;Vb4178_AppMan_out_C2_rasafilo;
 #vb4179;Vb4179_o47;
-#vb4180;Vb4180_AppMano_48_Enable_AssiXY_C2;
-#vb4181;Vb4181_AppMan_o49_C2_Piedino;
-#vb4182;Vb4182_AppMan_o50_C2_Pinza_int;
-#vb4183;Vb4183_AppMan_o51_PinzaPattina_1;
-#vb4184;Vb4184_AppMan_o52_PinzaPattina_2;
-#vb4185;Vb4185_AppMan_o53_C2_RaffreddamentoAgo;
-#vb4186;Vb4186_AppMan_o54_Scaric_dx_sx;
+#vb4180;Vb4180_AppMano_out_Enable_AssiXY_C2;
+#vb4181;Vb4181_AppMan_out_C2_Piedino;
+#vb4182;Vb4182_AppMan_out_C2_Pinza_int;
+#vb4183;Vb4183_AppMan_out_PinzaPattina_1;
+#vb4184;Vb4184_AppMan_out_PinzaPattina_2;
+#vb4185;Vb4185_AppMan_out_C2_RaffreddamentoAgo;
+#vb4186;Vb4186_AppMan_out_Scaric_dx_sx;
 #vb4187;Vb4187_o55;
-#vb4188;Vb4188_AppMan_o56_Piza_tras_su_giu;
-#vb4189;Vb4189_AppMan_o57_C2_Cambio_Pinze;
-#vb4190;Vb4190_AppMan_o58_C2_Scalino_Piedino;
+#vb4188;Vb4188_AppMan_out_Piza_tras_su_giu;
+#vb4189;Vb4189_AppMan_out_C2_Cambio_Pinze;
+#vb4190;Vb4190_AppMan_out_C2_Scalino_Piedino;
 #vb4191;Vb4191_o59;
-#vb4192;Vb4192_AppMan_o60_Prima_barra;
-#vb4193;Vb4193_AppMan_o61_Seconda_barra;
+#vb4192;Vb4192_AppMan_out_Prima_barra;
+#vb4193;Vb4193_AppMan_out_Seconda_barra;
 #vb4194;Vb4194_o62;
-#vb4195;Vb4195_AppMan_C2_bloccaFiloMagente;
+#vb4195;Vb4195_AppMan_out_C2_bloccaFiloMagente;
 #vb4196;Vb4196_o64;
 #vb4208;Vb4208_AppMagneteTensione;
 #vb4209;Vb4209_AppMagneteTensioneT2;
 #vb4210;Vb4210_AppMagneteSopraPiegatore;
 #vb4211;Vb4211_AppMagneteSottoPiegatore;
-#vb4333;Vb4333_AppAut_o1_Piegatore_1;
-#vb4334;Vb4334_AppAut_o2_Piegatore_2;
-#vb4335;Vb4335_AppAut_o3_Piegatore_3;
-#vb4336;Vb4336_AppAut_o4_Piegatore_4;
-#vb4337;Vb4337_AppAut_o5_Cambio_corpo;
-#vb4338;Vb4338_AppAut_o6_Cambio_lama_front;
-#vb4339;Vb4339_AppAut_o7_Cambio_lame_lateral;
-#vb4340;Vb4340_AppAut_o8_Cambio_Lamelle_4_5;
-#vb4341;Vb4341_AppAut_o9_Lancia_AD;
-#vb4342;Vb4342_AppAut_o10_Piegatore_AD;
-#vb4343;Vb4343_AppAut_o11_Piegatore_Su_Giu;
-#vb4344;Vb4344_AppAut_o12_Bilanciere_Su_Giu;
-#vb4345;Vb4345_AppAut_o13_Lancia_Cargo_Aperta;
-#vb4346;Vb4346_AppAut_o14_C1_rasafilo;
-#vb4347;Vb4347_AppAut_o15_EvAspiratore;
-#vb4348;Vb4348_AppAut_o16_Lancia_Cargo_Chiusa;
-#vb4349;Vb4349_AppAut_o17_C1_Piedino;
-#vb4350;Vb4350_AppAut_o18_C1_Pinza_int;
-#vb4351;Vb4351_AppAut_o19_C1_Pinza_est;
-#vb4352;Vb4352_AppAut_o20_C1_Retrattile_AC;
-#vb4353;Vb4353_AppAut_o21_C1_RaffreddamentoAgo;
+#vb4333;Vb4333_AppAut_out_Piegatore_1;
+#vb4334;Vb4334_AppAut_out_Piegatore_2;
+#vb4335;Vb4335_AppAut_out_Piegatore_3;
+#vb4336;Vb4336_AppAut_out_Piegatore_4;
+#vb4337;Vb4337_AppAut_out_Cambio_corpo;
+#vb4338;Vb4338_AppAut_out_Cambio_lama_front;
+#vb4339;Vb4339_AppAut_out_Cambio_lame_lateral;
+#vb4340;Vb4340_AppAut_out_Cambio_Lamelle_4_5;
+#vb4341;Vb4341_AppAut_out_Lancia_AD;
+#vb4342;Vb4342_AppAut_out_Piegatore_AD;
+#vb4343;Vb4343_AppAut_out_Piegatore_Su_Giu;
+#vb4344;Vb4344_AppAut_out_Bilanciere_Su_Giu;
+#vb4345;Vb4345_AppAut_out_Lancia_Cargo_Aperta;
+#vb4346;Vb4346_AppAut_out_C1_rasafilo;
+#vb4347;Vb4347_AppAut_out_EvAspiratore;
+#vb4348;Vb4348_AppAut_out_Lancia_Cargo_Chiusa;
+#vb4349;Vb4349_AppAut_out_C1_Piedino;
+#vb4350;Vb4350_AppAut_out_C1_Pinza_int;
+#vb4351;Vb4351_AppAut_out_C1_Pinza_est;
+#vb4352;Vb4352_AppAut_out_C1_Retrattile_AC;
+#vb4353;Vb4353_AppAut_out_C1_RaffreddamentoAgo;
 #vb4354;Vb4354_o22;
-#vb4355;Vb4355_AppAut_o23_Lentezza_Tasca_AD;
-#vb4356;Vb4356_AppAut_o24_Pinza_carico_Su_Giu;
-#vb4357;Vb4357_AppAut_o25_C1_Cambio_Pinze;
-#vb4358;Vb4358_AppAut_o26_C1_Scalino_Piedino;
-#vb4359;Vb4359_AppAut_o27_C1_Ranocchia_retrat;
-#vb4360;Vb4360_o28;
-#vb4361;Vb4361_o29;
-#vb4362;Vb4362_o30;
-#vb4363;Vb4363_AppAut_o31_C1_bloccaFiloMagente;
-#vb4364;Vb4364_AppAut_o32_Enable_AssiXY_C1;
-#vb4365;Vb4365_AppAut_o33_Valvolone;
-#vb4366;Vb4366_AppAut_o34_CarPat_FrontBack;
-#vb4367;Vb4367_AppAut_o35_CarPat_Aghi;
-#vb4368;Vb4368_AppAut_o36_CarPat_SoffioAghi;
-#vb4369;Vb4369_AppAut_o37_CarPat_SoffiPattina;
-#vb4370;Vb4370_AppAut_o38_CarPat_DCGiu;
-#vb4371;Vb4371_AppAut_o39_CarPat_DCSu;
+#vb4355;Vb4355_AppAut_out_Lentezza_Tasca_AD;
+#vb4356;Vb4356_AppAut_out_Pinza_carico_Su_Giu;
+#vb4357;Vb4357_AppAut_out_C1_Cambio_Pinze;
+#vb4358;Vb4358_AppAut_out_C1_Scalino_Piedino;
+#vb4359;Vb4359_AppAut_out_C1_Ranocchia_retrat;
+#vb4360;Vb4360_AppAut_out_Rullo_Rinforzo;
+#vb4361;Vb4361_AppAut_out_Coltello_Rinforzo;
+#vb4362;Vb4362_AppAut_out_MagneteSuGiu_Rinforzo;
+#vb4363;Vb4363_AppAut_out_C1_bloccaFiloMagente;
+#vb4364;Vb4364_AppAut_out_Enable_AssiXY_C1;
+#vb4365;Vb4365_AppAut_out_Valvolone;
+#vb4366;Vb4366_AppAut_out_CarPat_FrontBack;
+#vb4367;Vb4367_AppAut_out_CarPat_Aghi;
+#vb4368;Vb4368_AppAut_out_CarPat_SoffioAghi;
+#vb4369;Vb4369_AppAut_out_CarPat_SoffiPattina;
+#vb4370;Vb4370_AppAut_out_CarPat_DCGiu;
+#vb4371;Vb4371_AppAut_out_CarPat_DCSu;
 #vb4372;Vb4372_o40;
-#vb4373;Vb4373_o41;
-#vb4374;Vb4374_o42;
-#vb4375;Vb4375_o43;
+#vb4373;Vb4373_AppAut_out_CarPat_SpostLamLungo;
+#vb4374;Vb4374_AppAut_out_CarPat_SpostLamCorto;
+#vb4375;Vb4375_AppAut_out_CarPat_SoffioSuPiano;
 #vb4376;Vb4376_o44;
 #vb4377;Vb4377_o45;
-#vb4378;Vb4378_AppAut_o46_C2_rasafilo;
+#vb4378;Vb4378_AppAut_out_C2_rasafilo;
 #vb4379;Vb4379_o47;
-#vb4380;Vb4380_AppAuto48_Enable_AssiXY_C2;
-#vb4381;Vb4381_AppAut_o49_C2_Piedino;
-#vb4382;Vb4382_AppAut_o50_C2_Pinza_int;
-#vb4383;Vb4383_AppAut_o51_PinzaPattina_1;
-#vb4384;Vb4384_AppAut_o52_PinzaPattina_2;
-#vb4385;Vb4385_AppAut_o53_C2_RaffreddamentoAgo;
-#vb4386;Vb4386_AppAut_o54_Scaric_dx_sx;
+#vb4380;Vb4380_AppAuto_out_Enable_AssiXY_C2;
+#vb4381;Vb4381_AppAut_out_C2_Piedino;
+#vb4382;Vb4382_AppAut_out_C2_Pinza_int;
+#vb4383;Vb4383_AppAut_out_PinzaPattina_1;
+#vb4384;Vb4384_AppAut_out_PinzaPattina_2;
+#vb4385;Vb4385_AppAut_out_C2_RaffreddamentoAgo;
+#vb4386;Vb4386_AppAut_out_Scaric_dx_sx;
 #vb4387;Vb4387_o55;
-#vb4388;Vb4388_AppAut_o56_Pinza_tras_su_giu;
-#vb4389;Vb4389_AppAut_o57_C2_Cambio_Pinze;
-#vb4390;Vb4390_AppAut_o58_C2_Scalino_Piedino;
+#vb4388;Vb4388_AppAut_out_Pinza_tras_su_giu;
+#vb4389;Vb4389_AppAut_out_C2_Cambio_Pinze;
+#vb4390;Vb4390_AppAut_out_C2_Scalino_Piedino;
 #vb4391;Vb4391_o59;
-#vb4392;Vb4392_AppAut_o60_Prima_barra;
-#vb4393;Vb4393_AppAut_o61_Seconda_barra;
+#vb4392;Vb4392_AppAut_out_Prima_barra;
+#vb4393;Vb4393_AppAut_out_Seconda_barra;
 #vb4394;Vb4394_o62;
-#vb4395;Vb4395_AppAut_o63_C2_bloccaFiloMagente;
+#vb4395;Vb4395_AppAut_out_C2_bloccaFiloMagente;
 #vb4396;Vb4396_o64;
 #vb4501;Vb4501_AppVbChn3StartHMI;app pulsante hmi start
 #vb4502;Vb4502_AppPosMacchinaPerZero;a ON tutte i cilindri sono posizionati correttamente per azzeramento
@@ -334,13 +421,13 @@ As2000 Simbols Table
 #vb4513;Vb4513_AppEnbCucitrice2;a ON abilito la cucitrice 2
 #vb4514;Vb4514_AppHmiScaricatore;a tasto hmi  scaricatore
 #vb4515;Vb4515_AppEnbScaricatore;a ON abilito lo scaricatore
-#vb4516;Vb4516_AppHmiScambioPinzeC1_Car2;a tasto hmi tipo scambio pinza tra cucitrice 1 e caricatore 2
+#vb4516;Vb4516_AppHmiScambioPinzeC1_Car2;Clamp mode impostato da parametro HMI
 #vb4518;Vb4518_EnbQuartoXL;a ON abilito quarto XL
 #vb4519;Vb4519_AppScaricoCortiConPinza;a ON abilitolo scarico dei pezzi piccoli con la pinza
 #vb4520;Vb4520_AppScaricoCortiConPinzaRunning;a ON mentre sta girando il ciclo scaricatore pezzi piccoli
 #vb4521;Vb4521_AppHmiTestPiegatore;a tasto hmi test piegatore
 #vb4522;Vb4522_AppHmiTestTrasl;a tasto hmi test traslatore
-#vb4523;Vb4523_C2_PinzaDietroUnaTesta;a ON la pinza cucitura è nella posizione distro perchè ho Solo una testa
+#vb4523;Vb4523_C2_PinzaDietroUnaTesta;a ON la pinza cucitura è nella posizione dietro perchè ho Solo una testa
 #vb4580;Vb4580_EnbSgancioPinzaDopoZero;a ON sgancia le pinze alla fine dell'azzeramento
 #vb4581;Vb4581_EnbAggancioPinzaAutomatico;a ON aggancia le pinze in automatico
 #vb4582;Vb4582_EnbSgancioPinzaFineCucitura;a ON sgancia le pinze alla fine della cucitura
@@ -431,7 +518,7 @@ As2000 Simbols Table
 #vn111;Vn111_EnbEtichetta;/// a ON abilito la pausa per mettere l'etichetta ( 1 = tutte) ( 2 = 1 si 1 no )
 #vn112;Vn112_AppEtichettaMod_2;/// utilizzata come appoggio modo 2 ( se serve mettere reset )
 #vn115;Vn115_CopiaSeqPiegFree;copia sequenza piegatura Free per pagina touch
-#vn120;Vn120_AppEnbScambioPinzeC1_Car2;a 1 abilito tipo scambio pinza tra cucitrice 1 e caricatore 2
+#vn120;Vn120_AppEnbScambioPinzeC1_Car2;a 0 il traslo scende esterno alle pinze, a 1 il traslo scendo con la interna ancora bassa
 #vn131;Vn131_Debug;debug su pagina AUTO touch
 #vn132;Vn132_DebugPie;debug su pagina AUTO touch
 #vn133;Vn133_DebugAuto;debug su pagina AUTO touch
@@ -444,6 +531,7 @@ As2000 Simbols Table
 #vn163;Vn163_Read_anaout100;
 #vn164;mc_stati_Carica_Pattina;
 #vn180;Vn180_Device_Rinforzo;0= disabilitato, 1 = tipo JAM, 2 = tipo Turco
+#vn181;Vn181_Step_Rinforzo;
 #vn196;Vn196_Tasca_DX_C1;
 #vn197;Vn197_Tasca_SX_C1;
 #vn198;Vn198_Tasca_DX_C2;
@@ -672,6 +760,8 @@ As2000 Simbols Table
 #vq3203;Vq3203_Ritardo_PartenzaCuciPat;dopo che la prima pinza ha bloccato la pattina, parto a cucire per la prima cucitura
 #vq3204;Vq3204_Ritardo_PiegaturaPat;ritardo prima di piegare la pattina
 #vq3205;Vq3205_Ritardo_SecondaCuciPat;ritardo la piegatura della pattina e la partenza della seconda cucitura
+#vq3206;Vq3206_Time_Soffio_PosPattina;tempo per posizionare la pattina prima che arretra il piano                            //// Mauro
+#vq3207;Vq3207_Time_CorsaC_PosPattina;tempo per posizionare la pattina dopo che arretra il piano                            //// Mauro
 #vq3500;Vq3500_PosizioneCaricRiposo;posizione caricatore a riposo fuori ingombro
 #vq3501;Vq3501_PosizioneCaricCaricoTasca;posizione caricatore carico tasca
 #vq3502;Vq3502_PosizioneCaricScaricoTasca;posizione caricatore scarico tasca
@@ -713,131 +803,131 @@ As2000 Simbols Table
 #vq3602;GoAxPlcCaricVel;GoAx asse caricatore - Velocita'
 #vq3603;GoAxPlcCaric;GoAx asse caricatore - Libera
 #vq4000;FUN301_vq4000;
-#i1;i1_Pulsanti_start;
-#i2;i2_C1_Pedana;
-#i3;i3_C1_PedanaPiegatore;
-#i4;i4_C1_FcZeroCrochet;
-#i5;i5_FcPinzaCaricoAlta;
-#i6;i6_FcMinCaricatore1;
-#i7;i7_FcPiegatore_AV;
-#i8;i8_FcPiegatore_DI;
-#i9;i9_FcPiegatoreBasso;
-#i10;i10_Piegatore_Salito;
-#i11;i11_FcLancia_DI;
-#i12;i12_Bilanciere_Alto;
-#i13;i13_Bilanciere_Basso;
-#i14;i14_Rinforzo_Attivo;
-#i15;i15_Rinforzo_ready;
+#i1;i1;
+#i2;i2;
+#i3;i3;
+#i4;i4;C1_FcZeroCrochet
+#i5;i5;
+#i6;i6;_FcMinCaricatore1
+#i7;i7;
+#i8;i8;
+#i9;i9;
+#i10;i10;
+#i11;i11;
+#i12;i12;
+#i13;i13;
+#i14;i14;
+#i15;i15;
 #i16;i16;
 #i17;i17;
-#i18;i18_C1_RotturaFilo;
-#i19;i19_C1_FcMinAsseX;
-#i20;i20_C1_FcMinAsseY;
-#i21;i21_Emg;
-#i22;i22_C1_FcZeroAgo;
-#i23;i23_C1_PinzaIntBassa;
-#i24;i24_C1_PinzaEstAlta;
-#i25;i25_PulsResetFolder;
-#i26;i26_C1_PulsStopTesta;
-#i27;i27_C2_PulsStopTesta;
+#i18;i18;
+#i19;i19;
+#i20;i20;
+#i21;i21;
+#i22;i22;
+#i23;i23;
+#i24;i24;
+#i25;i25;
+#i26;i26;
+#i27;i27;
 #i28;i28;
 #i29;i29;
 #i30;i30;
-#i31;i31_C1_ReadyAsseX;
-#i32;i32_C1_ReadyAsseY;
-#i33;i33_C2_Pedana;
+#i31;i31;
+#i32;i32;
+#i33;i33;
 #i34;i34;
-#i35;i35_Pressostato;
-#i36;i36;
-#i37;i37_C2_FcZeroCrochet;
-#i38;i38_FcPinzaTraslAlta;
-#i39;i39_FcMinCaricatore2;
-#i40;i40;
-#i41;i41_CarPat_Top_SUGIu;
-#i42;i42_CarPat_Middle_SUGIu;
-#i43;i43_CarPat_Bottom_SUGIu;
-#i44;i44_CarPat_Tastatore;
-#i45;i45_CarPat_Empty;
-#i46;i46_CarPat_BackPos;
-#i47;i47_C2_ReadyAsseX;
-#i48;i48_C2_ReadyAsseY;
-#i49;i49;
-#i50;i50_C2_RotturaFilo;
-#i51;i51_C2_FcMinAsseX;
-#i52;i52_C2_FcMinAsseY;
-#i53;i53_C2_FcMaxAsseY;
-#i54;i54_C2_FcZeroAgo;
-#i55;i55_C2_FcPinzaIntBassa;
+#i35;i35;
+#i36;i36;C2_FcZeroCrochet
+#i37;i37;C2_FcMinAsseX
+#i38;i38;C2_FcMinAsseY
+#i39;i39;
+#i40;i40;i40_C2_FcZeroAgo
+#i41;i41;
+#i42;i42;
+#i43;i43;FcMinCaricatore2
+#i44;i44;
+#i45;i45;
+#i46;i46;
+#i47;i47;
+#i48;i48;
+#i49;i49;_CarPat_Top_SUGIu
+#i50;i50;_CarPat_Middle_SUGIu
+#i51;i51;_CarPat_Bottom_SUGIu  --------i51_C2_FcMinAsseX
+#i52;i52;_CarPat_Tastatore  ----------- i52_C2_FcMinAsseY
+#i53;i53;_CarPat_Empty  -------------i53_C2_FcMaxAsseY
+#i54;i54;_CarPat_BackPos   ------i54_C2_FcZeroAgo
+#i55;i55;
 #i56;i56;
 #i57;i57;
-#i58;i58_C2_PulsStopTesta;
+#i58;i58;
 #i59;i59;
 #i60;i60;
 #i61;i61;
 #i62;i62;
 #i63;i63;
 #i64;i64;
-#o1;o1_Piegatore_1;
-#o2;o2_Piegatore_2;
-#o3;o3_Piegatore_3;
-#o4;o4_Piegatore_4;
-#o5;o5_Cambio_corpo;
-#o6;o6_Cambio_lama_front;
-#o7;o7_Cambio_lame_lateral;
-#o8;o8_Cambio_Lamelle_4_5;
-#o9;o9_Lancia_AD;
-#o10;o10_Piegatore_AD;
-#o11;o11_Piegatore_Su_Giu;
-#o12;o12_Bilanciere_Su_Giu;
-#o13;o13_Lancia_Cargo_Aperta;
-#o14;o14_C1_rasafilo;
-#o15;o15_EvAspiratore;
-#o16;o16_Lancia_Cargo_Chiusa;
-#o17;o17_C1_Piedino;
-#o18;o18_C1_Pinza_int;
-#o19;o19_C1_Pinza_est;
-#o20;o20_C1_Retrattile_AC;
-#o21;o21_C1_RaffreddamentoAgo;
+#o1;o1;
+#o2;o2;
+#o3;o3;
+#o4;o4;
+#o5;o5;
+#o6;o6;
+#o7;o7;
+#o8;o8;
+#o9;o9;
+#o10;o10;
+#o11;o11;
+#o12;o12;
+#o13;o13;
+#o14;o14;
+#o15;o15;
+#o16;o16;
+#o17;o17;
+#o18;o18;
+#o19;o19;
+#o20;o20;
+#o21;o21;
 #o22;o22;
-#o23;o23_Lentezza_Tasca_AD;
-#o24;o24_Pinza_carico_Su_Giu;
-#o25;o25_C1_Cambio_Pinze;
-#o26;o26_C1_Scalino_Piedino;
-#o27;o27_C1_Ranocchia_retrat;
+#o23;o23;
+#o24;o24;
+#o25;o25;
+#o26;o26;
+#o27;o27;
 #o28;o28;
 #o29;o29;
 #o30;o30;
-#o31;o31_C1_bloccaFiloMagente;
-#o32;o32_Enable_AssiXY_C1;
-#o33;o33_Valvolone;
-#o34;o34_CarPat_FrontBack;
-#o35;o35_CarPat_Aghi;
-#o36;o36_CarPat_SoffioAghi;
-#o37;o37_CarPat_SoffiPattina;
-#o38;o38_CarPat_DCGiu;
-#o39;o39_CarPat_DCSu;
+#o31;o31;
+#o32;o32;
+#o33;o33;
+#o34;o34;
+#o35;o35;
+#o36;o36;
+#o37;o37;
+#o38;o38;
+#o39;o39;
 #o40;o40;
 #o41;o41;
 #o42;o42;
 #o43;o43;
 #o44;o44;
 #o45;o45;
-#o46;o46_C2_rasafilo;
+#o46;o46;
 #o47;o47;
-#o48;o48_Enable_AssiXY_C2;
-#o49;o49_C2_Piedino;
-#o50;o50_C2_Pinza_int;
-#o51;o51_PinzaPattina_1;
-#o52;o52_PinzaPattina_2;
-#o53;o53_C2_RaffreddamentoAgo;
-#o54;o54_Scaric_dx_sx;
+#o48;o48;
+#o49;o49;
+#o50;o50;
+#o51;o51;
+#o52;o52;
+#o53;o53;
+#o54;o54;
 #o55;o55;
-#o56;o56_Pinza_tras_su_giu;
-#o57;o57_C2_Cambio_Pinze;
-#o58;o58_C2_Scalino_Piedino;
-#o59;o59_C2_Retrattile_AC;
-#o60;o60_Prima_barra;
-#o61;o61_Seconda_barra;
+#o56;o56;
+#o57;o57;
+#o58;o58;
+#o59;o59;
+#o60;o60;
+#o61;o61;
 #o62;o62;
-#o63;o63_C2_bloccaFiloMagente;
+#o63;o63;
 #o64;o64;

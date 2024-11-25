@@ -19,74 +19,63 @@
 
 
 sub ()
-// se è attivo lo scaricatore pezzi corti mando la pinza dietro
-
-	if ( Vb4515_AppEnbScaricatore and Vb4519_AppScaricoCortiConPinza and Vn_ID_macchina != 882)
-		Vb4520_AppScaricoCortiConPinzaRunning = ON
-		Vb4350_AppAut_o18_C1_Pinza_int = ON
-		Vb4351_AppAut_o19_C1_Pinza_est = ON 
-		WaitCond ( i24_C1_PinzaEstAlta == 1)
-		ISO G1 X C1_QuoHomeX Y (C1_QuoHomeY + Vq3084_SpostamentoPinzaPezziCorti) F C1_VelFeed
-		Vb4350_AppAut_o18_C1_Pinza_int = OFF
-		Vb4351_AppAut_o19_C1_Pinza_est = OFF 
-		WaitCond ( i23_C1_PinzaIntBassa == 1)
-		Delays (0.1)
-		ISO G1 X C1_QuoHomeX Y C1_QuoHomeY F C1_VelFeed
-		
-		if ( Vb4515_AppEnbScaricatore and (Vb4034_ScaricOnSuRasafilo == 0 or Vb4519_AppScaricoCortiConPinza ==1 ))
-			Vb4032_AppScaricatoreStrBarre = ON
-		endif
-		Vb4520_AppScaricoCortiConPinzaRunning = OFF
-		
-
-	endif
-
+	
 		
 	// alzo le pinze dopo azzeramento
 
+//vn120 = 0, una testa + scaricatore, and Vb4000_Automatico ==0 non fa alzare le pinza ma lo avevo messo poco prima per un altro caso, da studiare
+	if((Vb4513_AppEnbCucitrice2 ==1 ) or (Vb4515_AppEnbScaricatore ==1)  )
 
-	if(Vb4513_AppEnbCucitrice2 ==1 or Vb4515_AppEnbScaricatore ==1)
 
 
 
-		if ( Vn120_AppEnbScambioPinzeC1_Car2 == 1 and Vb30_C1_InCucitura == 0 )
+		if ( Vn120_AppEnbScambioPinzeC1_Car2 == 1 and Vb30_C1_InCucitura == 0 and Vb4000_Automatico ==0 )
 		      // Attesa assi X Y fermi
 			WaitCond( IsAxInStop( C1_AsseX ) )
 			WaitCond( IsAxInStop( C1_AsseY ) )
-			Vb4351_AppAut_o19_C1_Pinza_est = ON
-			Waitcond ( i24_C1_PinzaEstAlta )
+			Vb303 = ON
+			Vb4351_AppAut_out_C1_Pinza_est = ON
+			Waitcond ( Vb_ingresso_C1_PinzaEstAlta )
 
 			RichiestaStartCuci2 = ON
 		endif
 
-	else
+		if ( Vn120_AppEnbScambioPinzeC1_Car2 == 0 and Vb30_C1_InCucitura == 0 )
+		      // Attesa assi X Y fermi
+			WaitCond( IsAxInStop( C1_AsseX ) )
+			WaitCond( IsAxInStop( C1_AsseY ) )
+			Vb304 = ON
+		//le pinze le devo alzare dopo che il traslatore si è abbassato 	Vb4350_AppAut_out_C1_Pinza_int = ON
+		//le pinze le devo alzare dopo che il traslatore si è abbassato	Vb4351_AppAut_out_C1_Pinza_est = ON 
+		//le pinze le devo alzare dopo che il traslatore si è abbassato	Waitcond ( Vb_ingresso_C1_PinzaEstAlta )
 
+			
+		endif
+
+	else
+		//********** Modalità solo una testa (senza scarico), finito cucitura **********************
 		if ( Vb4803_AppResetHmiC1 == 0 and Vb4507_AppManAuto == 0 )
 			if(Vb4016_PrgTraslatoreRun == OFF)
-				Vb4350_AppAut_o18_C1_Pinza_int = ON
-				Vb4351_AppAut_o19_C1_Pinza_est = ON 
+				Vb4350_AppAut_out_C1_Pinza_int = ON
+				Vb4351_AppAut_out_C1_Pinza_est = ON 
+				Vb305 = ON
 			endif
 			Vb4096_AppOnScartafiloC1 = ON
-			WaitCond ( i24_C1_PinzaEstAlta == 1)
-			Vb36_Clear_OPT1 = ON	//apro retrattile
-			Vb37_Clear_OPT2 = ON	//abbasso perni ranocchia
-			Vb38_Clear_OPT3 = ON	//disattivo salto piedino
+			WaitCond ( Vb_ingresso_C1_PinzaEstAlta == 1)
+			
 			
 		endif
 
 	endif
 
-
+	Vb36_Clear_OPT1 = ON	//apro retrattile
+	Vb37_Clear_OPT2 = ON	//abbasso perni ranocchia
+	Vb38_Clear_OPT3 = ON	//disattivo salto piedino
 // azzero numero punti fatti 
 	C1_VqActPntCuci = 0
 
 
-// scaricatore
 
-	//if ( Vb4515_AppEnbScaricatore and (Vb4034_ScaricOnSuRasafilo == 0 or Vb4519_AppScaricoCortiConPinza ==1 ) and Vn_ID_macchina != 882)
-	//	Waitcond ( Vb4031_AppScaricatoreInPos ) /// aspetto il tempo per lo spostamento dx sx dello scaricatore
-	//	Vb4032_AppScaricatoreStrBarre = ON
-	//endif
 
 // gestione tasca dx/sx
 	if(Vb21_Tasca_dx_sx)

@@ -41,9 +41,9 @@ sub ()
         // Start azzeramento asse AGO
 
         // Se il sensore e' scoperto si va avanti finche' non si copre il sensore
-    if ( din22            )
+    if ( vb222                    )
         AxAnt( 3         , 720 , -1, 2, 0 )         
-        WaitCond ( din22            )
+        WaitCond ( vb222                    )
         ExecPlcFun( 75         , (3          * 100)+1 , 0 )
         WaitCond( IsAxInStop( 3          ) ) 
         DelayS( 0.2 )

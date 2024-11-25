@@ -18,7 +18,7 @@
 
 
 sub ()
-	if(Vn_ID_macchina == 882 )
+	if(Vn_ID_macchina == 8823 or Vn_ID_macchina == 8824 )
 		// Operazioni iniziali Custom 
 	    gosub "C2_MainIniCustom.obj"    
 	    

@@ -18,7 +18,7 @@
 
 sub ()
 
-vn777   = 50	
+
  // Verifica se necessario il ciclo di azzeramento
 if ( vb50             == 0 )
 
@@ -27,13 +27,13 @@ if ( vb50             == 0 )
 		vb7901      = 1
 	endif
 	// Verifica azzeramenti cucitrice 2
-	if ( vb2032          == 0 and vn320          == 882)
+	if ( vb2032          == 0 and (vn320          == 8823 or vn320          == 8824))
 		if(vb152             ) 
 			Vb4371                        = 1
-			WaitCond(din41               )
+			WaitCond(vb249                       )
 			Vb4371                        = 0
 			Vb4366                             = 1
-			WaitCond(din46             )
+			WaitCond(vb254                     )
 
 			//Vb154CarInPosAltaOK = 1
 			//Vb153GoCicloCarPAttina = 1	//preparo una pattina
@@ -45,7 +45,7 @@ if ( vb50             == 0 )
 
 
 	vb7086      = 1
-	if(vn320          == 882 ) 
+	if(vn320          == 8823 or vn320          == 8824) 
 		vb7186       = 1 
 	endif
 
@@ -62,7 +62,7 @@ if ( vb50             == 0 )
 	//
 
 
-	if(vn320          == 882 ) 
+	if(vn320          == 8823 or vn320          == 8824 ) 
 		WaitCond ( ( vb7193       == 1 ) and ( vn3191         >= 7 ) )
 	endif
 
@@ -70,7 +70,7 @@ if ( vb50             == 0 )
 		gosub "Halt.obj"
 	endif    
 
-	if(vn320          == 882 )	
+	if(vn320          == 8823 or vn320          == 8824 )	
 		if ( vn3191         > 7 ) 
 			gosub "Halt.obj"
 		endif    
@@ -78,7 +78,7 @@ if ( vb50             == 0 )
 
 	fp[ 5          ] = Vq3512                         
 
-	if(vn320          == 882 )	
+	if(vn320          == 8823 or vn320          == 8824 )	
 		fp[ 10         ] = Vq3530                    
 	endif
 
@@ -88,13 +88,7 @@ if ( vb50             == 0 )
 
 		ax[ 5          ] = Vq3501                          
 		vb4507            = 1 	//quanto arrivo in posizione alzo la variabile ciclo Automatico per poter iniziare
-		//if(Vn_ID_macchina == 882 )
-		//	ax[ C2_AsseCAR ] = Vq3524_AppPosInizio
-		//endif
-	//else
-		//if(Vn_ID_macchina == 882 )
-		//	ax[ C2_AsseCAR ] = Vq3524_AppPosInizio
-		//endif
+
 	endif
 
 	WaitCond( vb50             == 1 )
@@ -102,7 +96,7 @@ if ( vb50             == 0 )
 	gosub "Halt.obj"
 endif
 
-vn777   = 51
+
 
 /////////////////////////////////////////// tarature pinze lancia e caricatori
             // lancio automatico per centrare la pinza su ago Cucitrice 1
@@ -130,7 +124,7 @@ vn777   = 51
             // lancio automatico per centrare la caricatore su pinza cucitrice
     if ( vb50             and ( Vb4081                       or Vb4082                        or Vb4083                          or Vb4084                           or Vb4087                           ))
 				vb7              = 1 
-		        Vb4350                         = 0  
+				Vb4350                         = 0  
 				Vb4351                         = 0   
 				Vb4356                                = 0  
 				Vb4382                         = 0  
@@ -193,20 +187,20 @@ fp[ 10         ] = Vq3530
 // posizioni caricatore per piegatore o manuale
 if( vb4507            and vb4509                 )
 	ax[ 5          ] = Vq3500                     
-	if(vn320          == 882 )
+	if(vn320          == 8823 or vn320          == 8824 )
 		ax[ 10         ] = Vq3524             
 	endif
 endif
 // posizione caricatore per ciclo solo caricatore
 if( vb4507            and vb4511                  )
 	ax[ 5          ] = Vq3501                          
-	if(vn320          == 882 )
+	if(vn320          == 8823 or vn320          == 8824 )
 		ax[ 10         ] = Vq3524             
 	endif
 endif
 
 
-	 vn777   = 52
+
 do
  //if(Vb96_AnticipoTrasl_SX == 0)
 	// Macchina a stati cucitrice 1
@@ -285,7 +279,7 @@ do
 			vb11                    = 0  
 			//----- step reset piegatore fine
 
-			if ( din23                )
+			if ( vb223                        )
 
 
 				if(Vb4001               == 0  )		//se non sono in passo passo faccio partire il fork Chn1 per anticipare la cucitura altrimenti proseguo normale
@@ -316,7 +310,7 @@ do
 			vb11                    = 0  
 			//----- step reset piegatore fine
 
-			if ( din5                 )
+			if ( vb205                         )
 
 
 
@@ -371,7 +365,7 @@ do
 			break
 
 		case 16
-			if ( (vb4601                            or vb11                    or Vb4001              ) and din23                 )
+			if ( (vb4601                            or vb11                    or Vb4001              ) and vb223                         )
 				//se sono in passo passo faccio partire il Chn1 per la cucitura
 				if( Vb4001               )
 
@@ -388,6 +382,8 @@ do
 
 
 		case 30// parto a cucire
+			vb4802                = 0 //per DACCA, in alcuni casi effettuava lo spostamento al primo punto di cucitura e poi tornava al punto di carico.
+			vb4803               = 0 //per DACCA, in alcuni casi effettuava lo spostamento al primo punto di cucitura e poi tornava al punto di carico.
 
 			vn16       = 1
 
@@ -467,16 +463,17 @@ do
 				//****** 882 traslatore 
 				if ( vb4513                  or vb4515                   )
 					vb4805                      = 0  
-					if ( vn120                           == 0 )
+					if ( vn120                           == 0 ) // a 0 il traslo scende esterno alle pinze
 						vb51                = 1 
 						vn11         = 60
 						break
 					endif
-					if ( vn120                           == 1 )
+					if ( vn120                           == 1 ) // a 1 il traslo scendo con la interna ancora bassa
 						vb51                = 1 
 						WaitCond( IsAxInStop( 1        ) )
 						WaitCond( IsAxInStop( 2        ) )
 						Vb4351                         = 1 
+						vb307 = 1 
 						vn11         = 60
 						break
 					endif
@@ -489,6 +486,7 @@ do
 					vb4805                      = 0  
 					Vb4350                         = 1 	//alzo la pinza interna
 					Vb4351                         = 1 	//alzo la pinza esterna
+					vb308 = 1 
 					Vb4096                   = 1 
 
 					if(Vb4001               )	//se la cucitura è finita e il passo passo piegatore attivo  faccio partire il fork piegatore
@@ -503,7 +501,7 @@ do
 					vn11         = 55
 				endif 
 			endif
-			if(Vb4001               and din3                  == 1 )	//se mentre cuce e passo passo piegatore attivo e premo la pedana faccio partire il fork piegatore
+			if(Vb4001               and vb203                          == 1 )	//se mentre cuce e passo passo piegatore attivo e premo la pedana faccio partire il fork piegatore
 				if ( vb4507            and vb4509                 )	//se Piegatore acceso lancio il suo Fork
 					if ( IsForkActive( vn201                 ) == 0 )
 						vn201                 = ForkProg ( "Piegatore", 1 )
@@ -515,7 +513,7 @@ do
 			break
 
 		case 55	//aspetto pinze alte e poi riapro la retrattile
-			if(din24               == 1)
+			if(vb224                       == 1)
 				vb36            = 1 	//apro retrattile
 				vb37            = 1 	//abbasso perni ranocchia
 				vb38            = 1 	//disattivo salto piedino
@@ -533,16 +531,16 @@ do
 
 		case 200 //-----case PASSO PASSO oppure RESET ----  aspetto la pedana piegatore o il reset
 			Vb4015                  = 0  
-			if ( vb10                  or din3                  )
+			if ( vb10                  or vb203                          )
 				vn11         = 201
 			endif 
-			if ( vb10                  or din25               )
+			if ( vb10                  or vb225                       )
 				vn11         = 202
 			endif
 			break
 
 		case 201 // aspetto la pedana piegatore o il reset
-			if ( vb10                  or din3                  == 0 )
+			if ( vb10                  or vb203                          == 0 )
 				vn11         = vn10              
 				vn10               = 0
 				vb11                    = 1 
@@ -550,7 +548,7 @@ do
 			break
 
 		case 202 //se chiamato lancio il fork Reset
-			if ( vb10                  or din25               == 0 )
+			if ( vb10                  or vb225                       == 0 )
 				Vb4003                  = 0  
 				vn203                   = ForkProg ( "ResetFolder", 1 )
 				vn11         = 203
@@ -570,7 +568,7 @@ do
 
 //endif
 
-        if(vn320          == 882)
+        if(vn320          == 8823 or vn320          == 8824)
 		    // Macchina a stati cucitrice 2
 		//  0 = stato iniziale
 		//  1e2 = aspetto la richiesta di attivazione traslatore RichiestaStartCuci2 
@@ -596,17 +594,17 @@ do
 		switch ( vn12         )
 
 		    case 0
-		    vn777   = 2
+
 
 			if(vb4513                  ==0 and vb4515                   ==1 and vb4507            ==1)
-			 vn777   = 3
+
 				if(vb51               )
 					vn12         = 1
-					 vn777   = 4
+
 				endif
 			else
 				vn12         = 1
-				 vn777   = 5
+
 			endif
 
 			break
@@ -633,10 +631,11 @@ do
 			break
 
 		case 2
-
-			if(vn120                           == 1 and vb30               == 0)
-				if ( vb51                 or (vb4513                  ==0 and vb4515                   ==1) or Vb4006               )	//scambio con pinza esterna alta
+			// Vn120_AppEnbScambioPinzeC1_Car2 a 0 il traslo scende esterno alle pinze, a 1 il traslo scendo con la interna ancora bassa
+			if(vn120                           == 1 and vb30               == 0)  
+				if ( vb51                 or (vb4513                  ==0 and vb97                       ==1 and vb51               ) or Vb4006               )	//scambio con pinza esterna alta
 					//RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
+					vb97                       =0 //pulisco
 					vn12         = 5
 					Vb4016                  = 1 	//segnalo che il ciclo trasalatore è in fasi di movimento
 					break
@@ -644,11 +643,11 @@ do
 			endif
 
 
-			if(vn120                           == 0 and vb51                == 1)
+			if(vn120                           == 0 and vb51                == 1 or (vn120                           == 0 and vb4513                 ==0 and vb97                      ))
 
-				if ( vb51                 or (vb4513                  ==0 and vb4515                   ==1) or Vb4006                 )	//scambio con pinza esterna bassa
+				if ( vb51                 or (vb4513                  ==0 and vb97                       ==1) or Vb4006                 )	//scambio con pinza esterna bassa
 					vb51                = 0		//pulisco altrimenti potrebbe partire subito
-
+					vb97                       =0 //pulisco
 					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX]
 					////------> AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
 					vn12         = 20
@@ -661,7 +660,7 @@ do
 
 
 		case 5 /// aspetto la pinza esterna C1 (ScambioPinzeC1 = 1 = esterna)
-			if ( din24               and vb30               == 0  )
+			if ( vb224                        and vb30               == 0  )
 				vn12         = 10
 			endif
 			break	
@@ -677,7 +676,7 @@ do
 									vb12                    = 0  
 								// step reset piegatore fine
 
-			if( (vb51                == 1 or   (vb4513                  ==0 and vb4515                   ==1) )and din38                ) /// vado a prendere la tasca
+			if( (vb51                == 1 or   (vb4513                  ==0 and vb4515                   ==1) )and vb242                        ) /// vado a prendere la tasca
 				vb51                = 0
 				AxAnt( 10        ,  Vq3522                             , -Vq3530                    , 2, 0 )
 				vn12         = 20
@@ -729,6 +728,10 @@ do
 
 
 		case 21 //aspetto pinza traslatore bassa poi alzo le pinze cucitura C1
+
+				vb51                = 0
+
+
 								// step reset piegatore inizio
 									if ( Vb4006                and vb12                    == 0   )
 											vn13               = vn12          
@@ -745,9 +748,25 @@ do
 
 			if(vb30               == 0  )	//aspetto che le pinze C1 siano tornate al punto di carico
 
-				if ( vb4602                              == 1  )	// aspetto la pinza del caricatore bassa per alzare l'interna C1
-					Vb4350                         = 1 
-					Vb4351                         = 1  
+				if ( vb4602                              == 1   )	// aspetto la pinza del caricatore bassa per alzare l'interna C1
+					//se ho la modalità Vn120_AppEnbScambioPinzeC1_Car2 == 0 (traslo a sx con 2 pinze basse) allora alzo entrambe le pinze
+
+					if(vn120                           == 0)
+						vb301 = 1 
+						Vb4350                         = 1 
+						Vb4351                         = 1  
+						Waitcond ( vb224                       )
+
+					endif
+
+					//se ho la modalità Vn120_AppEnbScambioPinzeC1_Car2 == 1 (traslo a sx con pinza interna bassa) allora alzo la pinza interna
+
+					if(vn120                           == 1)
+						Vb4350                         = 1 
+						//tolgo vb309			Vb4351_AppAut_out_C1_Pinza_est = ON 
+						vb309 = 1 
+					endif
+
 
 
 					vn12         = 22
@@ -766,18 +785,18 @@ do
 								// step reset piegatore fine
 
 			// se la cucitrice 2 è disabilitata e lo scaricatore attivo sposto dx-sx
-			if ( vb4513                  == 0 and vb4515                   and ( vb4523                        or vb4519                        ) and din24               and din23                ==0 ) 
+			if ( vb4513                  == 0 and vb4515                   and ( vb4523                        or vb4519                        ) and vb224                       and vb223                        ==0 ) 
 				AxAnt( 10        , Vq3520                         , -Vq3531                    , 2, 0 ) 
 
-				//Vb4386_AppAut_o54_Scaric_dx_sx = ON
+				//Vb4386_AppAut_out_Scaric_dx_sx = ON
 				vn12         = 30  //80
 			endif
 
 				// aspetto la pinza l'interna C1 alta per partire con il traslatore verso DX
-			waitcond(din23                ==0)
+			waitcond(vb223                        ==0)
 			Delays(0.2)
-			if ( vb4513                   and din24                )
-					if ( vb7928        == 0 and dout50            )
+			if ( vb4513                   and vb224                        )
+					if ( vb7928        == 0 and Vb4382                         )
 						//se C2 non cuce e la pinza esterna è alta muovo direttamente
 						AxAnt( 10        , Vq3520                         , -Vq3531                    , 2, 0 ) 
 						vn12         = 23
@@ -839,7 +858,7 @@ do
 									endif
 									vb12                    = 0  
 								// step reset piegatore fine
-			if ( vb7928        == 0 and din55                  == 0 and dout50           )	 //aspetto che la C2 finisce di cucire poi..
+			if ( vb7928        == 0 and vb241                          == 0 and Vb4382                         )	 //aspetto che la C2 finisce di cucire poi..
 
 				vn12         = 27
 			endif
@@ -925,7 +944,7 @@ do
 									vb12                    = 0  
 								// step reset piegatore fine
 
-			if ( din55                  )	// aspetto la pinza int C2 bassa per alzare la pinza tralatore
+			if ( vb241                          )	// aspetto la pinza int C2 bassa per alzare la pinza tralatore
 				if ( Vb4006               )
 
 					Vb4388                              = 0  			
@@ -978,7 +997,7 @@ do
 									vb12                    = 0  
 								// step reset piegatore fine
 
-			if ( din38                )	// aspetto la pinza traslatore alta per spostare il traslatore e iniziare a cucire
+			if ( vb242                        )	// aspetto la pinza traslatore alta per spostare il traslatore e iniziare a cucire
 
 					if ( vb4518             )
 						AxAnt( 10        , Vq3525                               , -Vq3530                    , 2, 0 )
@@ -1006,9 +1025,9 @@ do
 					//endif
 
 				else
-vn777   = 21
+
 					if ( vb51                 )
-vn777   = 22	 
+
 						vn12         = 1				//torno sopra in attesa di una nuova tasca
 					else
 						Vb4016                  = 0  	//segnalo che il ciclo trasalatore non è più in fasi di movimento e non ha altre chiamate
@@ -1040,7 +1059,7 @@ vn777   = 22
 
 
 		    case 200		//// aspetto la pedana C2 per ciclo passo passo
-			if ( Vb4006                and din33         )
+			if ( Vb4006                and vb233                 )
 				vn12         = 201
 			endif 
 			if ( Vb4006                == 0   )
@@ -1052,7 +1071,7 @@ vn777   = 22
 
 
 		    case 201		////aspetto rilascio pedana C2 per ciclo passo passo
-			if ( Vb4006                or din33         == 0 )
+			if ( Vb4006                or vb233                 == 0 )
 				vn12         = vn13              
 				vn13               = 0
 				vb12                    = 1 

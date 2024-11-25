@@ -18,8 +18,8 @@
 
 
 sub ()
-        Vb4350_AppAut_o18_C1_Pinza_int = OFF
-        Vb4367_AppAut_o19_C1_Pinza_est = OFF 
+        Vb4350_AppAut_out_C1_Pinza_int = OFF
+        Vb4350_AppAut_out_C1_Pinza_int = OFF 
             Delays (0.1)
 	//	WaitCond ( i24_C1_PinzaEstAlta == 0)
         // Comando azzeramento AsseX

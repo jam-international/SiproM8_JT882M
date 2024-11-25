@@ -18,7 +18,7 @@
 
 
 sub ()
-	if(vn320          == 882 )
+	if(vn320          == 8823 or vn320          == 8824 )
 		// Operazioni iniziali Custom 
 	    gosub "C2_MainIniCustom.obj"    
 

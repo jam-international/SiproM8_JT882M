@@ -34,12 +34,12 @@ sub ()
 		ax[ C2_AsseY ] = C2_QuoHomeY
 		Delays (0.1)
 
-		Vb4382_AppAut_o50_C2_Pinza_int  = ON
+		Vb4382_AppAut_out_C2_Pinza_int  = ON
 
 		Vb41_Clear_OPT3_C2 = ON  //clear OPT3
 
 		if(Vb152KitCarPAttine)
-			Vb4383_AppAut_o51_PinzaPattina_1 = OFF
+			Vb4383_AppAut_out_PinzaPattina_1 = OFF
 		endif
 		
         gosub "Halt.obj"

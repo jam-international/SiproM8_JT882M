@@ -18,12 +18,13 @@
 
 
 sub ()
-	Vb4382_AppAut_o50_C2_Pinza_int = OFF
+	Vb4382_AppAut_out_C2_Pinza_int = OFF
 	// se ho il comando da HMI per azzerare solo la pinza salto avanti
 	if ( Vb53RichiestaZeroAxDaHmiC2 )
-        Vb4382_AppAut_o50_C2_Pinza_int = OFF
+        Vb4382_AppAut_out_C2_Pinza_int = OFF
 			
 		  DelayS( 0.1 )    
+		  C2_CmdPiedinoGiu = OFF
 	    SyncVar( C2_CmdPiedinoSu )    
 		goto ZERO_X_Y
 	endif
@@ -38,9 +39,9 @@ sub ()
         // Start azzeramento asse AGO
 
         // Se il sensore e' scoperto si va avanti finche' non si copre il sensore
-    if ( i54_C2_FcZeroAgo )
+    if ( Vb_ingresso_C2_FcZeroAgo )
         AxAnt( C2_AsseAGO, 720 , -1, 2, 0 )         
-        WaitCond ( i54_C2_FcZeroAgo )
+        WaitCond ( Vb_ingresso_C2_FcZeroAgo )
         ExecPlcFun( PLC_STOP_AX, (C2_AsseAGO * 100)+1 , 0 )
         WaitCond( IsAxInStop( C2_AsseAGO ) ) 
         DelayS( 0.2 )
@@ -92,7 +93,7 @@ sub ()
         // Azzeramento X e Y
 
         // Movimento asse Y fuori ingombro ( finecorsa avanti )
-	if(PosAx_C2_AsseY < Vq3093_QuoteLimiteAsseY_C2 and C2_AssiAzzerati == 0)
+	if(PosAx_C2_AsseY < Vq3093_QuoteLimiteAsseY_C2 and C2_AssiAzzerati == 1)
 		AxAnt( C2_AsseY, Vq3093_QuoteLimiteAsseY_C2 , -15, 2, 0 )
 		WaitCond( IsAxInStop( C2_AsseY ) ) 
 	 endif

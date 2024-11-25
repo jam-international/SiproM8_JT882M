@@ -32,7 +32,7 @@ sub ()
 	loop
 
 	do	// attendo la cucitrice 1 libera e poi faccio avanzare il caricatore
-		if ( C1_VbRunCuci == OFF and i24_C1_PinzaEstAlta and i23_C1_PinzaIntBassa == 0 ) // and ( PosAx_C2_AsseCAR < ( Vq3522_PosizioneTraslCaricoTascaC1 - 1 ))) 
+		if ( C1_VbRunCuci == OFF and Vb_ingresso_C1_PinzaEstAlta and Vb_ingresso_C1_PinzaIntBassa == 0 ) // and ( PosAx_C2_AsseCAR < ( Vq3522_PosizioneTraslCaricoTascaC1 - 1 ))) 
 			AxAnt( C1_AsseCAR, Vq3502_PosizioneCaricScaricoTasca , -Vq3511_VelocitaCaricLavoro, 2, 0 )  
 			exitdo
 		endif

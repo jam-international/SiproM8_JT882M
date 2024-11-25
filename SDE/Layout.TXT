@@ -1,6 +1,6 @@
-PLC
-Debug|2|582|36|1246|852
 VarTable|C:\Program Files (x86)\Sipro\SDE\CONFIG\VARTABLES\Empty.VTB
-Programs||
-DigitalIO|Output
 PLC
+PLC
+Alarms
+PLC
+Programs||

@@ -20,7 +20,7 @@
 sub ()
         Vb4382                         = 0  
             Delays (0.1)
-		WaitCond ( din55                  )
+		WaitCond ( vb241                          )
         // Comando azzeramento AsseX
     vb7106      = 1
         // Comando azzeramento AsseY

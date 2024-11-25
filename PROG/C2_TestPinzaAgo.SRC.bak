@@ -18,9 +18,9 @@
 
 
 sub ()
-        Vb4383_AppAut_o50_C2_Pinza_int = OFF
+        Vb4382_AppAut_o50_C2_Pinza_int = OFF
             Delays (0.1)
-		WaitCond ( i55_C2_FcPinzaIntBassa )
+		WaitCond ( Vb_ingresso_C2_FcPinzaIntBassa )
         // Comando azzeramento AsseX
     VbCmdAzzAx6 = 1
         // Comando azzeramento AsseY

@@ -29,7 +29,7 @@ sub ()
 	/// se ho la cucitrice abilitata 
 	if ( vb4513                  and vn3804        != 1004)
 		Waitcond ( vb7193       and ( vq60             > 300 )) 
-		//Vb4382_AppAut_o50_C2_Pinza_int = ON
+
 	endif
 
 	/// se ho lo scaricatore abilitato 
