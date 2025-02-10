@@ -83,6 +83,7 @@ As2000 Simbols Table
 #vb95;Vb95_ResetConteggio;tasto Reset HMI rimette il conteggio 1/7
 #vb96;Vb96_AnticipoTrasl_SX;=1 anticipo il movimento del traslatore a sx sopra le pinze di cucitura della testa 1
 #vb97;Vb97_RiseScaricatoreAttivo;= 1 è un rise che mi dice che lo scaricatore è attivo ed è arrivato il segnale di fine cucitura
+#vb98;Vb98_mcInclinata;= 1 mc nel mio ufficio inclinata con caricatore braccio dietro
 #vb99;VbTest;per test
 #vb100;VbSimulaDbg;Cucitrice simulata ( per debugger )
 #vb101;VbSyncDbg;Variabile di sync ( per debugger )
@@ -90,6 +91,9 @@ As2000 Simbols Table
 #vb103;VbSimulazionePedanaC2;alza e abbassa le pinze tramite vb come se premessi la pedana
 #vb115;Vb115CricchettoRinforzo;ad ON lancia il ciclo per inserire la fettuccia nei rulli
 #vb116;Vb116RinforzoGiu_HMI;ad ON HMI chiede al PLC di abbassare i coltelli del rinforzo
+#vb117;Vb117_EnableJogXYPlc_T1;= 1 in fase di hold è possibile fare i jog con i tasti +- del HMI
+#vb118;Vb118_EnableJogXYPlc_T2;= 1 in fase di hold è possibile fare i jog con i tasti +- del HMI
+#vb119;Vb119_AnticipoTrasl_SX_fallito;=1 il plc non ha potuto fare il movimento in anticpo perchè il traslatore era occupato, lo farò fare al CN
 #vb151;Vb151EnableCarPattine;=1 device caricatore pattina attivo
 #vb152;Vb152KitCarPAttine;=1 il kit carica pattina è attivo (tasto HMI)
 #vb153;Vb153GoCicloCarPAttina;=1 fa partire un ciclo carica pattina
@@ -204,6 +208,7 @@ As2000 Simbols Table
 #vb4016;Vb4016_PrgTraslatoreRun;se il traslatore è in una fase di movimento questa vb = ON
 #vb4017;Vb4017_AttesaTascaIsRunning;il ciclo di attesa tasca in CicloAutomatico sta girando
 #vb4018;Vb4018_TrigrHMITascaCucita;ad On quando una tasca è stata cucita completamente
+#vb4019;Vb4019_ResetPiegatoreRun;ad On quando il CN fa la procedura di Reset Piegatore
 #vb4021;Vb4021_Piegatore1_ON;Primo piegatore attivato
 #vb4022;Vb4022_Piegatore2_ON;Secondo piegatore attivato
 #vb4023;Vb4023_Piegatore3_ON;Terzo piegatore attivato
@@ -663,6 +668,9 @@ As2000 Simbols Table
 #vq117;Vq_117_READ_FC_ava_Y_C2;Vq lettura fine corsa avanti asse Y C2
 #vq118;Vq_118_READ_FC_ind_CARIC_C2;Vq lettura fine corsa indietro traslatore
 #vq119;Vq_119_READ_FC_ava_CARIC_C2;Vq lettura fine corsa avanti traslatore
+#vq2997;VqTest2997;
+#vq2998;VqTest2998;
+#vq2999;VqTest2999;
 #vq3000;Vq3000_RitPiegatoreAD_ON;
 #vq3001;Vq3001_RitPiegatoreAD_OFF;
 #vq3002;Vq3002_RitPiegatoreAlto_ON;

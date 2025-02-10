@@ -27,7 +27,7 @@ sub ()
 	
 			/// abbasso la pinza cucitrice
 				Vb4350_AppAut_out_C1_Pinza_int = OFF
-				Vb4350_AppAut_out_C1_Pinza_int = OFF 
+				Vb4351_AppAut_out_C1_Pinza_est = OFF 
 				Delays (0.1)
 			/// alzo la pinza caricatore
 				Vb4356_AppAut_out_Pinza_carico_Su_Giu = OFF

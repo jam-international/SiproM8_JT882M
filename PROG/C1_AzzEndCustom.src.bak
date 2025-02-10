@@ -26,6 +26,7 @@ sub ()
 	if ( Vb4803_AppResetHmiC1 == 0 and Vb4807_PinzeAlteDopoPC ==1)
 		Vb4350_AppAut_out_C1_Pinza_int = ON
 		Vb4351_AppAut_out_C1_Pinza_est = ON 
+		Vb300 = ON
 	endif
 	
         // azzero numero punti fatti 

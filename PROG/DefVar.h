@@ -256,7 +256,7 @@
 #define Vb95_ResetConteggio			vb95		// tasto Reset HMI rimette il conteggio 1/7
 #define Vb96_AnticipoTrasl_SX		vb96		// =1 anticipo il movimento del traslatore a sx sopra le pinze di cucitura della testa 1
 #define Vb97_RiseScaricatoreAttivo	vb97		// = 1 è un rise che mi dice che lo scaricatore è attivo ed è arrivato il segnale di fine cucitura
-
+#define	Vb98_mcInclinata			vb98		// = 1 mc nel mio ufficio inclinata con caricatore braccio dietro
 #define	VbTest					    vb99		// per test
 
     // Debugger
@@ -267,6 +267,9 @@
 
 #define Vb115CricchettoRinforzo		vb115		//ad ON lancia il ciclo per inserire la fettuccia nei rulli
 #define Vb116RinforzoGiu_HMI		vb116		//ad ON HMI chiede al PLC di abbassare i coltelli del rinforzo
+#define Vb117_EnableJogXYPlc_T1		vb117		// = 1 in fase di hold è possibile fare i jog con i tasti +- del HMI
+#define Vb118_EnableJogXYPlc_T2		vb118		// = 1 in fase di hold è possibile fare i jog con i tasti +- del HMI
+#define Vb119_AnticipoTrasl_SX_fallito		vb119		// =1 il plc non ha potuto fare il movimento in anticpo perchè il traslatore era occupato, lo farò fare al CN
 
 //pattina
 #define Vb151EnableCarPattine		vb151		//=1 device caricatore pattina attivo
@@ -279,7 +282,7 @@
 #define	Vb158PattinaTestRunning		vb158		//=1 il ciclo piattina test sta girando
 #define	Vb159PattinaTestRunning		vb159		//=1 il ciclo piattina test sta girando
 #define Vb160PartiACucire			vb160		//=1 il plc avverte il CN che la pattina è stata caricata e bloccata, ora può effettuare la prima cucitura
-
+#define Vb161HoldErrTabelloneT1		vb161		//=1 FPGA non ha mandato tutti gli impusi per via dell'accavallamento degli anticipi
 //cargo
 #define Vb170KitTascaCargo			vb170		//=1 attivo il kit tasca cargo
 #define Vb_Fun301_run				vb171
@@ -407,7 +410,7 @@
 #define	Vb4016_PrgTraslatoreRun		Vb4016				//se il traslatore è in una fase di movimento questa vb = ON
 #define	Vb4017_AttesaTascaIsRunning	Vb4017				//il ciclo di attesa tasca in CicloAutomatico sta girando
 #define Vb4018_TrigrHMITascaCucita	Vb4018				// ad On quando una tasca è stata cucita completamente
-
+#define Vb4019_ResetPiegatoreRun	Vb4019				// ad On quando il CN fa la procedura di Reset Piegatore
 
 
 
@@ -1000,7 +1003,6 @@
 
 
 
-
 // ============================================================================
 //      ASSEGNAZIONE VQ
 // ============================================================================
@@ -1088,8 +1090,9 @@
 #define Vq_118_READ_FC_ind_CARIC_C2        vq118      // Vq lettura fine corsa indietro traslatore
 #define Vq_119_READ_FC_ava_CARIC_C2        vq119      // Vq lettura fine corsa avanti traslatore
 
-
-
+#define VqTest2997					vq2997
+#define VqTest2998					vq2998
+#define VqTest2999					vq2999
 //------------------------------------------------------------------------
 //
 // #######################################
@@ -1311,6 +1314,16 @@
 
 #define FUN301_vq4000				vq4000
 
+
+#define fun94idxPutni			vq5000		//= Numero del punto di cucitura
+#define fun94idfUdf				vq5001		//= Numero del passo UDF
+#define	fun94XTeorica			vq5002		// = Posizione teorica X [impulsi]
+#define fun94XReale				vq5003		//= Posizione reale X [impulsi]
+#define	fun94YTeorica			vq5004		//= Posizione teorica Y [impulsi]
+#define fun94YReale				vq5005		//= Posizione reale Y [impulsi]
+#define fun94ErrX				vq5006		//= Errore di posizione X [impulsi] (PosTeorica - PosReale)
+#define fun94ErrY				vq5007		//= Errore di posizione Y [impulsi] (PosTeorica - PosReale)
+#define fun94VelAgoTabellone	vq5008		//= Vel Ago per calcolo anticipi dal tabellone [RPM] 
 
 // ============================================================================
 //      ASSEGNAZIONE VD e VCD

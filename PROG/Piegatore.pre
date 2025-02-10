@@ -50,7 +50,7 @@ sub ()
 ////	avanti piegatore on
 	vn132          = 101
 		Vb4342                         = 1 
-		vb115                   = 1 
+	//sposto più sotto	Vb115CricchettoRinforzo = ON
 		if(vb170             )
 			Vb4345                                = 0  
 			Vb4348                                = 1 
@@ -169,6 +169,7 @@ sub ()
 ///////////////////////////////////////////////////////////////////////////////////////////	
 ////	piegatore 2 on
 	vn132          = 105
+	vb115                   = 1 
 		if ( Vn102               != 0 )
 			Vb4022               = 1 
 				Delays ( Vq3008                   )
@@ -520,6 +521,11 @@ sub ()
 ////	avanti piegatore off
 	vn132          = 1161
 		Vb4342                         = 0  
+
+		if(vb98            )
+			Vb4336                        = 1   //chiudo lamelle 4°5°
+		endif
+
 		// Vb9_ChiudePiegatore4 = ON
 		//	Waitcond ( i35_FcPiegatore_DI )
 				Delays ( Vq3001                    )
@@ -981,6 +987,7 @@ sub ()
 
 
 :RESET_PIEGATORE
+	Vb4019                   = 1 
 // alzo la pinza caricatore e sposto alla posizione Vq3500_PosizioneCaricRiposo
 	Vb4356                                = 0  
 	Waitcond ( vb205                         )
@@ -1057,7 +1064,7 @@ sub ()
 	Vb4336                        = 0  
 
 	vb8                = 1 
-
+	Vb4019                   = 0  
 	goto EXIT_PROG
 
 

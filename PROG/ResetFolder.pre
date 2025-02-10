@@ -16,6 +16,7 @@
 '#include "defvar.h"
 
 sub ()
+	Vb4019                   = 1 
 ///// in base a dove mi ero fermato resetto le pinze e il caricatore
 	if ( vn10               == 10)
 		WaitCond ( Vb4049                 )
@@ -56,6 +57,7 @@ sub ()
 
 
 :FINE
+	Vb4019                   = 0  
 	Vb4012                 = 0  
 	Vb4013               = 0  
 	Vb4003                  = 0  

@@ -24,7 +24,7 @@ sub ()
         Vb4382_AppAut_out_C2_Pinza_int = OFF
 			
 		  DelayS( 0.1 )    
-		  C2_CmdPiedinoGiu = OFF
+		C2_CmdPiedinoGiu = OFF
 	    SyncVar( C2_CmdPiedinoSu )    
 		goto ZERO_X_Y
 	endif
@@ -65,6 +65,7 @@ sub ()
     ax[ C2_AsseAGO ] = C2_AgoAlto
     
         // Piedino su
+	C2_CmdPiedinoGiu = OFF
     SyncVar( C2_CmdPiedinoSu )    
 
         // -----------------------------------------

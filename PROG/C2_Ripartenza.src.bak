@@ -21,8 +21,9 @@ sub ()
 
         // Verifica se la ripartenza e' in una zona di fermata temporanea
         // In tal caso bisogna riportarsi all'inizio della prossima cucitura
+	Vb117_EnableJogXYPlc_T1 = ON	//abilita i JOG XY dal PLC
     do
-	vntest1 = 2
+
             // Attesa rilascio hold          
         WaitCond( C2_CmdHoldRelease == 0 )
    
@@ -32,10 +33,10 @@ sub ()
 
 	 if ( C2_VbFlgCuciOrMove  or Vb45_TestCuciPrimaTasca_C2 )
 		Vb45_TestCuciPrimaTasca_C2 = OFF
-		vntest1 = 3
+	
             exitdo
         endif
-	vntest1 = 4
+
             // Movimento simulato avanti fino a ripresa o fine cucitura
         ExecPlcFun( PLC_CUCI_CMD, 250, 10 )  
 
@@ -44,7 +45,7 @@ sub ()
         WaitCond( IsAxInStop( C2_AsseY ) )      
 
     loop
-
+	Vb118_EnableJogXYPlc_T2 = OFF	//blocca i JOG XY dal PLC
         // Elimina le forzature di velocita' asse ago
     ExecPlcFun( PLC_CUCI_CMD, 208, 0 )        
 

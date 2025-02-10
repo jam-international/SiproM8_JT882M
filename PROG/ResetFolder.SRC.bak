@@ -28,7 +28,8 @@ sub ()
 		endif
 		Vb4356_AppAut_out_Pinza_carico_Su_Giu = OFF
 		Vb4350_AppAut_out_C1_Pinza_int = ON
-		Vb4351_AppAut_out_C1_Pinza_est = ON		
+		Vb4351_AppAut_out_C1_Pinza_est = ON
+		Vb310 = ON
 		Vn10MemoStatoCuci1 = 0
 		Vb4015_PrgCaricatoreRun = OFF
 			goto FINE
@@ -46,7 +47,8 @@ sub ()
 
 		endif
 		Vb4350_AppAut_out_C1_Pinza_int = ON
-		Vb4351_AppAut_out_C1_Pinza_est = ON		
+		Vb4351_AppAut_out_C1_Pinza_est = ON
+		Vb311 = ON
 		Vn10MemoStatoCuci1 = 0
 		Vb4015_PrgCaricatoreRun = OFF
 		goto FINE

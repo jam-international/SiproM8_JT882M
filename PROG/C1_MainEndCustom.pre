@@ -62,13 +62,14 @@ sub ()
 			endif
 			Vb4096                   = 1 
 			WaitCond ( vb224                       == 1)
-
+			vb36            = 1 	//apro retrattile
 
 		endif
 
 	endif
 
-	vb36            = 1 	//apro retrattile
+
+//kamrul, riapro retrattile dopo che la pinza si è alzata in CicloAutomatico	Vb36_Clear_OPT1 = ON	//apro retrattile
 	vb37            = 1 	//abbasso perni ranocchia
 	vb38            = 1 	//disattivo salto piedino
 // azzero numero punti fatti 

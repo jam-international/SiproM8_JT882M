@@ -19,7 +19,7 @@
 
 
 sub ()
-
+	Vb118_EnableJogXYPlc_T2 = OFF	//blocca i JOG XY dal PLC
         // Centratura pinza con ago
     if ( Vb4085_TestFcZeroC2 )
         gosub "C2_TestPinzaAgo"
@@ -30,6 +30,7 @@ sub ()
 
         ///// dopo un reset riporto la pinza in posizione home
     if ( Vb4903_AppResetHmiC2 )
+	C2_CmdPiedinoGiu = OFF
 	    SyncVar( C2_CmdPiedinoSu )   
 	C2_VelFeed = C2_Par_FeedG0Reset
 	if ( C2_Udf_FeedG0 < C2_VelFeed )           // #M200717_1GF#

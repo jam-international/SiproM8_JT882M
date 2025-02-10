@@ -90,6 +90,7 @@ sub ()
  ///  per centrare la pinza del caricatore C2 sulla cucitrice C1
 	if ( Vb4083_TestCaricatoreC2CaricoC1 )
 		// lancio l'azzeramento pinza C1
+				Vb4078_TestHomeC1 = ON  //dopo azzeramento vai su PC
 				Vb4080_TestFcZeroC1 = ON
 				VbChn1Start = 1
 				

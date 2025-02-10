@@ -19,7 +19,7 @@
 
 
 sub ()
-
+	vb118                   = 0  	//blocca i JOG XY dal PLC
         // Centratura pinza con ago
     if ( Vb4085              )
         gosub "C2_TestPinzaAgo"
@@ -65,11 +65,12 @@ sub ()
 
 
 
+	if(Vb4386                        )	//se lo scaricatore è a sx (può succedere se ho usato Test cucitura)
+		Vb4032                        = 1 
+		vq2952          = 0
+	endif
 
 
-
-
-        Delays (0.1)
 
         Vb4382                         = 1 
 	Vb4097                   = 1 

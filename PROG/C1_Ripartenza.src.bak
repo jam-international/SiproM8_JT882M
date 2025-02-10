@@ -29,8 +29,8 @@ sub ()
            // Per evitare di chiamare furiosamente la FUN 150
         DelayS( 0.1 )
 
-         if ( C1_VbFlgCuciOrMove  or Vb43_TestCuciPrimaTasca )
-		Vb43_TestCuciPrimaTasca = OFF
+         if ( C1_VbFlgCuciOrMove  or Vb43_TestCuciPrimaTasca_C1 )
+		Vb43_TestCuciPrimaTasca_C1 = OFF
             exitdo
         endif
 

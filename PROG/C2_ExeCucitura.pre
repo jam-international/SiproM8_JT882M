@@ -198,6 +198,7 @@ sub ()
     endif
 
       if ( vb4515                   and Vb4034                    and vb4519                         == 0)
+        WaitCond ( Vb4074                    == 0 or Vb4073                    ==0 )
         Vb4032                        = 1   //fa partire scarictore
       endif
 

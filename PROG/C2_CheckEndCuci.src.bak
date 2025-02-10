@@ -39,7 +39,12 @@ sub ()
 		Vb41_Clear_OPT3_C2 = ON  //clear OPT3
 
 		if(Vb152KitCarPAttine)
-			Vb4383_AppAut_o51_PinzaPattina_1 = OFF
+			Vb4383_AppAut_out_PinzaPattina_1 = OFF
+		endif
+
+		if(Vb4386_AppAut_out_Scaric_dx_sx)	//se lo scaricatore è a sx (può succedere se ho usato Test cucitura)
+			Vb4032_AppScaricatoreStrBarre = ON
+			C1_VqActPntCuci = 0
 		endif
 		
         gosub "Halt.obj"

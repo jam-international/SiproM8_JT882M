@@ -1,6 +1,1 @@
-VarTable|C:\Program Files (x86)\Sipro\SDE\CONFIG\VARTABLES\Empty.VTB
-PLC
-PLC
-Alarms
-PLC
-Programs||
+FileCommander

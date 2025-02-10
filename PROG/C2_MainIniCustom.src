@@ -19,7 +19,7 @@
 
 
 sub ()
-
+	Vb118_EnableJogXYPlc_T2 = OFF	//blocca i JOG XY dal PLC
         // Centratura pinza con ago
     if ( Vb4085_TestFcZeroC2 )
         gosub "C2_TestPinzaAgo"
@@ -65,11 +65,12 @@ sub ()
 
 
 
+	if(Vb4386_AppAut_out_Scaric_dx_sx)	//se lo scaricatore è a sx (può succedere se ho usato Test cucitura)
+		Vb4032_AppScaricatoreStrBarre = ON
+		C2_VqActPntCuci = 0
+	endif
 
 
-
-
-        Delays (0.1)
 
         Vb4382_AppAut_out_C2_Pinza_int = ON
 	Vb4097_AppOnScartafiloC2 = ON

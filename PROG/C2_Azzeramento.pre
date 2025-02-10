@@ -93,15 +93,6 @@ sub ()
         // -----------------
         // Azzeramento X e Y
 
-        // Movimento asse Y fuori ingombro ( finecorsa avanti )
-	if(vq57           < vq3093                     and vb2032          == 1)
-		AxAnt( 7       , vq3093                     , -15, 2, 0 )
-		WaitCond( IsAxInStop( 7        ) ) 
-	 endif
-
-
-
-
 
         // Comando azzeramento AsseX
     vb7106      = 1

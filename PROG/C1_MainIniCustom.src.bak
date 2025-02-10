@@ -19,7 +19,7 @@
 
 
 sub ()
-	
+	Vb117_EnableJogXYPlc_T1 = OFF	//blocca i JOG XY dal PLC
         // Centratura pinza con ago
     if ( Vb4080_TestFcZeroC1 )
         gosub "C1_TestPinzaAgo"
@@ -80,6 +80,7 @@ sub ()
         Delays (0.1)
         Vb4350_AppAut_out_C1_Pinza_int = ON
         Vb4351_AppAut_out_C1_Pinza_est = ON 
+	Vb306 = ON
 
 	WaitCond ( Vb_ingresso_C1_PinzaEstAlta == 1)
 

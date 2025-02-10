@@ -198,6 +198,7 @@ sub ()
     endif
 
       if ( Vb4515_AppEnbScaricatore and Vb4034_ScaricOnSuRasafilo and Vb4519_AppScaricoCortiConPinza == 0)
+        WaitCond ( Vb4074_AllarmeContSpolaC2 == 0 or Vb4073_AbilitaContSpolaC2 ==0 )
         Vb4032_AppScaricatoreStrBarre = ON  //fa partire scarictore
       endif
 

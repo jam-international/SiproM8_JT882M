@@ -21,6 +21,7 @@ sub ()
 
         // Verifica se la ripartenza e' in una zona di fermata temporanea
         // In tal caso bisogna riportarsi all'inizio della prossima cucitura
+	Vb117_EnableJogXYPlc_T1 = ON	//abilita i JOG XY dal PLC
     do
 
             // Attesa rilascio hold          
@@ -42,7 +43,7 @@ sub ()
         WaitCond( IsAxInStop( C1_AsseY ) )      
 
     loop
-
+	Vb117_EnableJogXYPlc_T1 = OFF	//blocca i JOG XY dal PLC
         // Elimina le forzature di velocita' asse ago
     ExecPlcFun( PLC_CUCI_CMD, 108, 0 )        
 

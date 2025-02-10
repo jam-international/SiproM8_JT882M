@@ -633,8 +633,9 @@ do
 		case 2
 			// Vn120_AppEnbScambioPinzeC1_Car2 a 0 il traslo scende esterno alle pinze, a 1 il traslo scendo con la interna ancora bassa
 			if(Vn120_AppEnbScambioPinzeC1_Car2 == 1 and Vb30_C1_InCucitura == 0)  
-				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1 and RichiestaStartCuci2) or Vb4006_StepTraslatore)	//scambio con pinza esterna alta
+				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb97_RiseScaricatoreAttivo ==1 and RichiestaStartCuci2) or Vb4006_StepTraslatore)	//scambio con pinza esterna alta
 					//RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
+					Vb97_RiseScaricatoreAttivo =0 //pulisco
 					VnStatoCuci2 = 5
 					Vb4016_PrgTraslatoreRun = ON	//segnalo che il ciclo trasalatore è in fasi di movimento
 					break
@@ -642,13 +643,17 @@ do
 			endif
 
 
-			if(Vn120_AppEnbScambioPinzeC1_Car2 == 0 and RichiestaStartCuci2 == 1 or (Vn120_AppEnbScambioPinzeC1_Car2 == 0 and Vb4513_AppEnbCucitrice2==0 and Vb4515_AppEnbScaricatore))
+			if(Vn120_AppEnbScambioPinzeC1_Car2 == 0 and RichiestaStartCuci2 == 1 or (Vn120_AppEnbScambioPinzeC1_Car2 == 0 and Vb4513_AppEnbCucitrice2==0 and Vb97_RiseScaricatoreAttivo))
 
-				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb4515_AppEnbScaricatore ==1) or Vb4006_StepTraslatore  )	//scambio con pinza esterna bassa
+				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb97_RiseScaricatoreAttivo ==1) or Vb4006_StepTraslatore  )	//scambio con pinza esterna bassa
 					RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
-
-					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX]
-					////------> AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
+					Vb97_RiseScaricatoreAttivo =0 //pulisco
+					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX] MA SE IL TRASLATORE ERA OCCUPATO ALLORA
+					/// IL PLC MI METTE A TRUE LA  Vb119_AnticipoTrasl_SX_fallito  E QUINDI IL MOVIMENTO LO FACCIO FARE QUI DAL CN
+					if(Vb119_AnticipoTrasl_SX_fallito)
+						Vb119_AnticipoTrasl_SX_fallito = 0	//pulisco
+						AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
+					endif
 					VnStatoCuci2 = 20
 					Vb4016_PrgTraslatoreRun = ON	//segnalo che il ciclo trasalatore è in fasi di movimento
 					break
@@ -794,6 +799,7 @@ do
 				// aspetto la pinza l'interna C1 alta per partire con il traslatore verso DX
 			waitcond(Vb_ingresso_C1_PinzaIntBassa ==0)
 			Delays(0.2)
+			Vb36_Clear_OPT1 = ON	//apro retrattile modificarichiesta da Kamrul per usare la retrattile sulla prima testa
 			if ( Vb4513_AppEnbCucitrice2  and Vb_ingresso_C1_PinzaEstAlta  )
 					if ( VbChn2AutoRun == 0 and Vb4382_AppAut_out_C2_Pinza_int )
 						//se C2 non cuce e la pinza esterna è alta muovo direttamente

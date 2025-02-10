@@ -41,6 +41,8 @@ sub ()
 		if(Vb152KitCarPAttine)
 			Vb4383_AppAut_out_PinzaPattina_1 = OFF
 		endif
+
+		
 		
         gosub "Halt.obj"
     endif

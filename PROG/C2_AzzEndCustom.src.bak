@@ -29,7 +29,7 @@ sub ()
 	/// se ho la cucitrice abilitata 
 	if ( Vb4513_AppEnbCucitrice2 and Vn3804_PageID != 1004)
 		Waitcond ( VbFlgAzzAx10 and ( PosAx_C2_AsseCAR > 300 )) 
-		//Vb4382_AppAut_o50_C2_Pinza_int = ON
+		
 	endif
 
 	/// se ho lo scaricatore abilitato 

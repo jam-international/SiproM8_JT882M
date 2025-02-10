@@ -16,6 +16,7 @@
 #include "defvar.h"
 
 sub ()
+	Vb4019_ResetPiegatoreRun = ON
 ///// in base a dove mi ero fermato resetto le pinze e il caricatore
 	if ( Vn10MemoStatoCuci1 == 10)
 		WaitCond ( Vb4049_C1_AsseCARFermo )
@@ -56,6 +57,7 @@ sub ()
 
 
 :FINE
+	Vb4019_ResetPiegatoreRun = OFF
 	Vb4012_FlagTascaPronta = OFF
 	Vb4013_DisableLancia = OFF
 	Vb4003_RqsStopPiegatore = OFF

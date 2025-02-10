@@ -45,9 +45,9 @@ sub ()
 			WaitCond( IsAxInStop( C1_AsseX ) )
 			WaitCond( IsAxInStop( C1_AsseY ) )
 			Vb304 = ON
-			Vb4350_AppAut_out_C1_Pinza_int = ON
-			Vb4351_AppAut_out_C1_Pinza_est = ON 
-			Waitcond ( Vb_ingresso_C1_PinzaEstAlta )
+		//le pinze le devo alzare dopo che il traslatore si è abbassato 	Vb4350_AppAut_out_C1_Pinza_int = ON
+		//le pinze le devo alzare dopo che il traslatore si è abbassato	Vb4351_AppAut_out_C1_Pinza_est = ON 
+		//le pinze le devo alzare dopo che il traslatore si è abbassato	Waitcond ( Vb_ingresso_C1_PinzaEstAlta )
 
 			
 		endif
@@ -62,13 +62,14 @@ sub ()
 			endif
 			Vb4096_AppOnScartafiloC1 = ON
 			WaitCond ( Vb_ingresso_C1_PinzaEstAlta == 1)
-			
+			Vb36_Clear_OPT1 = ON	//apro retrattile
 			
 		endif
 
 	endif
+	
 
-	Vb36_Clear_OPT1 = ON	//apro retrattile
+//kamrul, riapro retrattile dopo che la pinza si è alzata	Vb36_Clear_OPT1 = ON	//apro retrattile
 	Vb37_Clear_OPT2 = ON	//abbasso perni ranocchia
 	Vb38_Clear_OPT3 = ON	//disattivo salto piedino
 // azzero numero punti fatti 

@@ -102,14 +102,6 @@ sub ()
 :ZERO_X_Y
         // -----------------
         // Azzeramento X e Y
-
-        // Movimento asse Y fuori ingombro
-
-	if(PosAx_C1_AsseY < Vq3092_QuoteLimiteAsseY_C1)
-		AxAnt( C1_AsseY, Vq3092_QuoteLimiteAsseY_C1 , -15, 2, 0 )
-		WaitCond( IsAxInStop( C1_AsseY ) ) 
-	 endif
-	
         // Comando azzeramento AsseX
     VbCmdAzzAx1 = 1
     
@@ -128,28 +120,10 @@ sub ()
         // Attende fine azzeramento asse AsseY
     WaitCond ( ( VbFlgAzzAx2 == 1 ) and ( VnFaseZeroAx2 >= 7 ) )
 
-        // Solo se presente l'asse di rotazione
-//    if ( C1_AsseC != AX_NULL )    
-//        if (Vb52RichiestaZeroAxDaHmiC1 == 0)
-//            WaitCond ( ( VbFlgAzzAx5 == 1 ) and ( VnFaseZeroAx5 >= 7 ) )
-//            WaitCond ( ( VbFlgAzzAx6 == 1 ) and ( VnFaseZeroAx6 >= 7 ) )
-//
-//            if ( VnFaseZeroAx5 > 7 )
-//		  Vn2CodiceAllarmeXHmi = 8
-//                gosub "Halt.obj"
-//            endif
-//
-//            if ( VnFaseZeroAx6 > 7 )
-//		  Vn2CodiceAllarmeXHmi = 9
-//                gosub "Halt.obj"
-//            endif
-//
-        ///// aggancio inseguimento asse C_DW
-//            ExecPlcFun( PLC_ENABLE_FOLLOW, (C1_AsseC_DW * 100), 0 )
-//
-//        endif 
-//    endif 
-    
+	//aspetto che il caricatore si è azzerato altrimenti ci potrebbe essere il caso che il caricatore ancora è sopra le pinze di cucitura
+     WaitCond ( ( VbFlgAzzAx5 == 1 ) and ( VnFaseZeroAx5 >= 7 ) )
+
+
         // Verifica se azzeramento completato con errore
     if ( VnFaseZeroAx2 > 7 ) 
 	Vb52RichiestaZeroAxDaHmiC1 = OFF

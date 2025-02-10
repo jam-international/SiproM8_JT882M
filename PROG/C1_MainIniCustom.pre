@@ -19,7 +19,7 @@
 
 
 sub ()
-
+	vb117                   = 0  	//blocca i JOG XY dal PLC
         // Centratura pinza con ago
     if ( Vb4080              )
         gosub "C1_TestPinzaAgo"
@@ -84,7 +84,7 @@ sub ()
 
 	WaitCond ( vb224                       == 1)
 
-	vb36            = 1 	//apro retrattile
+//kamrul	Vb36_Clear_OPT1 = ON	//apro retrattile
 	vb37            = 1 	//abbasso perni ranocchia
 	vb38            = 1 	//disattivo salto piedino
 

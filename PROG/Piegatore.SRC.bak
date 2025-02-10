@@ -50,6 +50,7 @@ sub ()
 ////	avanti piegatore on
 	Vn132_DebugPie = 101
 		Vb4342_AppAut_out_Piegatore_AD = ON
+	//sposto più sotto	Vb115CricchettoRinforzo = ON
 		if(Vb170KitTascaCargo)
 			Vb4345_AppAut_out_Lancia_Cargo_Aperta = OFF
 			Vb4348_AppAut_out_Lancia_Cargo_Chiusa = ON
@@ -463,7 +464,7 @@ sub ()
 ///////////////////////////////////////////////////////////////////////////////////////////	
 ////	piegatore basso off
 	Vn132_DebugPie = 115
-
+		Vb115CricchettoRinforzo = ON
 		//Per sicurezza, mi assicuro che tutte le lamelle del piegatore siano aperte altrimenti le apro
 		if( Vb4333_AppAut_out_Piegatore_1 or Vb4334_AppAut_out_Piegatore_2 or Vb4335_AppAut_out_Piegatore_3 or Vb4336_AppAut_out_Piegatore_4)
 			
@@ -519,6 +520,11 @@ sub ()
 ////	avanti piegatore off
 	Vn132_DebugPie = 1161
 		Vb4342_AppAut_out_Piegatore_AD = OFF
+
+		if(Vb98_mcInclinata)
+			Vb4336_AppAut_out_Piegatore_4 = ON  //chiudo lamelle 4°5°
+		endif
+
 		// Vb9_ChiudePiegatore4 = ON
 		//	Waitcond ( i35_FcPiegatore_DI )
 				Delays ( Vq3001_RitPiegatoreAD_OFF )
@@ -980,6 +986,7 @@ sub ()
 
 
 :RESET_PIEGATORE
+	Vb4019_ResetPiegatoreRun = ON
 // alzo la pinza caricatore e sposto alla posizione Vq3500_PosizioneCaricRiposo
 	Vb4356_AppAut_out_Pinza_carico_Su_Giu = OFF
 	Waitcond ( Vb_ingresso_FcPinzaCaricoAlta )
@@ -1056,7 +1063,7 @@ sub ()
 	Vb4336_AppAut_out_Piegatore_4 = OFF
 
 	Vb8_ExitAutomatico = ON
-
+	Vb4019_ResetPiegatoreRun = OFF
 	goto EXIT_PROG
 
 

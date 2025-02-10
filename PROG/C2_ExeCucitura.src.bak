@@ -21,6 +21,7 @@
 sub ()
 
         // Piedino su
+	C2_CmdPiedinoGiu = OFF
     SyncVar( C2_CmdPiedinoSu )    
 
         // --------------------------------------------------
@@ -179,6 +180,7 @@ sub ()
     loop        
 	
         // Piedino su
+	C2_CmdPiedinoGiu = OFF
     SyncVar( C2_CmdPiedinoSu )   
     
 
@@ -195,7 +197,8 @@ sub ()
         ExecPlcFun( PLC_MOVE_AX, (C2_AsseC * 100), C2_FUN74_IDX )
     endif
 
-      if ( Vb4515_AppEnbScaricatore and Vb4034_ScaricOnSuRasafilo and Vb4519_AppScaricoCortiConPinza == 0)
+      if ( Vb4515_AppEnbScaricatore and Vb4034_ScaricOnSuRasafilo and Vb4519_AppScaricoCortiConPinza == 0 and  Vb4074_AllarmeContSpolaC2 == 0)
+//	WaitCond ( Vb4074_AllarmeContSpolaC2 == 0 or Vb4073_AbilitaContSpolaC2 ==0 )
         Vb4032_AppScaricatoreStrBarre = ON  //fa partire scarictore
       endif
 

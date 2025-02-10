@@ -102,7 +102,7 @@
 			<functions/>
 			<functionBlocks/>
 			<programs>
-				<program name="Emergenze" version="1.0.0" creationDate="0" lastModifiedDate="1732283277" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="Emergenze" version="1.0.0" creationDate="0" lastModifiedDate="1737789664" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="Rise_ciclo_emergenza_attivata" type="RiseEdge"/>
@@ -115,6 +115,8 @@
 							<var name="VcdIdxOP" type="INT"/>
 							<var name="Rise_i_Emg" type="RiseEdge"/>
 							<var name="Rit_in_Pressostato" type="Ton"/>
+							<var name="Rise_AllarmeDriver_X2" type="RiseEdge"/>
+							<var name="Rise_AllarmeDriver_Y2" type="RiseEdge"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
@@ -395,6 +397,8 @@ if(Rise_ciclo_emergenza_attivata.q) then
  //	Vb4513_AppEnbCucitrice2				:= TRUE;
  	Vb96_AnticipoTrasl_SX 				:= FALSE;
  	Vb97_RiseScaricatoreAttivo			:= FALSE;
+ 	Vb4019_ResetPiegatoreRun 			:= FALSE;
+ 	Vb119_AnticipoTrasl_SX_fallito		:= FALSE;
 
 		(* azzeramento variabili PLC *)
 	MoveAsseY_C2_ON 	          		:= FALSE ;
@@ -407,7 +411,8 @@ if(Rise_ciclo_emergenza_attivata.q) then
 	Vb89_TascaC2Completata				:= FALSE ;
 	Vb43_TestCuciPrimaTasca_C1			:= FALSE;
 	Vb45_TestCuciPrimaTasca_C2			:= FALSE;
-
+	Vb117_EnableJogXYPlc_T1				:= FALSE;
+	Vb118_EnableJogXYPlc_T2				:= FALSE;
 
 	
 	
@@ -500,23 +505,47 @@ if ( Rit_in_Pressostato.q )then
 	Ciclo_emergenza_attivata := TRUE;
 end_if;
 
-if(Vn_ID_macchina = 862 or Vn_ID_macchina = 860)then
+//if(Vn_ID_macchina = 862 or Vn_ID_macchina = 860)then
 	Rit_Driver( in := (VB_SYS_CNC_ENABLED ), pt := 500 );
-	(* Allarme driver X *)
-	Rise_AllarmeDriver_X ( in := (Rit_Driver.q and not Vb_ingresso_C1_ReadyAsseX));
-	if ( Rise_AllarmeDriver_X.q )then
-			Vn4CodiceWarning := 1;
-			vret := ExecPlcFun( PLC_SET_EMERGENZA, 4, 0 );
-	end_if;
-	(* Allarme driver Y *)
-		Rise_AllarmeDriver_Y ( in := (Rit_Driver.q and not Vb_ingresso_C1_ReadyAsseY));
-	if ( Rise_AllarmeDriver_Y.q )then
-		Vn4CodiceWarning := 2;
-		vret := ExecPlcFun( PLC_SET_EMERGENZA, 5, 0 );
-		Ciclo_emergenza_attivata := TRUE;
-	end_if;
+	
+	
+	
+	
 
-end_if;
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!! FORSE CI VUOLE PIU TEMPO A PARTIRE !!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	(* Allarme driver X *)
+//	Rise_AllarmeDriver_X ( in := (Rit_Driver.q and not Vb_ingresso_C1_ReadyAsseX) );
+//	if ( Rise_AllarmeDriver_X.q )then
+//			Vn4CodiceWarning := 1;
+//			vret := ExecPlcFun( PLC_SET_EMERGENZA, 4, 0 );
+//	end_if;
+//	(* Allarme driver Y *)
+//		Rise_AllarmeDriver_Y ( in := (Rit_Driver.q and not Vb_ingresso_C1_ReadyAsseY) );
+//	if ( Rise_AllarmeDriver_Y.q )then
+//		Vn4CodiceWarning := 2;
+//		vret := ExecPlcFun( PLC_SET_EMERGENZA, 5, 0 );
+//		Ciclo_emergenza_attivata := TRUE;
+//	end_if;
+	
+		(* Allarme driver X2 *)
+//	Rise_AllarmeDriver_X2 ( in := (Rit_Driver.q and not Vb_ingresso_C2_ReadyAsseX) );
+//	if ( Rise_AllarmeDriver_X2.q )then
+//			Vn4CodiceWarning := 5;
+//			vret := ExecPlcFun( PLC_SET_EMERGENZA, 8, 0 );
+//	end_if;
+	(* Allarme driver Y *)
+//	Rise_AllarmeDriver_Y2 ( in := (Rit_Driver.q and not Vb_ingresso_C2_ReadyAsseY));
+//	if ( Rise_AllarmeDriver_Y2.q )then
+//		Vn4CodiceWarning := 6;
+//		vret := ExecPlcFun( PLC_SET_EMERGENZA, 9, 0 );
+//		Ciclo_emergenza_attivata := TRUE;
+//	end_if;
+
+
+//end_if;
 	
 	 
 (* Emergenza orologio*)	
@@ -563,6 +592,10 @@ if ( Rise_i_Emg.q)then
 	else
 		  Vb4523_C2_PinzaDietroUnaTesta := TRUE;
 	end_if;
+	
+	
+
+	
 end_if;
 ]]>
 					</sourceCode>
@@ -855,7 +888,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Boot" version="1.0.0" creationDate="0" lastModifiedDate="1730130952" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="Boot" version="1.0.0" creationDate="0" lastModifiedDate="1738771089" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -879,7 +912,17 @@ end_if;
 
 (* ver.20 prendo versione fatta da Mauro con raddrizatore pattina e gli tolgo una scheda IO di Belli per fare la 882 normale 
 			vedi vb172 (NB in Argentina la prima 882 ne aveva 4 quindi questa vb va tenuta a false)*)
+(* ver.21 Una macchina in India e 2 in Pakistan*)
+(* ver.22 se la partenza scaricatore parte sul rasafilo ora tiene conto se c'è fine spola*)		
+(*ver 23 = aggiunta varabile Vb117_EnableJogXYPlc_T1  Vb118_EnableJogXYPlc_T2 per cercare di risolvere il problema dello spostamento della cucitura*)	
+(* ver 24 = fiera Kamrul*)
+(* ver 25 = ABS contaspole + aggiunto allarmi driver X2 e Y2*)
+(* ver 25.1 = tolto controlli Vb117_EnableJogXYPlc_T1 e Vb118_EnableJogXYPlc_T2*)
+(* ver 25.2 = ritardato comando inizio ciclo rinforzo *)
+(* ver 25.3 = tolto allarmi driver XY, scatta sempre X2 e cambiato comando inizio ciclo rinforzo *)
+(* ver 25.4 = messe a FALSE le varibili di JOG quando entro nelle pagine modifica *)
 	(* ------------------------------- *)
+	
 	(* FLAG SIMULAZIONE - PER DEBUGGER *)
 VbSimulaDbg := FALSE;
 
@@ -887,7 +930,8 @@ VbSimulaDbg := FALSE;
 case(Vn_ID_macchina)of
 //	862: App_Ver := 'JT862M - Ver 25.00 - 28.03.2024';	
 //	860: App_Ver := 'JT862HM - Ver 24.00 - 12.05.2023';
-	882: App_Ver := 'JT882M - Ver 20.00.00 - 21.05.2024'; 
+	8823: App_Ver := 'JT882M - Ver 25.04 - 05.02.2025'; 
+	8824: App_Ver := 'JT882M - Ver 25.04 - 05.02.2025'; 
 end_case;
 
 	(* Emergenza all'accensione *)
@@ -933,6 +977,9 @@ Fun202VnParIndx_3 := ContIRQSensPiegatore_su_IDX;
 vret := ExecPlcFun( PLC_ADD_FUN_IRQ, 31, 1000 ); 
 
 Vb4077_IRQPiegatore_Su := TRUE;
+
+
+vret := ExecPlcFun(  281, 194, 5000 ); //start movimento di X o di Y su interrupt 
 ]]>
 					</sourceCode>
 				</program>
@@ -1043,7 +1090,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C1_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1730209881" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="C1_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1737993018" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="FallPrgRun" type="FallEdge"/>
@@ -1075,6 +1122,9 @@ end_if;
 							<var name="RisePinzeC1" type="RiseEdge"/>
 							<var name="FallPinzeC1" type="FallEdge"/>
 							<var name="Rise_C1_CuciSimulaAuto" type="RiseEdge"/>
+							<var name="IdxInizialeTabellone" type="BOOL"/>
+							<var name="Rise_InizioTabellone" type="RiseEdge"/>
+							<var name="Rise_ErroreTabellone" type="RiseEdge"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
@@ -1181,7 +1231,8 @@ FallPrgRun( in:= VB_CHN_AUTO_RUNNING );
 if RisePrgRun.q then
     C1_VbSuspendCuci := FALSE;
     C1_PlcStatoAgo := 0;    
-    
+    IdxInizialeTabellone :=FALSE;	/*modifica errore Tabellone 24/01/2025*/
+    Vb161HoldErrTabelloneT1 := FALSE;/*modifica errore Tabellone 24/01/2025*/
         (* Reset comando di hold *)
     C1_CmdHoldRelease := FALSE;
     vret := ExecPlcFun( PLC_CUCI_CMD, 104, 1 );     (* Toglie l'hold *)
@@ -1193,7 +1244,7 @@ end_if;
  -------------------------------------*)
 if FallPrgRun.q then
     VN_AX3_OVERRIDE := 1000;
-    
+    IdxInizialeTabellone :=FALSE;	/*modifica errore Tabellone 24/01/2025*/
         (* Rollover asse ago *)
     RollPlcAgoModule := 360000;
     RollPlcAgoQuo := 0;
@@ -1300,6 +1351,10 @@ if ( C1_CmdHoldRelease and VB_CHN_AUTO_RUNNING and ( C1_FaseAxAgo = 0 ) ) then
         mc_stati_C1CmdSimula := 1;
     	Forwards := FALSE;
     	Backwards := TRUE;  
+    	Vb161HoldErrTabelloneT1 := FALSE;/*modifica errore Tabellone 24/01/2025*/
+    	if(Vn2CodiceAllarmeXHmi =42) then
+    		Vn2CodiceAllarmeXHmi := 0;
+    	end_if;
     end_if;
 
 	case ( mc_stati_C1CmdSimula ) of
@@ -1845,6 +1900,22 @@ if(Rise_C1_CuciSimulaAuto.q and Vb42_PrimaTasca_C1) then
 	Vb43_TestCuciPrimaTasca_C1 := TRUE;
 end_if;
 
+/* modifica errore Tabellone 24/01/2025 */
+Rise_InizioTabellone (in:= (fun94idxPutni > 1 and fun94idfUdf > 1));
+if(Rise_InizioTabellone.q) then
+	IdxInizialeTabellone := TRUE;
+	Vb161HoldErrTabelloneT1 := FALSE;
+end_if;
+
+if(IdxInizialeTabellone) then
+Rise_ErroreTabellone (in:= (fun94ErrX > 10 or fun94ErrX < -10));
+	if(Rise_ErroreTabellone.q) then
+	//	Vb161HoldErrTabelloneT1 := TRUE;
+		Vn2CodiceAllarmeXHmi :=42;
+	end_if;
+
+end_if;
+/* FINE modifica errore Tabellone 24/01/2025 */
 
 ]]>
 					</sourceCode>
@@ -2215,7 +2286,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="AppMainC3" version="1.0.0" creationDate="0" lastModifiedDate="1732112891" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="AppMainC3" version="1.0.0" creationDate="0" lastModifiedDate="1736251839" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseBootDone" type="RiseEdge"/>
@@ -2549,7 +2620,7 @@ FallEnbManuale(  in := not Vb4507_AppManAuto );
 
 (* start automatico canale 3 per azzeramento *) 
 (* se ho tutti i sensori in posizione parto per lo zero *)
-Rise_i_Pulsanti_start (in:= ((Vb_ingresso_Pulsanti_start or (Vb4007_MemoriaAvviaCaric and not VbChn3AutoRun))and not( C1_CuciSimulaAuto and not Vb4509_AppEnbPiegatore and not Vb4511_AppEnbCaricatore ) and not C2_CuciSimulaAuto ));
+Rise_i_Pulsanti_start (in:= ((Vb_ingresso_Pulsanti_start or (Vb4007_MemoriaAvviaCaric and not VbChn3AutoRun))and not( C1_CuciSimulaAuto and not Vb4509_AppEnbPiegatore and not Vb4511_AppEnbCaricatore ) and not (C2_CuciSimulaAuto and not o9 )));
 
 
 case ( Vn_ID_macchina ) of
@@ -2895,7 +2966,7 @@ end_if;
 (*---------------------------------------------------------------------------------------------*)
 (* abilitazione traslatore *)
 
-Rise_Vb4522_AppHmiTestTrasl (in:= Vb4522_AppHmiTestTrasl and not Vb4016_PrgTraslatoreRun);
+Rise_Vb4522_AppHmiTestTrasl (in:= Vb4522_AppHmiTestTrasl and not Vb4016_PrgTraslatoreRun and not Vb31_C2_InCucitura);
 if(Rise_Vb4522_AppHmiTestTrasl.q) then
 	if(not Vb4006_StepTraslatore and Vb4513_AppEnbCucitrice2) then
 			Vb4006_StepTraslatore := TRUE;
@@ -3605,7 +3676,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="C2_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1730281330" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="C2_Cucitrice" version="1.0.0" creationDate="0" lastModifiedDate="1737370346" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="FallPrgRun" type="FallEdge"/>
@@ -4648,7 +4719,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Piegatore" version="1.0.0" creationDate="0" lastModifiedDate="1731662401" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="Piegatore" version="1.0.0" creationDate="0" lastModifiedDate="1733417952" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseLanciaAvDi" type="RiseEdge"/>
@@ -4716,7 +4787,7 @@ end_if;
 	
 	(* pulsante stop piegatore *)
 Rise_i25_PulsResetFolder ( in:= ( (Vb4010_PrgPiegatoreRun or Vb4015_PrgCaricatoreRun) and Vb_ingresso_PulsResetFolder and not Vb4003_RqsStopPiegatore and  Vb4010_PrgPiegatoreRun ));
-if ( Rise_i25_PulsResetFolder.q ) then
+if ( Rise_i25_PulsResetFolder.q and not Vb4019_ResetPiegatoreRun) then
 	Vb4003_RqsStopPiegatore := TRUE ; 		
 end_if;
 
@@ -6128,7 +6199,7 @@ Rise_i49_PinzaTrasloAlta( in :=Vb_ingresso_FcPinzaTraslAlta);
 ]]>
 					</sourceCode>
 				</program>
-				<program name="AppMainC1" version="1.0.0" creationDate="0" lastModifiedDate="1730211099" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="AppMainC1" version="1.0.0" creationDate="0" lastModifiedDate="1737969555" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RisePinzeC1" type="RiseEdge"/>
@@ -6249,7 +6320,7 @@ end_if;
 
 RiseStartC1(  in := ( ( Vb_ingresso_Pulsanti_start or Vb4801_PulsStartHmiC1 ) and not VB_CHN_AUTO_RUNNING and not Vb4507_AppManAuto and MacchinaAzzerata and not Vb4350_AppAut_out_C1_Pinza_int and not Vb4351_AppAut_out_C1_Pinza_est  and not Vb4506_AppCambioPinzeRun));
 
-	if ( RiseStartC1.q and Vn2CodiceAllarmeXHmi = 0 and Vn3804_PageID <= 1001)then  (*Daniele: permetto partenza se non ci sono errore HMI*)
+	if ( RiseStartC1.q and (Vn2CodiceAllarmeXHmi = 0 or Vn2CodiceAllarmeXHmi = 37 or Vn2CodiceAllarmeXHmi = 38) and Vn3804_PageID <= 1001)then  (*Daniele: permetto partenza se non ci sono errore HMI*)
 	
 		VbChn1Start := TRUE ;
 		Vn16GoCuci := 1;
@@ -6271,9 +6342,10 @@ RiseStartC1(  in := ( ( Vb_ingresso_Pulsanti_start or Vb4801_PulsStartHmiC1 ) an
 *)
 
 (* comando stop/hold C1 *)
-RiseStopC1(  in := ( VB_CHN_AUTO_RUNNING and not C1_CmdHoldRelease and Vb_ingresso_C1_PulsStopTesta ));
+RiseStopC1(  in := ( VB_CHN_AUTO_RUNNING and not C1_CmdHoldRelease and Vb_ingresso_C1_PulsStopTesta ) or (Vb161HoldErrTabelloneT1));/*modifica errore Tabellone 24/01/2025*/
 	if ( RiseStopC1.q )then
 		C1_CmdHoldHMI := TRUE ;
+		//Vb161HoldErrTabelloneT1 := FALSE;/*modifica errore Tabellone 24/01/2025*/
 	end_if;
 		if ( C1_CmdHoldHMI and C1_CmdHoldRelease)then
 			C1_CmdHoldHMI := FALSE ;
@@ -6281,7 +6353,7 @@ RiseStopC1(  in := ( VB_CHN_AUTO_RUNNING and not C1_CmdHoldRelease and Vb_ingres
 
 (* comando Restart/release C1 *)
 RiseReleaseC1(  in := (VB_CHN_AUTO_RUNNING and C1_CmdHoldRelease and not C1_CuciSimulaAuto and ( Vb_ingresso_Pulsanti_start or Vb4801_PulsStartHmiC1 and not Vn3804_PageID = 1005) ));
-	if ( RiseReleaseC1.q and Vn2CodiceAllarmeXHmi = 0)then (*Daniele: permetto ripartenza se non ci sono errore HMI*)
+	if ( RiseReleaseC1.q and Vn2CodiceAllarmeXHmi = 0 and not Vb161HoldErrTabelloneT1)then (*Daniele: permetto ripartenza se non ci sono errore HMI*)
 		C1_CmdReleaseHMI := TRUE ;
 		Vb4801_PulsStartHmiC1 := FALSE ;
 	end_if;
@@ -6302,6 +6374,9 @@ RiseAbortC1(  in := (VB_CHN_AUTO_RUNNING and C1_CmdHoldRelease and Vb4802_PulsRe
 		if(Vn2CodiceAllarmeXHmi = 2) then
 			Vn2CodiceAllarmeXHmi :=0;   (*Daniele HMI*)
 		end_if;
+		if(Vn2CodiceAllarmeXHmi =42) then
+    		Vn2CodiceAllarmeXHmi := 0;
+    	end_if;
 		vret := ExecPlcFun( PLC_CUCI_CMD, 153,0);   (*Daniele Restart estrazione punti dal buffer di cucitura*)
 	end_if;
 	
@@ -7105,7 +7180,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="OutAnalogicheT1" version="1.0.0" creationDate="0" lastModifiedDate="1730279437" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="OutAnalogicheT1" version="1.0.0" creationDate="0" lastModifiedDate="1736847258" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseVb4061_AppTensAumentaTesta1" type="RiseEdge"/>
@@ -7195,7 +7270,14 @@ if ( RiseVb4061_AppTensAumentaTesta1.q or RiseVb4062_AppTensDiminuisceTesta1.q o
 
 end_if;
 
-
+(* se il valore di time colpo alto  è = 0 lo imposto a 100*)
+if(Vq3094_TimeColpoTensione =0) then
+	Vq3094_TimeColpoTensione :=100;
+end_if;
+(* se il valore di time out è = 0 lo imposto a 3000*)
+if(Vq3095_TimeChiusTensTasti =0) then
+	Vq3095_TimeChiusTensTasti :=3000;
+end_if;
 
 (* timer colpo tensione a 5V *)
 TimIniTensioneTesta1( in := AppON_TensioneTesta1 ,pt :=TO_UDINT(Vq3094_TimeColpoTensione ));
@@ -7247,7 +7329,7 @@ TimeOutTensioneTesta1( in := ( AppON_TensioneTesta1 and not Vb4061_AppTensAument
 	
 	(****** tensione testa 1 in automatico ******)
 	
-	VbTest := ColpoForteTensione;
+
 	
 	if ( VbChn1AutoRun and C1_AssiAzzerati and not Vb4080_TestFcZeroC1 )then
 		(* con il piedino alto blocco la tensione *)
@@ -7496,7 +7578,7 @@ if ( RiseBloccaFilo_C2.q )then
 
 			8823: 	//882 con 3 schede IO Belli	
 		
-				o46 := TRUE ;	
+				o47 := TRUE ;	
 	
 			8824: // prima macchina Argentina con 4 schede IO Belli
 	
@@ -7509,7 +7591,7 @@ if ( FallBloccaFilo_C2.q )then
 
 			8823: 	//882 con 3 schede IO Belli	
 		
-				o46 := FALSE ;	
+				o47 := FALSE ;	
 	
 			8824: // prima macchina Argentina con 4 schede IO Belli
 	
@@ -7520,7 +7602,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="OutAnalogicheT2" version="1.0.0" creationDate="0" lastModifiedDate="1730281445" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="OutAnalogicheT2" version="1.0.0" creationDate="0" lastModifiedDate="1736847258" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="AppON_TensioneTesta2" type="BOOL"/>
@@ -7604,7 +7686,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 		case ( mc_stati_PiuMenoTensioneT2 ) of
 		
 			1:
-			
+			 vntest1 :=1;
 				vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , TO_INT ( 2500 ) );  //5V con alimentatore a 48V
 				ColpoForteTensione :=FALSE;
 				AppON_TensioneTesta2 := TRUE ;
@@ -7614,6 +7696,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 		 	
 		 			vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , TO_INT( C2_Udf_ValTensione /20  ) );	//con alimentatore 48V
 		 			mc_stati_PiuMenoTensioneT2 :=10;
+		 			 vntest1 :=2;
 				end_if;
 			10:
 				if ( TimeOutTensioneTesta2.q or not Vb_ingresso_Emg )then
@@ -7621,8 +7704,9 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 		    		vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , 0 );
 					AppON_TensioneTesta2 := FALSE ;
 					mc_stati_PiuMenoTensioneT2 := 0; 	
+					 vntest1 :=3;
 				else
-			
+			 vntest1 :=4;
 					vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , TO_INT( C2_Udf_ValTensione /20  ) );
 				end_if;
 				
@@ -7635,26 +7719,26 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 	end_if;
 	
 	if (TimeOutTensioneTesta2.q or not Vb_ingresso_Emg )then
-
+ vntest1 :=5;
 	    vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , 0 );
 	end_if;
 	
 	
 	(****** tensione testa 2 in automatico ******)
 	
-	VbTest := ColpoForteTensione;
+
 	
 	if ( VbChn2AutoRun and C2_AssiAzzerati and not Vb4085_TestFcZeroC2 )then
 		(* con il piedino alto blocco la tensione *)
 			if ( status_out_C2_Piedino and not C2_CmdHoldRelease )then
-
+ vntest1 :=6;
 	    		vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , 2500 );  //5V  con alimentatore 48V
 	    	
 			end_if;
 		(* colpo forte per chiusura, avviene all'inizio di una cucitura oppure se chiamato da "ColpoForteTensione"  *)	
 			Rise_Inizio_Cucitura ( in:= not status_out_C2_Piedino and not C2_AsseAgoFermo and not Vb3_C2_Apritensione );
 			if(Rise_Inizio_Cucitura.q or ColpoForteTensione ) then
-
+ vntest1 :=7;
 			 	vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , TO_INT ( 2500 ) );  //5V   con alimentatore 48V 
 			  	ColpoForteTensione:= TRUE;
 			end_if;
@@ -7662,7 +7746,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 			Tim_Inizio_Cucitura( in := ColpoForteTensione , pt := 200 );
 			if(Tim_Inizio_Cucitura.q) then
 				TensioneT2Fix3 := C2_Udf_ValTensione*100;
-
+ vntest1 :=8;
 				vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , TO_INT( TensioneT2Fix3 / 2000 ) ); //con alimentatore 48V			
 				ColpoForteTensione := FALSE;
 			end_if;
@@ -7671,7 +7755,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 	
 			Rise_Camma_Apritensione ( in:= not status_out_C2_Piedino and not C2_AsseAgoFermo and Vb3_C2_Apritensione );
 			if(Rise_Camma_Apritensione.q) then
-
+ vntest1 :=9;
 	    		vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , 0 );
 	    	
 			end_if;
@@ -7679,14 +7763,14 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 			Fall_Camma_Apritensione ( in:=Vb3_C2_Apritensione );
 			if(Fall_Camma_Apritensione.q) then
 				Chiudi_tensione_dopo_rasafilo := TRUE;
-			
+			 vntest1 :=10;
 				vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , TO_INT ( 2500 ) );  //5V  con alimentatore 48V
 			
 			end_if;
 		(* alla fine della camma, sopra l'ho chiusa, qui la riapro definitivamente *)	
 			Tim_Fall_Camma_Apritensione ( in := Chiudi_tensione_dopo_rasafilo , pt := 400 );
 			if(Tim_Fall_Camma_Apritensione.q) then
-		
+		 vntest1 :=11;
 				vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , 0 );
 			
 					Chiudi_tensione_dopo_rasafilo := FALSE;
@@ -7695,7 +7779,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 		(* stop cucitura  la tensione è aperta *)
 			if ( not status_out_C2_Piedino and C2_AsseAgoFermo and not Vb3_C2_Apritensione and not  ColpoForteTensione  and not Chiudi_tensione_dopo_rasafilo)then
 	    		vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , 0 );
-
+ vntest1 :=12;
 	    	end_if;
 	
 		(* ripresa cucitura dopo stop cucitura*)
@@ -7713,7 +7797,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 	RitOffTensContaSpolaT2( in := ( Vn2CodiceAllarmeXHmi = 1 and not Vb5_C2_InCucitura ) , pt := 1000 );
 	if ( FallVbChn2AutoRun.q or RitOffTensSimT2.q or RitOffTensContaSpolaT2.q )then
 		vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , 0 );
-		
+		 vntest1 :=13;
 
 	end_if;
 
@@ -7746,7 +7830,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 	(* se c'è un codice tesione nel programma imposto uscita analogia*)
 	if ( C2_TensioneInProfilo > 0 and not C2_VbEnableCamme) then		(*DA 09082023*)
 		TensioneT2Fix3 := C2_TensioneInProfilo *100;
-	
+	 vntest1 :=14;
 		vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , TO_INT( TensioneT2Fix3 / 2000 ) ); //con alimentatore 48V
 	end_if;
 	(* se c'è un codice tesione = 0 riporto la tensione al valore di udf *)
@@ -7777,7 +7861,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 
 	(* Pulsante Test uscita magnete tensione *)
 		if ( Vb4209_AppMagneteTensioneT2 )then
-
+ vntest1 :=15;
         	vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , TO_INT ( 2500 ) );   //5V con alimentatore 48V
     	
 		end_if;
@@ -7786,7 +7870,7 @@ TimeOutTensioneTesta2( in := ( AppON_TensioneTesta2 and not Vb4063_AppTensAument
 
 	if ( TimTestTensioneTesta2.q or  (not Vb_ingresso_Emg and not EnbManuale )or Fall_Vb4209_AppMagneteTensioneT2.q)then
         vret := ExecPlcFun( PLC_AN_OUT_NUM , AO98_ValoreTensioneTesta2 , 0 );
-       
+        vntest1 :=16;
 		Vb4209_AppMagneteTensioneT2 := FALSE ;	
 	end_if;
 	(**)
@@ -8264,7 +8348,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="ComandiHMI" version="1.0.0" creationDate="0" lastModifiedDate="1730304765" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="ComandiHMI" version="1.0.0" creationDate="0" lastModifiedDate="1738771030" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="RiseVb52RichiestaZeroAxDaHmiC1" type="RiseEdge"/>
@@ -8313,6 +8397,7 @@ end_if;
 							<var name="mc_stati_move_XY_C2" type="INT"/>
 							<var name="Rise_Pagina_Jog" type="RiseEdge"/>
 							<var name="Fall_Pagina_Jog" type="FallEdge"/>
+							<var name="Ris_VN_SYS_PAGE_ID" type="RiseEdge"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
@@ -8353,7 +8438,23 @@ RiseVb53RichiestaZeroAxDaHmiC2( in := Vb53RichiestaZeroAxDaHmiC2 );
 		VbFlgAzzAx7	:= FALSE ;
 		VbChn2Start	:= TRUE ;
 	end_if; 
-	
+
+
+(* azzero variabili di JOG quando entro in queste pagien *)
+Ris_VN_SYS_PAGE_ID (in:=	VN_SYS_PAGE_ID = 1003 or VN_SYS_PAGE_ID = 1004 or VN_SYS_PAGE_ID = 1007);
+if(Ris_VN_SYS_PAGE_ID.q) then
+
+Vb62HmiJogXP_C1	:=FALSE;
+Vb63HmiJogXM_C1	:=FALSE;
+Vb64HmiJogYP_C1 :=FALSE;
+Vb65HmiJogYM_C1	:=FALSE;
+Vb66HmiJogXP_C2 :=FALSE;
+Vb67HmiJogXM_C2 :=FALSE;
+Vb68HmiJogYP_C2	:=FALSE;
+Vb69HmiJogYM_C2	:=FALSE;
+end_if;
+
+
 (**** cambio velocità assi pinza tramite tasti su HMI ****)	
 (* asse X cucitrice 1 *)
 
@@ -9079,7 +9180,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="RotturaFilo_Spola_C1" version="1.0.0" creationDate="0" lastModifiedDate="1731685350" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="RotturaFilo_Spola_C1" version="1.0.0" creationDate="0" lastModifiedDate="1736843666" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="CNT_N_PuntiRottFiloC1" type="DINT"/>
@@ -9099,6 +9200,8 @@ end_if;
 							<var name="Rise_Riarmo" type="RiseEdge"/>
 							<var name="CNT_N_PuntiRottFiloC2" type="DINT"/>
 							<var name="OLD_ContPuntiRottFiloC2" type="DINT"/>
+							<var name="Rise_VN_SYS_PAGE_ID" type="RiseEdge"/>
+							<var name="Fall_VN_SYS_PAGE_ID" type="FallEdge"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
@@ -9177,6 +9280,8 @@ RiseStopC1(  in := ( VB_CHN_AUTO_RUNNING and not C1_CmdHoldRelease and Vb4090_En
 
     Vq3596_ContPuntiSpolaC1 := Vq3596_ContPuntiSpolaC1 + To_Dint( To_Udint( VnDeltaCntGiri_C1 ) );
 
+	Vq3596_ContPuntiSpolaC1 := ABS(Vq3596_ContPuntiSpolaC1);
+
 (* allarme raggiunto numero punti spola *)
 RiseAllSpolaC1 ( in:= Vq3596_ContPuntiSpolaC1 >= Vq3597_ImpPuntiSpolaC1 );
 
@@ -9240,7 +9345,6 @@ end_if;
 
 if ( RiseVb4_C1_InCucitura.q )then 
 	Vb4092_EnbCountRotturaFiloC1 := TRUE;	//Filo 1	
-	Vb4093_EnbCountRotturaFiloC2 := TRUE;	//Filo 2
 	Vq3561_ContPuntiRottFiloC1 := 1; 		//Filo 1		
 	Vq3563_ContPuntiRottFiloC2 := 1; 		//Filo 2
 	CNT_N_PuntiRottFiloC1 := 0; 			//Filo 1
@@ -9289,21 +9393,28 @@ end_if;
 		end_if;
 	
 	end_if;
+//	VqTest2999 := CNT_N_PuntiRottFiloC1;
 
 
 // per capire se IRQ1 funziona, nella pagina TEST IO lascio contare, vedrò aumentare il conteggio su VQ3561
-if(VN_SYS_PAGE_ID = 1005) then		//pagina test IO
+Rise_VN_SYS_PAGE_ID ( in:= VN_SYS_PAGE_ID = 1005 );
+Fall_VN_SYS_PAGE_ID ( in:= VN_SYS_PAGE_ID = 1005 );
+if(Rise_VN_SYS_PAGE_ID.q ) then		//pagina test IO
 	vret := ExecPlcFun( PLC_ENABLE_IRQ, 11, ContPuntiRottFiloC1_IDX );	//Filo 1	
 	Vb4092_EnbCountRotturaFiloC1 := TRUE;	//Filo 1	
 	
 
 end_if;		
 
+if(Fall_VN_SYS_PAGE_ID.q) then		//pagina test IO
+	
+	Vb4092_EnbCountRotturaFiloC1 := FALSE;	//Filo 1
+end_if;		
 
 ]]>
 					</sourceCode>
 				</program>
-				<program name="RotturaFilo_Spola_C2" version="1.0.0" creationDate="0" lastModifiedDate="1731662912" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="RotturaFilo_Spola_C2" version="1.0.0" creationDate="0" lastModifiedDate="1736843666" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="FallVb5_C2_InCucitura" type="FallEdge"/>
@@ -9318,6 +9429,8 @@ end_if;
 							<var name="Rise_Vb4076_GiraAgoFaiSpolaC2" type="RiseEdge"/>
 							<var name="Fall_Vb4076_GiraAgoFaiSpolaC2" type="FallEdge"/>
 							<var name="Rise_i50_C2_RotturaFilo" type="RiseEdge"/>
+							<var name="Rise_VN_SYS_PAGE_ID" type="RiseEdge"/>
+							<var name="Fall_VN_SYS_PAGE_ID" type="FallEdge"/>
 						</localVars>
 					</vars>
 					<iecDeclaration active="FALSE"/>
@@ -9398,6 +9511,8 @@ RiseStopC2(  in := ( VB_CHN2_AUTO_RUNNING and not C2_CmdHoldRelease and Vb4091_E
 
     Vq3598_ContPuntiSpolaC2 := Vq3598_ContPuntiSpolaC2 + To_Dint( To_Udint( VnDeltaCntGiri_C2 ) );
 
+	Vq3598_ContPuntiSpolaC2 := ABS(Vq3598_ContPuntiSpolaC2);
+	
 (* allarme raggiunto numero punti spola C2 *)
 RiseAllSpolaC2 ( in:= Vq3598_ContPuntiSpolaC2 >= Vq3599_ImpPuntiSpolaC2 );
 
@@ -9489,7 +9604,7 @@ end_if;
 
 
 	if ( Rise_cnt_giro_C2.q and VN_SYS_PAGE_ID = 1001)then 	
-		
+	//	VqTest2997 := OLD_ContPuntiRottFiloC2;
 		//Filo 2-------------------------------------------------------
 		if ( Vq3563_ContPuntiRottFiloC2 > OLD_ContPuntiRottFiloC2 )then
 			OLD_ContPuntiRottFiloC2 := Vq3563_ContPuntiRottFiloC2 ;	
@@ -9501,12 +9616,19 @@ end_if;
 		end_if;
 		//-------------------------------------------------------------
 	end_if;
-
+//VqTest2998 := CNT_N_PuntiRottFiloC2;
 
 // per capire se IRQ1 funziona, nella pagina TEST IO lascio contare, vedrò aumentare il conteggio su VQ3561
-if(VN_SYS_PAGE_ID = 1005) then		//pagina test IO
+Rise_VN_SYS_PAGE_ID ( in:= VN_SYS_PAGE_ID = 1005 );
+Fall_VN_SYS_PAGE_ID ( in:= VN_SYS_PAGE_ID = 1005 );
+if(Rise_VN_SYS_PAGE_ID.q) then		//pagina test IO
 	vret := ExecPlcFun( PLC_ENABLE_IRQ, 21, ContPuntiRottFiloC2_IDX );	//Filo 2
 	Vb4093_EnbCountRotturaFiloC2 := TRUE;	//Filo 2
+end_if;	
+
+if(Fall_VN_SYS_PAGE_ID.q) then		//pagina test IO
+	
+	Vb4093_EnbCountRotturaFiloC2 := FALSE;	//Filo 2
 end_if;		
 
 
@@ -9599,7 +9721,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Timeout_Sensori" version="1.0.0" creationDate="1627283434" lastModifiedDate="1730222886" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="Timeout_Sensori" version="1.0.0" creationDate="1627283434" lastModifiedDate="1734078506" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars>
 						<localVars>
 							<var name="TonSensPinzaEstOff" type="Ton"/>
@@ -9751,7 +9873,7 @@ end_if;
 
 //sensore pinza interna bassa non si accende T2
 TonSensPinzaIntOn_C2 ( in:= not Vb4382_AppAut_out_C2_Pinza_int and not Vb_ingresso_C2_FcPinzaIntBassa , pt := TO_UDINT(Vq3090_TimeoutSensori) ); 
-if(TonSensPinzaIntOn_C2.q and ( Vb4509_AppEnbPiegatore or Vb4511_AppEnbCaricatore)) then
+if(TonSensPinzaIntOn_C2.q and Vb4016_PrgTraslatoreRun) then
 	Vn2CodiceAllarmeXHmi :=33;
 	Vn17GoCuci_C2 := 2; //annullo esecuzione cucitura
 end_if;
@@ -10442,7 +10564,7 @@ end_if;
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Traslatore" version="1.0.0" creationDate="1718369881" lastModifiedDate="1732112891" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="Traslatore" version="1.0.0" creationDate="1718369881" lastModifiedDate="1736247953" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -10470,30 +10592,34 @@ end_if;
 (**)
 Rise_Vb96_AnticipoTrasl_SX ( in:= Vb96_AnticipoTrasl_SX);
 Fall_Vb96_AnticipoTrasl_SX ( in:= Vb96_AnticipoTrasl_SX);
-if(Vn120_AppEnbScambioPinzeC1_Car2 = 0 and Rise_Vb96_AnticipoTrasl_SX.q and (VnStatoCuci2 < 25 or VnStatoCuci2 =50)) then
-	 vntest1 :=1;
- 	if(Vb4513_AppEnbCucitrice2 = TRUE or (Vb4513_AppEnbCucitrice2 =FALSE and Vb4515_AppEnbScaricatore = TRUE) ) then
-		 vntest1 :=2;		
- 		if( not VbChn3AutoRun) then
- 			VbChn3Start := TRUE ;
-		end_if;
- 		
- 		GoAxPlcCaricErrCode := 0;
-		GoAxPlcCariObj := Vq3522_PosizioneTraslCaricoTascaC1 ;
-		GoAxPlcCaricVel:= -Vq3530_VelocitaTraslRiposo ; 
-		GoAxPlcCaric := 0;
-		
+if(Vn120_AppEnbScambioPinzeC1_Car2 = 0 and Rise_Vb96_AnticipoTrasl_SX.q) then
+ 	if(VnStatoCuci2 < 25 or VnStatoCuci2 =50) then
+	
+	 	if(Vb4513_AppEnbCucitrice2 = TRUE or (Vb4513_AppEnbCucitrice2 =FALSE and Vb4515_AppEnbScaricatore = TRUE) ) then
+					
+	 		if( not VbChn3AutoRun) then
+	 			VbChn3Start := TRUE ;
+			end_if;
+	 		
+	 		GoAxPlcCaricErrCode := 0;
+			GoAxPlcCariObj := Vq3522_PosizioneTraslCaricoTascaC1 ;
+			GoAxPlcCaricVel:= -Vq3530_VelocitaTraslRiposo ; 
+			GoAxPlcCaric := 0;
 			
-		ipar := ((C2_AsseCAR*100)+1);
-    	vret := ExecPlcFun( PLC_MOVE_AX, ipar, GOAX_PLC_CARIC_IDX );  		
- 		
+				
+			ipar := ((C2_AsseCAR*100)+1);
+	    	vret := ExecPlcFun( PLC_MOVE_AX, ipar, GOAX_PLC_CARIC_IDX );  		
+	 		
+	 	end_if;
+	 else
+	 	Vb119_AnticipoTrasl_SX_fallito:= TRUE;
  	end_if;
 end_if; 
 
 ]]>
 					</sourceCode>
 				</program>
-				<program name="Input_Output" version="1.0.0" creationDate="1730130972" lastModifiedDate="1730362641" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
+				<program name="Input_Output" version="1.0.0" creationDate="1730130972" lastModifiedDate="1733327150" excludeFromBuild="FALSE" excludeFromBuildIfNotDef="">
 					<vars/>
 					<iecDeclaration active="FALSE"/>
 					<sourceCode type="ST">
@@ -10635,7 +10761,7 @@ case (Vn_ID_macchina) of
  	Vb_ingresso_C2_FcPinzaIntBassa :=i55;
  	//56
  	//57
- 	Vb_ingresso_C2_PulsStopTesta :=i58;
+ 	Vb_ingresso_C2_PulsStopTesta_suC1 := i58;	 //Vb_ingresso_C2_PulsStopTesta :=i58;
  	//59
  	Vb_ingresso_CarPat_SpoLamLungoL :=i61;
  	Vb_ingresso_CarPat_SpoLamLungoR :=i62;
@@ -12823,9 +12949,9 @@ END_VAR
 			<lib name="DefVar.PLL" fullXml="false" link="true">
 				<![CDATA[(*
  *
- * MDPlc source file: DefVar.PLL
+ * MDPlc source file: DefVar.pll
  *
- * Date = "20/11/2024 15:02:24"
+ * Date = "25/01/2025 08:15:51"
  *)
 
 
@@ -12833,14 +12959,6 @@ VAR_GLOBAL
 
 
     {G:"Application_Variables"}
-
-    C1_PrgName                              AT %MB700.1    : STRING[ 80 ]; {DE:"va1    - Nome del programma CN da eseguire"}
-    C1_UdfName                              AT %MB700.2    : STRING[ 80 ]; {DE:"va2    - Nome UDF - ( parametri, tabellone, profilo )"}
-    C2_PrgName                              AT %MB700.11   : STRING[ 80 ]; {DE:"va11   - Nome del programma CN da eseguire"}
-    C2_UdfName                              AT %MB700.12   : STRING[ 80 ]; {DE:"va12   - Nome UDF - ( parametri, tabellone, profilo )"}
-    Sup_PrgName                             AT %MB700.21   : STRING[ 80 ]; {DE:"va21   - Nome del programma CN del canale 3"}
-    App_Ver                                 AT %MB700.31   : STRING[ 80 ]; {DE:"va31   - Versione applicativo"}
-
 
     VbEnableCamme                           AT %MB300.1    : BOOL;         {DE:"vb1    - Comando di abilitazione camme ( globale )"}
     Vb2_C1_Apritensione                     AT %MB300.2    : BOOL;         {DE:"vb2    - Vb attivazione apritenzione cucitrice 1"}
@@ -12926,6 +13044,7 @@ VAR_GLOBAL
     Vb95_ResetConteggio                     AT %MB300.95   : BOOL;         {DE:"vb95   - tasto Reset HMI rimette il conteggio 1/7"}
     Vb96_AnticipoTrasl_SX                   AT %MB300.96   : BOOL;         {DE:"vb96   - =1 anticipo il movimento del traslatore a sx sopra le pinze di cucitura della testa 1"}
     Vb97_RiseScaricatoreAttivo              AT %MB300.97   : BOOL;         {DE:"vb97   - = 1 è un rise che mi dice che lo scaricatore è attivo ed è arrivato il segnale di fine cucitura"}
+    Vb98_mcInclinata                        AT %MB300.98   : BOOL;         {DE:"vb98   - = 1 mc nel mio ufficio inclinata con caricatore braccio dietro"}
     VbTest                                  AT %MB300.99   : BOOL;         {DE:"vb99   - per test"}
     VbSimulaDbg                             AT %MB300.100  : BOOL;         {DE:"vb100  - Cucitrice simulata ( per debugger )"}
     VbSyncDbg                               AT %MB300.101  : BOOL;         {DE:"vb101  - Variabile di sync ( per debugger )"}
@@ -12933,6 +13052,9 @@ VAR_GLOBAL
     VbSimulazionePedanaC2                   AT %MB300.103  : BOOL;         {DE:"vb103  - alza e abbassa le pinze tramite vb come se premessi la pedana"}
     Vb115CricchettoRinforzo                 AT %MB300.115  : BOOL;         {DE:"vb115  - ad ON lancia il ciclo per inserire la fettuccia nei rulli"}
     Vb116RinforzoGiu_HMI                    AT %MB300.116  : BOOL;         {DE:"vb116  - ad ON HMI chiede al PLC di abbassare i coltelli del rinforzo"}
+    Vb117_EnableJogXYPlc_T1                 AT %MB300.117  : BOOL;         {DE:"vb117  - = 1 in fase di hold è possibile fare i jog con i tasti +- del HMI"}
+    Vb118_EnableJogXYPlc_T2                 AT %MB300.118  : BOOL;         {DE:"vb118  - = 1 in fase di hold è possibile fare i jog con i tasti +- del HMI"}
+    Vb119_AnticipoTrasl_SX_fallito          AT %MB300.119  : BOOL;         {DE:"vb119  - =1 il plc non ha potuto fare il movimento in anticpo perchè il traslatore era occupato, lo farò fare al CN"}
     Vb151EnableCarPattine                   AT %MB300.151  : BOOL;         {DE:"vb151  - =1 device caricatore pattina attivo"}
     Vb152KitCarPAttine                      AT %MB300.152  : BOOL;         {DE:"vb152  - =1 il kit carica pattina è attivo (tasto HMI)"}
     Vb153GoCicloCarPAttina                  AT %MB300.153  : BOOL;         {DE:"vb153  - =1 fa partire un ciclo carica pattina"}
@@ -12943,6 +13065,7 @@ VAR_GLOBAL
     Vb158PattinaTestRunning                 AT %MB300.158  : BOOL;         {DE:"vb158  - =1 il ciclo piattina test sta girando"}
     Vb159PattinaTestRunning                 AT %MB300.159  : BOOL;         {DE:"vb159  - =1 il ciclo piattina test sta girando"}
     Vb160PartiACucire                       AT %MB300.160  : BOOL;         {DE:"vb160  - =1 il plc avverte il CN che la pattina è stata caricata e bloccata, ora può effettuare la prima cucitura"}
+    Vb161HoldErrTabelloneT1                 AT %MB300.161  : BOOL;         {DE:"vb161  - =1 FPGA non ha mandato tutti gli impusi per via dell'accavallamento degli anticipi"}
     Vb170KitTascaCargo                      AT %MB300.170  : BOOL;         {DE:"vb170  - =1 attivo il kit tasca cargo"}
     Vb_Fun301_run                           AT %MB300.171  : BOOL;         {DE:"vb171"}
     Vb_3SchedeIOBelli                       AT %MB300.172  : BOOL;         {DE:"vb172  - =1 è una 882 con solo 3 schede IO fatte da Belli (NB in Argentina la prima 882 ne aveva 4 quindi questa vb va tenuta a false)"}
@@ -13047,6 +13170,7 @@ VAR_GLOBAL
     Vb4016_PrgTraslatoreRun                 AT %MB300.4016 : BOOL;         {DE:"vb4016 - se il traslatore è in una fase di movimento questa vb = ON"}
     Vb4017_AttesaTascaIsRunning             AT %MB300.4017 : BOOL;         {DE:"vb4017 - il ciclo di attesa tasca in CicloAutomatico sta girando"}
     Vb4018_TrigrHMITascaCucita              AT %MB300.4018 : BOOL;         {DE:"vb4018 - ad On quando una tasca è stata cucita completamente"}
+    Vb4019_ResetPiegatoreRun                AT %MB300.4019 : BOOL;         {DE:"vb4019 - ad On quando il CN fa la procedura di Reset Piegatore"}
     Vb4021_Piegatore1_ON                    AT %MB300.4021 : BOOL;         {DE:"vb4021 - Primo piegatore attivato"}
     Vb4022_Piegatore2_ON                    AT %MB300.4022 : BOOL;         {DE:"vb4022 - Secondo piegatore attivato"}
     Vb4023_Piegatore3_ON                    AT %MB300.4023 : BOOL;         {DE:"vb4023 - Terzo piegatore attivato"}
@@ -13510,6 +13634,9 @@ VAR_GLOBAL
     Vq_117_READ_FC_ava_Y_C2                 AT %MD500.117  : DINT;         {DE:"vq117  - Vq lettura fine corsa avanti asse Y C2"}
     Vq_118_READ_FC_ind_CARIC_C2             AT %MD500.118  : DINT;         {DE:"vq118  - Vq lettura fine corsa indietro traslatore"}
     Vq_119_READ_FC_ava_CARIC_C2             AT %MD500.119  : DINT;         {DE:"vq119  - Vq lettura fine corsa avanti traslatore"}
+    VqTest2997                              AT %MD500.2997 : DINT;         {DE:"vq2997"}
+    VqTest2998                              AT %MD500.2998 : DINT;         {DE:"vq2998"}
+    VqTest2999                              AT %MD500.2999 : DINT;         {DE:"vq2999"}
     Vq3000_RitPiegatoreAD_ON                AT %MD500.3000 : DINT;         {DE:"vq3000"}
     Vq3001_RitPiegatoreAD_OFF               AT %MD500.3001 : DINT;         {DE:"vq3001"}
     Vq3002_RitPiegatoreAlto_ON              AT %MD500.3002 : DINT;         {DE:"vq3002"}
@@ -13650,6 +13777,15 @@ VAR_GLOBAL
     GoAxPlcCaricVel                         AT %MD500.3602 : DINT;         {DE:"vq3602 - GoAx asse caricatore - Velocita'"}
     GoAxPlcCaric                            AT %MD500.3603 : DINT;         {DE:"vq3603 - GoAx asse caricatore - Libera"}
     FUN301_vq4000                           AT %MD500.4000 : DINT;         {DE:"vq4000"}
+    fun94idxPutni                           AT %MD500.5000 : DINT;         {DE:"vq5000 - = Numero del punto di cucitura"}
+    fun94idfUdf                             AT %MD500.5001 : DINT;         {DE:"vq5001 - = Numero del passo UDF"}
+    fun94XTeorica                           AT %MD500.5002 : DINT;         {DE:"vq5002 - = Posizione teorica X [impulsi]"}
+    fun94XReale                             AT %MD500.5003 : DINT;         {DE:"vq5003 - = Posizione reale X [impulsi]"}
+    fun94YTeorica                           AT %MD500.5004 : DINT;         {DE:"vq5004 - = Posizione teorica Y [impulsi]"}
+    fun94YReale                             AT %MD500.5005 : DINT;         {DE:"vq5005 - = Posizione reale Y [impulsi]"}
+    fun94ErrX                               AT %MD500.5006 : DINT;         {DE:"vq5006 - = Errore di posizione X [impulsi] (PosTeorica - PosReale)"}
+    fun94ErrY                               AT %MD500.5007 : DINT;         {DE:"vq5007 - = Errore di posizione Y [impulsi] (PosTeorica - PosReale)"}
+    fun94VelAgoTabellone                    AT %MD500.5008 : DINT;         {DE:"vq5008 - = Vel Ago per calcolo anticipi dal tabellone [RPM]"}
 
 
     VdTmpCalc                               AT %ML600.1    : LREAL;        {DE:"vd1    - Usato per calcoli temporanei nel PLC"}
@@ -13658,6 +13794,14 @@ VAR_GLOBAL
     VdTmpOP_T1                              AT %ML600.4    : LREAL;        {DE:"vd4    - Usato per calcoli temporanei nel PLC"}
     VdTmpOP_T2                              AT %ML600.5    : LREAL;        {DE:"vd5    - Usato per calcoli temporanei nel PLC"}
     VdTmpOP_T3                              AT %ML600.6    : LREAL;        {DE:"vd6    - Usato per calcoli temporanei nel PLC"}
+
+
+    C1_PrgName                              AT %MB700.1    : STRING[ 80 ]; {DE:"va1    - Nome del programma CN da eseguire"}
+    C1_UdfName                              AT %MB700.2    : STRING[ 80 ]; {DE:"va2    - Nome UDF - ( parametri, tabellone, profilo )"}
+    C2_PrgName                              AT %MB700.11   : STRING[ 80 ]; {DE:"va11   - Nome del programma CN da eseguire"}
+    C2_UdfName                              AT %MB700.12   : STRING[ 80 ]; {DE:"va12   - Nome UDF - ( parametri, tabellone, profilo )"}
+    Sup_PrgName                             AT %MB700.21   : STRING[ 80 ]; {DE:"va21   - Nome del programma CN del canale 3"}
+    App_Ver                                 AT %MB700.31   : STRING[ 80 ]; {DE:"va31   - Versione applicativo"}
 
 
     i1                                      AT %IX100.0    : BOOL;         {DE:"i1"}
@@ -13858,6 +14002,43 @@ VAR_GLOBAL CONSTANT
     C2_MODE_BLOCCO_FILO_END                 : INT := 101; { DE:"Mode camma blocco filo durante primo giro" }
     C2_VB_BLOCCO_FILO_END                   : INT := 16; { DE:"VB blocco filo durante primo giro" }
     C2_ENA_BLOCCO_FILO_END                  : INT := 2001; { DE:"Indice VB abilitazione camma blocco filo durante primo giro ( vb1001 )" }
+    C1_NumPuntiRottFilo                     : DINT := 14000; { DE:"punti impostati rottura filo" }
+    PLC_VN_TO_VB                            : DINT := 15; { DE:"Copia una vn su 16 vb consecutive" }
+    PLC_READ_FORK_VAR                       : DINT := 28; { DE:"Lettura variabile fork" }
+    PLC_WRITE_FORK_VAR                      : DINT := 29; { DE:"Scrittura variabile fork" }
+    PLC_READ_AX_QUOTE                       : DINT := 70; { DE:"Lettura quota asse" }
+    PLC_WRITE_AX_QUOTE                      : DINT := 71; { DE:"Set quota asse" }
+    PLC_ROLLOVER_AX                         : DINT := 72; { DE:"Rollover asse" }
+    PLC_MOVE_AX_TONDO                       : DINT := 73; { DE:"Movimento asse tondo" }
+    PLC_MOVE_AX                             : DINT := 74; { DE:"Movimento asse" }
+    PLC_STOP_AX                             : DINT := 75; { DE:"Stop asse" }
+    PLC_CHG_QUO_OBJ_AX                      : DINT := 78; { DE:"Modifica quota obiettivo asse" }
+    PLC_SET_EMERGENZA                       : DINT := 90; { DE:"Set emergenza" }
+    PLC_ENABLE_FOLLOW                       : DINT := 105; { DE:"Abilitazione inseguimento" }
+    PLC_DISABLE_FOLLOW                      : DINT := 106; { DE:"Disabilitazione inseguimento" }
+    PLC_RESET_ALL_CAM                       : DINT := 120; { DE:"Reset di tutte le camme digitali" }
+    PLC_INIT_ONE_CAM                        : DINT := 121; { DE:"Inizializzazione di una camma digitale" }
+    PLC_DISABLE_ONE_CAM                     : DINT := 122; { DE:"Disabilitazione di una camma digitale" }
+    PLC_ANTICIPO_CAM                        : DINT := 123; { DE:"Set anticipo di una camma digitale" }
+    PLC_IO_CTL_CAM                          : DINT := 124; { DE:"IoCtl camma digitale" }
+    PLC_AN_OUT_NUM                          : DINT := 140; { DE:"imposta uscita analogica" }
+    PLC_AN_OUT_READ                         : DINT := 141; { DE:"legge uscita analogica" }
+    PLC_VCD_TO_VD                           : DINT := 168; { DE:"copia una Vcd in una Vd" }
+    PLC_VD_TO_VCD                           : DINT := 169; { DE:"copia una Vd in una Vcd" }
+    PLC_SET_UDT_CMD                         : DINT := 191; { DE:"Set comandi udt e udf" }
+    PLC_ENABLE_IRQ                          : DINT := 200; { DE:"Abilitazione interrupt" }
+    PLC_DISABLE_IRQ                         : DINT := 201; { DE:"Disabilitazione interrupt" }
+    PLC_ADD_FUN_IRQ                         : DINT := 202; { DE:"Inserimento di una funzione di interrupt" }
+    PLC_REMOVE_FUN_IRQ                      : DINT := 203; { DE:"Rimozione di una funzione di interrupt" }
+    PLC_READ_AX_PARAM                       : DINT := 210; { DE:"Lettura parametri assi" }
+    PLC_WRITE_AX_PARAM                      : DINT := 211; { DE:"Scrittura parametri assi" }
+    PLC_SPA_ACC_DEC                         : DINT := 216; { DE:"Calcolo spazio acc e dec" }
+    PLC_FORCE_ZEROED                        : DINT := 218; { DE:"Forzatura assi azzerati" }
+    PLC_CUCI_SET_PARAM                      : DINT := 280; { DE:"Impostazione parametri di cucitura" }
+    PLC_CUCI_CMD                            : DINT := 281; { DE:"Comandi per la cucitrice" }
+    PLC_ECAT_SDO_WR                         : DINT := 300; { DE:"Ethercat SDO write" }
+    PLC_ECAT_SDO_RD                         : DINT := 301; { DE:"Ethercat SDO read" }
+    PLC_ECAT_INFO                           : DINT := 302; { DE:"Ethercat info" }
     ENABLE_CAMME_IDX                        : INT := 1;
     EnbCountIRQPiegatore_Su_IDX             : INT := 4077; { DE:"///  HMI utilizzato per abilitare il conteggio del sensore piegatore su" }
     EnbCountRotturaFiloC1_IDX               : INT := 4092; { DE:"///  HMI utilizzato per abilitare il conteggio della rottura filo C1" }
@@ -13901,43 +14082,6 @@ VAR_GLOBAL CONSTANT
     AO98_ValoreTensioneTesta2               : INT := 98; { DE:"valore scrittura analogica per elettrocalamita blocca filo testa 1  0-10000 mV" }
     AO99_ValoreElettrocSotto                : INT := 99; { DE:"valore scrittura analogica per elettrocalamita 0-10000 mV" }
     AO100_ValoreElettrocSopra               : INT := 100; { DE:"valore scrittura analogica per elettrocalamita perno 0-10000 mV" }
-    C1_NumPuntiRottFilo                     : DINT := 14000; { DE:"punti impostati rottura filo" }
-    PLC_VN_TO_VB                            : DINT := 15; { DE:"Copia una vn su 16 vb consecutive" }
-    PLC_READ_FORK_VAR                       : DINT := 28; { DE:"Lettura variabile fork" }
-    PLC_WRITE_FORK_VAR                      : DINT := 29; { DE:"Scrittura variabile fork" }
-    PLC_READ_AX_QUOTE                       : DINT := 70; { DE:"Lettura quota asse" }
-    PLC_WRITE_AX_QUOTE                      : DINT := 71; { DE:"Set quota asse" }
-    PLC_ROLLOVER_AX                         : DINT := 72; { DE:"Rollover asse" }
-    PLC_MOVE_AX_TONDO                       : DINT := 73; { DE:"Movimento asse tondo" }
-    PLC_MOVE_AX                             : DINT := 74; { DE:"Movimento asse" }
-    PLC_STOP_AX                             : DINT := 75; { DE:"Stop asse" }
-    PLC_CHG_QUO_OBJ_AX                      : DINT := 78; { DE:"Modifica quota obiettivo asse" }
-    PLC_SET_EMERGENZA                       : DINT := 90; { DE:"Set emergenza" }
-    PLC_ENABLE_FOLLOW                       : DINT := 105; { DE:"Abilitazione inseguimento" }
-    PLC_DISABLE_FOLLOW                      : DINT := 106; { DE:"Disabilitazione inseguimento" }
-    PLC_RESET_ALL_CAM                       : DINT := 120; { DE:"Reset di tutte le camme digitali" }
-    PLC_INIT_ONE_CAM                        : DINT := 121; { DE:"Inizializzazione di una camma digitale" }
-    PLC_DISABLE_ONE_CAM                     : DINT := 122; { DE:"Disabilitazione di una camma digitale" }
-    PLC_ANTICIPO_CAM                        : DINT := 123; { DE:"Set anticipo di una camma digitale" }
-    PLC_IO_CTL_CAM                          : DINT := 124; { DE:"IoCtl camma digitale" }
-    PLC_AN_OUT_NUM                          : DINT := 140; { DE:"imposta uscita analogica" }
-    PLC_AN_OUT_READ                         : DINT := 141; { DE:"legge uscita analogica" }
-    PLC_VCD_TO_VD                           : DINT := 168; { DE:"copia una Vcd in una Vd" }
-    PLC_VD_TO_VCD                           : DINT := 169; { DE:"copia una Vd in una Vcd" }
-    PLC_SET_UDT_CMD                         : DINT := 191; { DE:"Set comandi udt e udf" }
-    PLC_ENABLE_IRQ                          : DINT := 200; { DE:"Abilitazione interrupt" }
-    PLC_DISABLE_IRQ                         : DINT := 201; { DE:"Disabilitazione interrupt" }
-    PLC_ADD_FUN_IRQ                         : DINT := 202; { DE:"Inserimento di una funzione di interrupt" }
-    PLC_REMOVE_FUN_IRQ                      : DINT := 203; { DE:"Rimozione di una funzione di interrupt" }
-    PLC_READ_AX_PARAM                       : DINT := 210; { DE:"Lettura parametri assi" }
-    PLC_WRITE_AX_PARAM                      : DINT := 211; { DE:"Scrittura parametri assi" }
-    PLC_SPA_ACC_DEC                         : DINT := 216; { DE:"Calcolo spazio acc e dec" }
-    PLC_FORCE_ZEROED                        : DINT := 218; { DE:"Forzatura assi azzerati" }
-    PLC_CUCI_SET_PARAM                      : DINT := 280; { DE:"Impostazione parametri di cucitura" }
-    PLC_CUCI_CMD                            : DINT := 281; { DE:"Comandi per la cucitrice" }
-    PLC_ECAT_SDO_WR                         : DINT := 300; { DE:"Ethercat SDO write" }
-    PLC_ECAT_SDO_RD                         : DINT := 301; { DE:"Ethercat SDO read" }
-    PLC_ECAT_INFO                           : DINT := 302; { DE:"Ethercat info" }
 
 END_VAR
 ]]>
@@ -13945,9 +14089,9 @@ END_VAR
 			<lib name="DefCuci.PLL" fullXml="false" link="true">
 				<![CDATA[(*
  *
- * MDPlc source file: DefCuci.PLL
+ * MDPlc source file: DefCuci.pll
  *
- * Date = "20/11/2024 15:02:24"
+ * Date = "25/01/2025 08:15:51"
  *)
 
 

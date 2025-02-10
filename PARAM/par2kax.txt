@@ -1,5 +1,5 @@
 [StartAxes]
-  #Version 1.0.6.12207
+  #Version 1.0.6.13293
   #FILENAME par2kax
   #CanAdd StdAx
   #CanAdd CopAx
@@ -30,7 +30,7 @@
     InvDir = 1
     InvEnc = 1
     RecGioco = 0
-    MinPos = -20
+    MinPos = -8
     MaxPos = 300
     EnabSwFcEmerg = 0
     MargineFcMm = 0
@@ -120,7 +120,7 @@
     MaxDistMarkerMm = 0
     VelMax = 95
     VelMan = 10
-    VelZero = 4
+    VelZero = 8
     VelRilascioMicro = 2
     VelHome = 15
     DelayBeforeInversion = 0
@@ -345,14 +345,14 @@
     EngineRPM = 4500
     TimeAcc = 0.2
     TimeDec = 0.2
-    MmRif = 40
+    MmRif = 25
     ImpRif = 65536
     InvDir = 0
     InvEnc = 1
     RecGioco = 0
     DeadTime = 0
     MinPos = -5
-    MaxPos = 985
+    MaxPos = 850
     EnabSwFcEmerg = 0
     MargineFcMm = 0
     QuoZero = 0
@@ -362,7 +362,7 @@
     MaxDistMarkerMm = 0
     VelMax = 100
     VelMan = 10
-    VelZero = 2
+    VelZero = 4
     VelRilascioMicro = 0.5
     VelHome = 1
     DelayBeforeInversion = 0
@@ -382,8 +382,8 @@
     FlgFcDisab = 1
     FlgFcNA = 1
     VelShape = 2
-    VelPPa = 20
-    VelPPd = 20
+    VelPPa = 10
+    VelPPd = 10
     AccSpig = 15000
     AccCirc = 0
     KaccG1 = 0
@@ -454,7 +454,7 @@
     OvdType = 2
     ZeroDir = 6
     InPushState = 1
-    InZero = 37
+    InZero = 51
     InMin = 0
     InMax = 0
     MaxFcDebounceMs = 0
@@ -533,7 +533,7 @@
     OvdType = 2
     ZeroDir = 6
     InPushState = 1
-    InZero = 38
+    InZero = 52
     InMin = 0
     InMax = 0
     MaxFcDebounceMs = 0
@@ -614,7 +614,7 @@
     ZeroDir = 6
     ZeroDirParam = 0
     InPushState = 0
-    InZero = 40
+    InZero = 54
     InMin = 0
     InMax = 0
     MaxFcDebounceMs = 0
@@ -695,7 +695,7 @@
     ZeroDir = 6
     ZeroDirParam = 0
     InPushState = 1
-    InZero = 36
+    InZero = 37
     InMin = 0
     InMax = 0
     MaxFcDebounceMs = 0
@@ -753,7 +753,7 @@
     RecGioco = 0
     DeadTime = 0
     MinPos = -17
-    MaxPos = 1005
+    MaxPos = 955
     EnabSwFcEmerg = 0
     MargineFcMm = 0
     QuoZero = 0
@@ -763,7 +763,7 @@
     MaxDistMarkerMm = 0
     VelMax = 100
     VelMan = 10
-    VelZero = 5
+    VelZero = 15
     VelRilascioMicro = 0.5
     VelHome = 2
     DelayBeforeInversion = 0
@@ -776,7 +776,7 @@
     ZeroDir = 6
     ZeroDirParam = 0
     InPushState = 1
-    InZero = 43
+    InZero = 39
     InMin = 0
     InMax = 0
     MaxFcDebounceMs = 0
@@ -784,7 +784,7 @@
     FlgFcNA = 1
     VelShape = 2
     VelPPa = 10
-    VelPPd = 50
+    VelPPd = 10
     AccSpig = 15000
     AccCirc = 0
     KaccG1 = 0
@@ -796,7 +796,7 @@
     ErrIns = 100
     MaxErrInsDelayMs = 0
     TimeAccJog = 0.6
-    TimeDecJog = 0.2
+    TimeDecJog = 0.01
     VelPPaJog = 20
     VelPPdJog = 20
     TimeDecStop = 0

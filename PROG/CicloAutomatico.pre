@@ -648,8 +648,12 @@ do
 				if ( vb51                 or (vb4513                  ==0 and vb97                       ==1) or Vb4006                 )	//scambio con pinza esterna bassa
 					vb51                = 0		//pulisco altrimenti potrebbe partire subito
 					vb97                       =0 //pulisco
-					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX]
-					////------> AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
+					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX] MA SE IL TRASLATORE ERA OCCUPATO ALLORA
+					/// IL PLC MI METTE A TRUE LA  Vb119_AnticipoTrasl_SX_fallito  E QUINDI IL MOVIMENTO LO FACCIO FARE QUI DAL CN
+					if(vb119                         )
+						vb119                          = 0	//pulisco
+						AxAnt( 10        , Vq3522                             , -Vq3530                    , 2, 0 )
+					endif
 					vn12         = 20
 					Vb4016                  = 1 	//segnalo che il ciclo trasalatore è in fasi di movimento
 					break
@@ -795,6 +799,7 @@ do
 				// aspetto la pinza l'interna C1 alta per partire con il traslatore verso DX
 			waitcond(vb223                        ==0)
 			Delays(0.2)
+			vb36            = 1 	//apro retrattile modificarichiesta da Kamrul per usare la retrattile sulla prima testa
 			if ( vb4513                   and vb224                        )
 					if ( vb7928        == 0 and Vb4382                         )
 						//se C2 non cuce e la pinza esterna è alta muovo direttamente
@@ -957,6 +962,17 @@ do
 			break
 
 		case 36
+
+
+				Vb4388                              = 0  			
+				if(vb242                       )
+					vn12         = 37
+				endif		
+
+
+			break
+
+		case 37
 				//// se la C2 è abilitata parto a cucire
 				if (vb4513                  or vb4519                        )
 
@@ -964,7 +980,7 @@ do
 
 				endif
 
-				Vb4388                              = 0  			
+
 				vn12         = 40
 
 

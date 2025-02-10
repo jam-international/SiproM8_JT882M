@@ -648,8 +648,12 @@ do
 				if ( RichiestaStartCuci2  or (Vb4513_AppEnbCucitrice2 ==0 and Vb97_RiseScaricatoreAttivo ==1) or Vb4006_StepTraslatore  )	//scambio con pinza esterna bassa
 					RichiestaStartCuci2 = 0		//pulisco altrimenti potrebbe partire subito
 					Vb97_RiseScaricatoreAttivo =0 //pulisco
-					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX]
-					////------> AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
+					////------> IL MOVIMENTO A SX DEL TRASLATORE LO FACCIO FARE AL PLC PER ANTICIPARE [VEDI Vb96_AnticipoTrasl_SX] MA SE IL TRASLATORE ERA OCCUPATO ALLORA
+					/// IL PLC MI METTE A TRUE LA  Vb119_AnticipoTrasl_SX_fallito  E QUINDI IL MOVIMENTO LO FACCIO FARE QUI DAL CN
+					if(Vb119_AnticipoTrasl_SX_fallito)
+						Vb119_AnticipoTrasl_SX_fallito = 0	//pulisco
+						AxAnt( C2_AsseCAR, Vq3522_PosizioneTraslCaricoTascaC1 , -Vq3530_VelocitaTraslRiposo, 2, 0 )
+					endif
 					VnStatoCuci2 = 20
 					Vb4016_PrgTraslatoreRun = ON	//segnalo che il ciclo trasalatore è in fasi di movimento
 					break
@@ -795,6 +799,7 @@ do
 				// aspetto la pinza l'interna C1 alta per partire con il traslatore verso DX
 			waitcond(Vb_ingresso_C1_PinzaIntBassa ==0)
 			Delays(0.2)
+			Vb36_Clear_OPT1 = ON	//apro retrattile modificarichiesta da Kamrul per usare la retrattile sulla prima testa
 			if ( Vb4513_AppEnbCucitrice2  and Vb_ingresso_C1_PinzaEstAlta  )
 					if ( VbChn2AutoRun == 0 and Vb4382_AppAut_out_C2_Pinza_int )
 						//se C2 non cuce e la pinza esterna è alta muovo direttamente
@@ -957,6 +962,17 @@ do
 			break
 
 		case 36
+				
+
+				Vb4388_AppAut_out_Pinza_tras_su_giu = OFF			
+				if(Vb_ingresso_FcPinzaTraslAlta)
+					VnStatoCuci2 = 37
+				endif		
+			
+				
+			break
+
+		case 37
 				//// se la C2 è abilitata parto a cucire
 				if (Vb4513_AppEnbCucitrice2 or Vb4519_AppScaricoCortiConPinza)
 			
@@ -964,7 +980,7 @@ do
 					
 				endif
 
-				Vb4388_AppAut_out_Pinza_tras_su_giu = OFF			
+		
 				VnStatoCuci2 = 40
 						
 			

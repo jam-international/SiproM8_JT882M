@@ -93,15 +93,6 @@ sub ()
         // -----------------
         // Azzeramento X e Y
 
-        // Movimento asse Y fuori ingombro ( finecorsa avanti )
-	if(PosAx_C2_AsseY < Vq3093_QuoteLimiteAsseY_C2 and C2_AssiAzzerati == 1)
-		AxAnt( C2_AsseY, Vq3093_QuoteLimiteAsseY_C2 , -15, 2, 0 )
-		WaitCond( IsAxInStop( C2_AsseY ) ) 
-	 endif
-   
-
-
-
 	
         // Comando azzeramento AsseX
     VbCmdAzzAx6 = 1

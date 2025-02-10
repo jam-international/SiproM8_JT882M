@@ -1,8 +1,8 @@
 (*
  *
- * MDPlc source file: DefVar.PLL
+ * MDPlc source file: DefVar.pll
  *
- * Date = "20/11/2024 15:02:24"
+ * Date = "25/01/2025 08:15:51"
  *)
 
 
@@ -10,14 +10,6 @@ VAR_GLOBAL
 
 
     {G:"Application_Variables"}
-
-    C1_PrgName                              AT %MB700.1    : STRING[ 80 ]; {DE:"va1    - Nome del programma CN da eseguire"}
-    C1_UdfName                              AT %MB700.2    : STRING[ 80 ]; {DE:"va2    - Nome UDF - ( parametri, tabellone, profilo )"}
-    C2_PrgName                              AT %MB700.11   : STRING[ 80 ]; {DE:"va11   - Nome del programma CN da eseguire"}
-    C2_UdfName                              AT %MB700.12   : STRING[ 80 ]; {DE:"va12   - Nome UDF - ( parametri, tabellone, profilo )"}
-    Sup_PrgName                             AT %MB700.21   : STRING[ 80 ]; {DE:"va21   - Nome del programma CN del canale 3"}
-    App_Ver                                 AT %MB700.31   : STRING[ 80 ]; {DE:"va31   - Versione applicativo"}
-
 
     VbEnableCamme                           AT %MB300.1    : BOOL;         {DE:"vb1    - Comando di abilitazione camme ( globale )"}
     Vb2_C1_Apritensione                     AT %MB300.2    : BOOL;         {DE:"vb2    - Vb attivazione apritenzione cucitrice 1"}
@@ -103,6 +95,7 @@ VAR_GLOBAL
     Vb95_ResetConteggio                     AT %MB300.95   : BOOL;         {DE:"vb95   - tasto Reset HMI rimette il conteggio 1/7"}
     Vb96_AnticipoTrasl_SX                   AT %MB300.96   : BOOL;         {DE:"vb96   - =1 anticipo il movimento del traslatore a sx sopra le pinze di cucitura della testa 1"}
     Vb97_RiseScaricatoreAttivo              AT %MB300.97   : BOOL;         {DE:"vb97   - = 1 è un rise che mi dice che lo scaricatore è attivo ed è arrivato il segnale di fine cucitura"}
+    Vb98_mcInclinata                        AT %MB300.98   : BOOL;         {DE:"vb98   - = 1 mc nel mio ufficio inclinata con caricatore braccio dietro"}
     VbTest                                  AT %MB300.99   : BOOL;         {DE:"vb99   - per test"}
     VbSimulaDbg                             AT %MB300.100  : BOOL;         {DE:"vb100  - Cucitrice simulata ( per debugger )"}
     VbSyncDbg                               AT %MB300.101  : BOOL;         {DE:"vb101  - Variabile di sync ( per debugger )"}
@@ -110,6 +103,9 @@ VAR_GLOBAL
     VbSimulazionePedanaC2                   AT %MB300.103  : BOOL;         {DE:"vb103  - alza e abbassa le pinze tramite vb come se premessi la pedana"}
     Vb115CricchettoRinforzo                 AT %MB300.115  : BOOL;         {DE:"vb115  - ad ON lancia il ciclo per inserire la fettuccia nei rulli"}
     Vb116RinforzoGiu_HMI                    AT %MB300.116  : BOOL;         {DE:"vb116  - ad ON HMI chiede al PLC di abbassare i coltelli del rinforzo"}
+    Vb117_EnableJogXYPlc_T1                 AT %MB300.117  : BOOL;         {DE:"vb117  - = 1 in fase di hold è possibile fare i jog con i tasti +- del HMI"}
+    Vb118_EnableJogXYPlc_T2                 AT %MB300.118  : BOOL;         {DE:"vb118  - = 1 in fase di hold è possibile fare i jog con i tasti +- del HMI"}
+    Vb119_AnticipoTrasl_SX_fallito          AT %MB300.119  : BOOL;         {DE:"vb119  - =1 il plc non ha potuto fare il movimento in anticpo perchè il traslatore era occupato, lo farò fare al CN"}
     Vb151EnableCarPattine                   AT %MB300.151  : BOOL;         {DE:"vb151  - =1 device caricatore pattina attivo"}
     Vb152KitCarPAttine                      AT %MB300.152  : BOOL;         {DE:"vb152  - =1 il kit carica pattina è attivo (tasto HMI)"}
     Vb153GoCicloCarPAttina                  AT %MB300.153  : BOOL;         {DE:"vb153  - =1 fa partire un ciclo carica pattina"}
@@ -120,6 +116,7 @@ VAR_GLOBAL
     Vb158PattinaTestRunning                 AT %MB300.158  : BOOL;         {DE:"vb158  - =1 il ciclo piattina test sta girando"}
     Vb159PattinaTestRunning                 AT %MB300.159  : BOOL;         {DE:"vb159  - =1 il ciclo piattina test sta girando"}
     Vb160PartiACucire                       AT %MB300.160  : BOOL;         {DE:"vb160  - =1 il plc avverte il CN che la pattina è stata caricata e bloccata, ora può effettuare la prima cucitura"}
+    Vb161HoldErrTabelloneT1                 AT %MB300.161  : BOOL;         {DE:"vb161  - =1 FPGA non ha mandato tutti gli impusi per via dell'accavallamento degli anticipi"}
     Vb170KitTascaCargo                      AT %MB300.170  : BOOL;         {DE:"vb170  - =1 attivo il kit tasca cargo"}
     Vb_Fun301_run                           AT %MB300.171  : BOOL;         {DE:"vb171"}
     Vb_3SchedeIOBelli                       AT %MB300.172  : BOOL;         {DE:"vb172  - =1 è una 882 con solo 3 schede IO fatte da Belli (NB in Argentina la prima 882 ne aveva 4 quindi questa vb va tenuta a false)"}
@@ -224,6 +221,7 @@ VAR_GLOBAL
     Vb4016_PrgTraslatoreRun                 AT %MB300.4016 : BOOL;         {DE:"vb4016 - se il traslatore è in una fase di movimento questa vb = ON"}
     Vb4017_AttesaTascaIsRunning             AT %MB300.4017 : BOOL;         {DE:"vb4017 - il ciclo di attesa tasca in CicloAutomatico sta girando"}
     Vb4018_TrigrHMITascaCucita              AT %MB300.4018 : BOOL;         {DE:"vb4018 - ad On quando una tasca è stata cucita completamente"}
+    Vb4019_ResetPiegatoreRun                AT %MB300.4019 : BOOL;         {DE:"vb4019 - ad On quando il CN fa la procedura di Reset Piegatore"}
     Vb4021_Piegatore1_ON                    AT %MB300.4021 : BOOL;         {DE:"vb4021 - Primo piegatore attivato"}
     Vb4022_Piegatore2_ON                    AT %MB300.4022 : BOOL;         {DE:"vb4022 - Secondo piegatore attivato"}
     Vb4023_Piegatore3_ON                    AT %MB300.4023 : BOOL;         {DE:"vb4023 - Terzo piegatore attivato"}
@@ -687,6 +685,9 @@ VAR_GLOBAL
     Vq_117_READ_FC_ava_Y_C2                 AT %MD500.117  : DINT;         {DE:"vq117  - Vq lettura fine corsa avanti asse Y C2"}
     Vq_118_READ_FC_ind_CARIC_C2             AT %MD500.118  : DINT;         {DE:"vq118  - Vq lettura fine corsa indietro traslatore"}
     Vq_119_READ_FC_ava_CARIC_C2             AT %MD500.119  : DINT;         {DE:"vq119  - Vq lettura fine corsa avanti traslatore"}
+    VqTest2997                              AT %MD500.2997 : DINT;         {DE:"vq2997"}
+    VqTest2998                              AT %MD500.2998 : DINT;         {DE:"vq2998"}
+    VqTest2999                              AT %MD500.2999 : DINT;         {DE:"vq2999"}
     Vq3000_RitPiegatoreAD_ON                AT %MD500.3000 : DINT;         {DE:"vq3000"}
     Vq3001_RitPiegatoreAD_OFF               AT %MD500.3001 : DINT;         {DE:"vq3001"}
     Vq3002_RitPiegatoreAlto_ON              AT %MD500.3002 : DINT;         {DE:"vq3002"}
@@ -827,6 +828,15 @@ VAR_GLOBAL
     GoAxPlcCaricVel                         AT %MD500.3602 : DINT;         {DE:"vq3602 - GoAx asse caricatore - Velocita'"}
     GoAxPlcCaric                            AT %MD500.3603 : DINT;         {DE:"vq3603 - GoAx asse caricatore - Libera"}
     FUN301_vq4000                           AT %MD500.4000 : DINT;         {DE:"vq4000"}
+    fun94idxPutni                           AT %MD500.5000 : DINT;         {DE:"vq5000 - = Numero del punto di cucitura"}
+    fun94idfUdf                             AT %MD500.5001 : DINT;         {DE:"vq5001 - = Numero del passo UDF"}
+    fun94XTeorica                           AT %MD500.5002 : DINT;         {DE:"vq5002 - = Posizione teorica X [impulsi]"}
+    fun94XReale                             AT %MD500.5003 : DINT;         {DE:"vq5003 - = Posizione reale X [impulsi]"}
+    fun94YTeorica                           AT %MD500.5004 : DINT;         {DE:"vq5004 - = Posizione teorica Y [impulsi]"}
+    fun94YReale                             AT %MD500.5005 : DINT;         {DE:"vq5005 - = Posizione reale Y [impulsi]"}
+    fun94ErrX                               AT %MD500.5006 : DINT;         {DE:"vq5006 - = Errore di posizione X [impulsi] (PosTeorica - PosReale)"}
+    fun94ErrY                               AT %MD500.5007 : DINT;         {DE:"vq5007 - = Errore di posizione Y [impulsi] (PosTeorica - PosReale)"}
+    fun94VelAgoTabellone                    AT %MD500.5008 : DINT;         {DE:"vq5008 - = Vel Ago per calcolo anticipi dal tabellone [RPM]"}
 
 
     VdTmpCalc                               AT %ML600.1    : LREAL;        {DE:"vd1    - Usato per calcoli temporanei nel PLC"}
@@ -835,6 +845,14 @@ VAR_GLOBAL
     VdTmpOP_T1                              AT %ML600.4    : LREAL;        {DE:"vd4    - Usato per calcoli temporanei nel PLC"}
     VdTmpOP_T2                              AT %ML600.5    : LREAL;        {DE:"vd5    - Usato per calcoli temporanei nel PLC"}
     VdTmpOP_T3                              AT %ML600.6    : LREAL;        {DE:"vd6    - Usato per calcoli temporanei nel PLC"}
+
+
+    C1_PrgName                              AT %MB700.1    : STRING[ 80 ]; {DE:"va1    - Nome del programma CN da eseguire"}
+    C1_UdfName                              AT %MB700.2    : STRING[ 80 ]; {DE:"va2    - Nome UDF - ( parametri, tabellone, profilo )"}
+    C2_PrgName                              AT %MB700.11   : STRING[ 80 ]; {DE:"va11   - Nome del programma CN da eseguire"}
+    C2_UdfName                              AT %MB700.12   : STRING[ 80 ]; {DE:"va12   - Nome UDF - ( parametri, tabellone, profilo )"}
+    Sup_PrgName                             AT %MB700.21   : STRING[ 80 ]; {DE:"va21   - Nome del programma CN del canale 3"}
+    App_Ver                                 AT %MB700.31   : STRING[ 80 ]; {DE:"va31   - Versione applicativo"}
 
 
     i1                                      AT %IX100.0    : BOOL;         {DE:"i1"}
@@ -1035,6 +1053,43 @@ VAR_GLOBAL CONSTANT
     C2_MODE_BLOCCO_FILO_END                 : INT := 101; { DE:"Mode camma blocco filo durante primo giro" }
     C2_VB_BLOCCO_FILO_END                   : INT := 16; { DE:"VB blocco filo durante primo giro" }
     C2_ENA_BLOCCO_FILO_END                  : INT := 2001; { DE:"Indice VB abilitazione camma blocco filo durante primo giro ( vb1001 )" }
+    C1_NumPuntiRottFilo                     : DINT := 14000; { DE:"punti impostati rottura filo" }
+    PLC_VN_TO_VB                            : DINT := 15; { DE:"Copia una vn su 16 vb consecutive" }
+    PLC_READ_FORK_VAR                       : DINT := 28; { DE:"Lettura variabile fork" }
+    PLC_WRITE_FORK_VAR                      : DINT := 29; { DE:"Scrittura variabile fork" }
+    PLC_READ_AX_QUOTE                       : DINT := 70; { DE:"Lettura quota asse" }
+    PLC_WRITE_AX_QUOTE                      : DINT := 71; { DE:"Set quota asse" }
+    PLC_ROLLOVER_AX                         : DINT := 72; { DE:"Rollover asse" }
+    PLC_MOVE_AX_TONDO                       : DINT := 73; { DE:"Movimento asse tondo" }
+    PLC_MOVE_AX                             : DINT := 74; { DE:"Movimento asse" }
+    PLC_STOP_AX                             : DINT := 75; { DE:"Stop asse" }
+    PLC_CHG_QUO_OBJ_AX                      : DINT := 78; { DE:"Modifica quota obiettivo asse" }
+    PLC_SET_EMERGENZA                       : DINT := 90; { DE:"Set emergenza" }
+    PLC_ENABLE_FOLLOW                       : DINT := 105; { DE:"Abilitazione inseguimento" }
+    PLC_DISABLE_FOLLOW                      : DINT := 106; { DE:"Disabilitazione inseguimento" }
+    PLC_RESET_ALL_CAM                       : DINT := 120; { DE:"Reset di tutte le camme digitali" }
+    PLC_INIT_ONE_CAM                        : DINT := 121; { DE:"Inizializzazione di una camma digitale" }
+    PLC_DISABLE_ONE_CAM                     : DINT := 122; { DE:"Disabilitazione di una camma digitale" }
+    PLC_ANTICIPO_CAM                        : DINT := 123; { DE:"Set anticipo di una camma digitale" }
+    PLC_IO_CTL_CAM                          : DINT := 124; { DE:"IoCtl camma digitale" }
+    PLC_AN_OUT_NUM                          : DINT := 140; { DE:"imposta uscita analogica" }
+    PLC_AN_OUT_READ                         : DINT := 141; { DE:"legge uscita analogica" }
+    PLC_VCD_TO_VD                           : DINT := 168; { DE:"copia una Vcd in una Vd" }
+    PLC_VD_TO_VCD                           : DINT := 169; { DE:"copia una Vd in una Vcd" }
+    PLC_SET_UDT_CMD                         : DINT := 191; { DE:"Set comandi udt e udf" }
+    PLC_ENABLE_IRQ                          : DINT := 200; { DE:"Abilitazione interrupt" }
+    PLC_DISABLE_IRQ                         : DINT := 201; { DE:"Disabilitazione interrupt" }
+    PLC_ADD_FUN_IRQ                         : DINT := 202; { DE:"Inserimento di una funzione di interrupt" }
+    PLC_REMOVE_FUN_IRQ                      : DINT := 203; { DE:"Rimozione di una funzione di interrupt" }
+    PLC_READ_AX_PARAM                       : DINT := 210; { DE:"Lettura parametri assi" }
+    PLC_WRITE_AX_PARAM                      : DINT := 211; { DE:"Scrittura parametri assi" }
+    PLC_SPA_ACC_DEC                         : DINT := 216; { DE:"Calcolo spazio acc e dec" }
+    PLC_FORCE_ZEROED                        : DINT := 218; { DE:"Forzatura assi azzerati" }
+    PLC_CUCI_SET_PARAM                      : DINT := 280; { DE:"Impostazione parametri di cucitura" }
+    PLC_CUCI_CMD                            : DINT := 281; { DE:"Comandi per la cucitrice" }
+    PLC_ECAT_SDO_WR                         : DINT := 300; { DE:"Ethercat SDO write" }
+    PLC_ECAT_SDO_RD                         : DINT := 301; { DE:"Ethercat SDO read" }
+    PLC_ECAT_INFO                           : DINT := 302; { DE:"Ethercat info" }
     ENABLE_CAMME_IDX                        : INT := 1;
     EnbCountIRQPiegatore_Su_IDX             : INT := 4077; { DE:"///  HMI utilizzato per abilitare il conteggio del sensore piegatore su" }
     EnbCountRotturaFiloC1_IDX               : INT := 4092; { DE:"///  HMI utilizzato per abilitare il conteggio della rottura filo C1" }
@@ -1078,42 +1133,5 @@ VAR_GLOBAL CONSTANT
     AO98_ValoreTensioneTesta2               : INT := 98; { DE:"valore scrittura analogica per elettrocalamita blocca filo testa 1  0-10000 mV" }
     AO99_ValoreElettrocSotto                : INT := 99; { DE:"valore scrittura analogica per elettrocalamita 0-10000 mV" }
     AO100_ValoreElettrocSopra               : INT := 100; { DE:"valore scrittura analogica per elettrocalamita perno 0-10000 mV" }
-    C1_NumPuntiRottFilo                     : DINT := 14000; { DE:"punti impostati rottura filo" }
-    PLC_VN_TO_VB                            : DINT := 15; { DE:"Copia una vn su 16 vb consecutive" }
-    PLC_READ_FORK_VAR                       : DINT := 28; { DE:"Lettura variabile fork" }
-    PLC_WRITE_FORK_VAR                      : DINT := 29; { DE:"Scrittura variabile fork" }
-    PLC_READ_AX_QUOTE                       : DINT := 70; { DE:"Lettura quota asse" }
-    PLC_WRITE_AX_QUOTE                      : DINT := 71; { DE:"Set quota asse" }
-    PLC_ROLLOVER_AX                         : DINT := 72; { DE:"Rollover asse" }
-    PLC_MOVE_AX_TONDO                       : DINT := 73; { DE:"Movimento asse tondo" }
-    PLC_MOVE_AX                             : DINT := 74; { DE:"Movimento asse" }
-    PLC_STOP_AX                             : DINT := 75; { DE:"Stop asse" }
-    PLC_CHG_QUO_OBJ_AX                      : DINT := 78; { DE:"Modifica quota obiettivo asse" }
-    PLC_SET_EMERGENZA                       : DINT := 90; { DE:"Set emergenza" }
-    PLC_ENABLE_FOLLOW                       : DINT := 105; { DE:"Abilitazione inseguimento" }
-    PLC_DISABLE_FOLLOW                      : DINT := 106; { DE:"Disabilitazione inseguimento" }
-    PLC_RESET_ALL_CAM                       : DINT := 120; { DE:"Reset di tutte le camme digitali" }
-    PLC_INIT_ONE_CAM                        : DINT := 121; { DE:"Inizializzazione di una camma digitale" }
-    PLC_DISABLE_ONE_CAM                     : DINT := 122; { DE:"Disabilitazione di una camma digitale" }
-    PLC_ANTICIPO_CAM                        : DINT := 123; { DE:"Set anticipo di una camma digitale" }
-    PLC_IO_CTL_CAM                          : DINT := 124; { DE:"IoCtl camma digitale" }
-    PLC_AN_OUT_NUM                          : DINT := 140; { DE:"imposta uscita analogica" }
-    PLC_AN_OUT_READ                         : DINT := 141; { DE:"legge uscita analogica" }
-    PLC_VCD_TO_VD                           : DINT := 168; { DE:"copia una Vcd in una Vd" }
-    PLC_VD_TO_VCD                           : DINT := 169; { DE:"copia una Vd in una Vcd" }
-    PLC_SET_UDT_CMD                         : DINT := 191; { DE:"Set comandi udt e udf" }
-    PLC_ENABLE_IRQ                          : DINT := 200; { DE:"Abilitazione interrupt" }
-    PLC_DISABLE_IRQ                         : DINT := 201; { DE:"Disabilitazione interrupt" }
-    PLC_ADD_FUN_IRQ                         : DINT := 202; { DE:"Inserimento di una funzione di interrupt" }
-    PLC_REMOVE_FUN_IRQ                      : DINT := 203; { DE:"Rimozione di una funzione di interrupt" }
-    PLC_READ_AX_PARAM                       : DINT := 210; { DE:"Lettura parametri assi" }
-    PLC_WRITE_AX_PARAM                      : DINT := 211; { DE:"Scrittura parametri assi" }
-    PLC_SPA_ACC_DEC                         : DINT := 216; { DE:"Calcolo spazio acc e dec" }
-    PLC_FORCE_ZEROED                        : DINT := 218; { DE:"Forzatura assi azzerati" }
-    PLC_CUCI_SET_PARAM                      : DINT := 280; { DE:"Impostazione parametri di cucitura" }
-    PLC_CUCI_CMD                            : DINT := 281; { DE:"Comandi per la cucitrice" }
-    PLC_ECAT_SDO_WR                         : DINT := 300; { DE:"Ethercat SDO write" }
-    PLC_ECAT_SDO_RD                         : DINT := 301; { DE:"Ethercat SDO read" }
-    PLC_ECAT_INFO                           : DINT := 302; { DE:"Ethercat info" }
 
 END_VAR

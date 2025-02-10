@@ -19,7 +19,7 @@
 
 
 sub ()
-	
+	Vb117_EnableJogXYPlc_T1 = OFF	//blocca i JOG XY dal PLC
         // Centratura pinza con ago
     if ( Vb4080_TestFcZeroC1 )
         gosub "C1_TestPinzaAgo"
@@ -84,7 +84,7 @@ sub ()
 
 	WaitCond ( Vb_ingresso_C1_PinzaEstAlta == 1)
 
-	Vb36_Clear_OPT1 = ON	//apro retrattile
+//kamrul	Vb36_Clear_OPT1 = ON	//apro retrattile
 	Vb37_Clear_OPT2 = ON	//abbasso perni ranocchia
 	Vb38_Clear_OPT3 = ON	//disattivo salto piedino
 

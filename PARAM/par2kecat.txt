@@ -1,5 +1,5 @@
 [StartEthercat]
-  #Version 1.0.6.12207
+  #Version 1.0.6.13293
   #CanAdd NetEthercat
 
   [StartNetEthercat]
@@ -90,118 +90,10 @@
       NodeGestStateVnIdx = 0
     [EndEcatNodeDrvDeltaPos]
 
-    [StartEcatGenericNode]
-      #CanAdd EcatReadVal
-      #CanAdd EcatWriteVal
-      #CanAdd EcatDigIn
-      #CanAdd EcatDigOut
-      EcatNodeId = 4
-      Name = "Microchip"
-      NodeEnable = 1
-      EcatVendorId = 1240
-      EcatProductCode = 0
-      EcatTypeNode = 0
-      EcatPar1 = 0
-      ChangeTwinCATreg = 0
-      NodeStateVnIdx = 0
-      NodeGestStateVnIdx = 0
-      Sync0StartTimeUs = 0
-
-      [StartEcatDigIn]
-        EcatDigInIndex = &H3001
-        EcatDigInSubIndex = &H1
-        EcatDigInObjSize = 8
-        EcatFirstDigIn = 1
-        EcatNumDigIn = 8
-        EcatDigInPar = 0
-      [EndEcatDigIn]
-
-      [StartEcatDigIn]
-        EcatDigInIndex = &H3001
-        EcatDigInSubIndex = &H2
-        EcatDigInObjSize = 8
-        EcatFirstDigIn = 9
-        EcatNumDigIn = 8
-        EcatDigInPar = 0
-      [EndEcatDigIn]
-
-      [StartEcatDigOut]
-        EcatDigOutIndex = &H3101
-        EcatDigOutSubIndex = &H1
-        EcatDigOutObjSize = 8
-        EcatFirstDigOut = 1
-        EcatNumDigOut = 8
-        EcatDigOutPar = 0
-      [EndEcatDigOut]
-
-      [StartEcatDigOut]
-        EcatDigOutIndex = &H3101
-        EcatDigOutSubIndex = &H2
-        EcatDigOutObjSize = 8
-        EcatFirstDigOut = 9
-        EcatNumDigOut = 8
-        EcatDigOutPar = 0
-      [EndEcatDigOut]
-    [EndEcatGenericNode]
-
-    [StartEcatGenericNode]
-      #CanAdd EcatReadVal
-      #CanAdd EcatWriteVal
-      #CanAdd EcatDigIn
-      #CanAdd EcatDigOut
-      EcatNodeId = 5
-      Name = "Microchip"
-      NodeEnable = 1
-      EcatVendorId = 1240
-      EcatProductCode = 0
-      EcatTypeNode = 0
-      EcatPar1 = 0
-      ChangeTwinCATreg = 0
-      NodeStateVnIdx = 0
-      NodeGestStateVnIdx = 0
-      Sync0StartTimeUs = 0
-
-      [StartEcatDigIn]
-        EcatDigInIndex = &H3001
-        EcatDigInSubIndex = &H1
-        EcatDigInObjSize = 8
-        EcatFirstDigIn = 17
-        EcatNumDigIn = 8
-        EcatDigInPar = 0
-      [EndEcatDigIn]
-
-      [StartEcatDigIn]
-        EcatDigInIndex = &H3001
-        EcatDigInSubIndex = &H2
-        EcatDigInObjSize = 8
-        EcatFirstDigIn = 25
-        EcatNumDigIn = 8
-        EcatDigInPar = 0
-      [EndEcatDigIn]
-
-      [StartEcatDigOut]
-        EcatDigOutIndex = &H3101
-        EcatDigOutSubIndex = &H1
-        EcatDigOutObjSize = 8
-        EcatFirstDigOut = 17
-        EcatNumDigOut = 8
-        EcatDigOutPar = 0
-      [EndEcatDigOut]
-
-      [StartEcatDigOut]
-        EcatDigOutIndex = &H3101
-        EcatDigOutSubIndex = &H2
-        EcatDigOutObjSize = 8
-        EcatFirstDigOut = 25
-        EcatNumDigOut = 8
-        EcatDigOutPar = 0
-      [EndEcatDigOut]
-    [EndEcatGenericNode]
-
     [StartEcatNodeDrvDeltaPos]
       #CanAdd EcatMonitor
       #CanAdd EcatSetVal
-      EcatNodeId = 6
+      EcatNodeId = 4
       Name = ""
       NodeEnable = 1
       AxId = 8
@@ -216,7 +108,7 @@
     [StartEcatNodeDrvDeltaPos]
       #CanAdd EcatMonitor
       #CanAdd EcatSetVal
-      EcatNodeId = 7
+      EcatNodeId = 5
       Name = ""
       NodeEnable = 1
       AxId = 9
@@ -231,7 +123,7 @@
     [StartEcatNodeDrvDeltaPos]
       #CanAdd EcatMonitor
       #CanAdd EcatSetVal
-      EcatNodeId = 8
+      EcatNodeId = 6
       Name = ""
       NodeEnable = 1
       AxId = 10
@@ -243,58 +135,46 @@
       NodeGestStateVnIdx = 0
     [EndEcatNodeDrvDeltaPos]
 
-    [StartEcatGenericNode]
-      #CanAdd EcatReadVal
-      #CanAdd EcatWriteVal
-      #CanAdd EcatDigIn
-      #CanAdd EcatDigOut
-      EcatNodeId = 9
-      Name = "Microchip"
+    [StartEcatNodeMcpuEnhanced]
+      #CanAdd EcatMonitor
+      #CanAdd EcatSetVal
+      EcatNodeId = 7
+      Name = ""
       NodeEnable = 1
-      EcatVendorId = 1240
-      EcatProductCode = 0
-      EcatTypeNode = 0
-      EcatPar1 = 0
-      ChangeTwinCATreg = 0
+      MaxIONum = 32
+      NumDi = 32
+      NumDo = 32
+      AnInBoard = 0
+      MaxAiNum = 0
+      NumAi = 0
+      MaxAoNum = 0
+      NumAo = 0
+      McpuExpBoardCode = 0
+      NumMcpuEnc = 0
+      MaxMcpuEnc = 0
       NodeStateVnIdx = 0
       NodeGestStateVnIdx = 0
-      Sync0StartTimeUs = 0
+    [EndEcatNodeMcpuEnhanced]
 
-      [StartEcatDigIn]
-        EcatDigInIndex = &H3001
-        EcatDigInSubIndex = &H1
-        EcatDigInObjSize = 8
-        EcatFirstDigIn = 33
-        EcatNumDigIn = 8
-        EcatDigInPar = 0
-      [EndEcatDigIn]
-
-      [StartEcatDigIn]
-        EcatDigInIndex = &H3001
-        EcatDigInSubIndex = &H2
-        EcatDigInObjSize = 8
-        EcatFirstDigIn = 41
-        EcatNumDigIn = 8
-        EcatDigInPar = 0
-      [EndEcatDigIn]
-
-      [StartEcatDigOut]
-        EcatDigOutIndex = &H3101
-        EcatDigOutSubIndex = &H1
-        EcatDigOutObjSize = 8
-        EcatFirstDigOut = 33
-        EcatNumDigOut = 8
-        EcatDigOutPar = 0
-      [EndEcatDigOut]
-
-      [StartEcatDigOut]
-        EcatDigOutIndex = &H3101
-        EcatDigOutSubIndex = &H2
-        EcatDigOutObjSize = 8
-        EcatFirstDigOut = 41
-        EcatNumDigOut = 8
-        EcatDigOutPar = 0
-      [EndEcatDigOut]
-    [EndEcatGenericNode]
+    [StartEcatNodeMcpuEnhanced]
+      #CanAdd EcatMonitor
+      #CanAdd EcatSetVal
+      EcatNodeId = 8
+      Name = ""
+      NodeEnable = 1
+      MaxIONum = 32
+      NumDi = 32
+      NumDo = 32
+      AnInBoard = 0
+      MaxAiNum = 0
+      NumAi = 0
+      MaxAoNum = 0
+      NumAo = 0
+      McpuExpBoardCode = 0
+      NumMcpuEnc = 0
+      MaxMcpuEnc = 0
+      NodeStateVnIdx = 0
+      NodeGestStateVnIdx = 0
+    [EndEcatNodeMcpuEnhanced]
   [EndNetEthercat]
 [EndEthercat]

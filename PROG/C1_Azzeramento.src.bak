@@ -22,7 +22,7 @@ sub ()
 	// se ho il comando da HMI per azzerare solo la pinza salto avanti
 	if ( Vb52RichiestaZeroAxDaHmiC1 )
         Vb4350_AppAut_out_C1_Pinza_int = OFF
-        Vb4351_AppAut_o19_C1_Pinza_est = OFF 
+        Vb4351_AppAut_out_C1_Pinza_est = OFF 
 		  DelayS( 0.1 )    
 	    SyncVar( C1_CmdPiedinoSu )    
 		goto ZERO_X_Y
@@ -102,14 +102,6 @@ sub ()
 :ZERO_X_Y
         // -----------------
         // Azzeramento X e Y
-
-        // Movimento asse Y fuori ingombro
-
-	if(PosAx_C1_AsseY < Vq3092_QuoteLimiteAsseY_C1)
-		AxAnt( C1_AsseY, Vq3092_QuoteLimiteAsseY_C1 , -15, 2, 0 )
-		WaitCond( IsAxInStop( C1_AsseY ) ) 
-	 endif
-	
         // Comando azzeramento AsseX
     VbCmdAzzAx1 = 1
     
